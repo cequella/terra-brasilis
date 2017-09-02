@@ -142,10 +142,6 @@ end
 -- static methods
 
 function Mat.translation(x, y, z)
-   if type(x) ~= "number" then return nil end
-   if type(y) ~= "number" then return nil end
-   if type(z) ~= "number" then return nil end
-   
    local out = Mat()
 
    out.value[13], out.value[14], out.value[15] = x, y, z
@@ -154,10 +150,6 @@ function Mat.translation(x, y, z)
 end
 
 function Mat.scale(x, y, z)
-   if type(x) ~= "number" then return nil end
-   if type(y) ~= "number" then return nil end
-   if type(z) ~= "number" then return nil end
-
    local out = Mat()
 
    out.value[1], out.value[6], out.value[11] = x, y, z
@@ -166,8 +158,6 @@ function Mat.scale(x, y, z)
 end
 
 function Mat.rotateX(angle)
-   if type(angle) ~= "number" then return nil end
-   
    local out = Mat()
    
    local cosAngle, sinAngle = math.cos(angle), math.sin(angle)
@@ -179,8 +169,6 @@ function Mat.rotateX(angle)
 end
 
 function Mat.rotateY(angle)
-   if type(angle) ~= "number" then return nil end
-   
    local out = Mat()
    
    local cosAngle, sinAngle = math.cos(angle), math.sin(angle)
@@ -192,8 +180,6 @@ function Mat.rotateY(angle)
 end
 
 function Mat.rotateZ(angle)
-   if type(angle) ~= "number" then return nil end
-   
    local out = Mat()
    
    local cosAngle, sinAngle = math.cos(angle), math.sin(angle)
