@@ -1,4 +1,8 @@
+function love.update()
+   mousex = love.mouse.getX()
+   mousey = love.mouse.getY()
+end
 
 function love.draw()
-   love.graphics.print("Ola, mundo", 400, 300)
+   love.graphics.print("Ola, mundo", mousex, mousey)
 end
