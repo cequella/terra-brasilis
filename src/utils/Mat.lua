@@ -92,8 +92,6 @@ function Mat:__mul(that)
 end
 
 function Mat:__div(that)
-   if type(that) ~= "number" then return nil end
-
    local out = Mat()
    for i=1, 16 do
 	  out.value[i] = self.value[i]/that
@@ -103,8 +101,6 @@ function Mat:__div(that)
 end
 
 function Mat:__unm(that)
-   if type(that) ~= "number" then return nil end
-
    local out = Mat()
    for i=1, 16 do
 	  out.value[i] = -self.value[i]
@@ -114,8 +110,6 @@ function Mat:__unm(that)
 end
 
 function Mat:__eq(that)
-   if not Mat.check(that) then return nil end
-
    for i=1, 16 do
 	  
 	  if self.value[i] ~= that.value[i] then
