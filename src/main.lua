@@ -4,5 +4,5 @@ function love.update()
 end
 
 function love.draw()
-   love.graphics.print("Ola, mundo", mousex, mousey)
+   love.graphics.print("VAAAAIII SIMBOOORA", mousex, mousey)
 end
