@@ -6,14 +6,14 @@ Menu.__index = Menu
 
 setmetatable(Menu, {
 				__call = function(instance, x, y)
-				   return instance.new(x, y)
+				   local self = setmetatable({}, instance)
+				   instance:new(x, y)
+				   return self
 				end
 				   }
 )
 --------------------------------------------------------------
-function Menu.new(x, y)
-   local self = setmetatable({}, Menu)
-
+function Menu:new(x, y)
    -- coord
    self.x = x or 0
    self.y = y or 0

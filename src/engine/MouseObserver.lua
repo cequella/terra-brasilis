@@ -5,17 +5,15 @@ MouseObserver.__index = MouseObserver
 -- metatable
 setmetatable(MouseObserver,{
 				__call = function(instance)
-				   return instance.new()
+				   local self = setmetatable({}, instance)
+				   instance:new()
+				   return self
 				end
 						   }
 )
 --------------------------------------------------------------
-function MouseObserver.new()
-   local self = setmetatable({}, MouseObserver)
-
+function MouseObserver:new()
    self.observable = {}
-   
-   return self
 end
 --------------------------------------------------------------
 
@@ -23,16 +21,16 @@ end
 -- methods
 
 
-function MouseObserver:attach(reaction)
+function MouseObserver:attach(observable)
 
-   self.observable[ #self.observable +1 ] = reaction
+   self.observable[ #self.observable +1 ] = observable
 
 end
 --------------------------------------------------------------
-function MouseObserver:detach(reaction)
+function MouseObserver:detach(observable)
 
    for i=1, #self.observable do
-
+	  -- TODO
    end
 
 end

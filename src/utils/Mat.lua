@@ -7,28 +7,18 @@ Mat.__index = Mat
 
 setmetatable(Mat, {
 				__call = function(instance)
-				   return instance.new()
+				   local self = setmetatable({}, instance)
+				   instance:new()
+				   return self
 				end
 					 }
 )
-
-function Mat.new()
-   local self = setmetatable({}, Mat)
-
-   self.value = {}
-   for i=1, 16 do
-	  self.value[i] = 0.0
-   end
-   self.value[1], self.value[6], self.value[11], self.value[16] = 1.0, 1.0, 1.0, 1.0
-   
-   return self
-end
-
+------------------------------------------------------------------------------------
 function Mat.check(that)
    if type(that) ~= "table" then return false end
    return that.__index == Mat.__index
 end
-
+------------------------------------------------------------------------------------
 function Mat:__tostring()
    local out = "m =("
 
@@ -58,7 +48,7 @@ function Mat:__tostring()
 
    return out
 end
-
+------------------------------------------------------------------------------------
 function Mat:__add(that)
    local out = Mat()
    for i=1, 16 do
@@ -67,7 +57,7 @@ function Mat:__add(that)
 
    return out
 end
-
+------------------------------------------------------------------------------------
 function Mat:__sub(that)
    local out = Mat()
    for i=1, 16 do
@@ -76,7 +66,7 @@ function Mat:__sub(that)
 
    return out
 end
-
+------------------------------------------------------------------------------------
 function Mat:__mul(that)
    if type(that) == "number" then
 	  local out = Mat()
@@ -90,7 +80,7 @@ function Mat:__mul(that)
 
    return nil
 end
-
+------------------------------------------------------------------------------------
 function Mat:__div(that)
    local out = Mat()
    for i=1, 16 do
@@ -99,7 +89,7 @@ function Mat:__div(that)
 
    return out
 end
-
+------------------------------------------------------------------------------------
 function Mat:__unm(that)
    local out = Mat()
    for i=1, 16 do
@@ -108,7 +98,7 @@ function Mat:__unm(that)
 
    return out
 end
-
+------------------------------------------------------------------------------------
 function Mat:__eq(that)
    for i=1, 16 do
 	  
@@ -120,9 +110,19 @@ function Mat:__eq(that)
 
    return true
 end
+------------------------------------------------------------------------------------
 
 -- methods
 
+
+function Mat:new()
+   self.value = {}
+   for i=1, 16 do
+	  self.value[i] = 0.0
+   end
+   self.value[1], self.value[6], self.value[11], self.value[16] = 1.0, 1.0, 1.0, 1.0
+end
+------------------------------------------------------------------------------------
 function Mat:clone()
    local out = Mat
 
@@ -132,8 +132,11 @@ function Mat:clone()
 
    return out
 end
+------------------------------------------------------------------------------------
+
 
 -- static methods
+
 
 function Mat.translation(x, y, z)
    local out = Mat()
@@ -142,7 +145,7 @@ function Mat.translation(x, y, z)
    
    return out;
 end
-
+------------------------------------------------------------------------------------
 function Mat.scale(x, y, z)
    local out = Mat()
 
@@ -150,7 +153,7 @@ function Mat.scale(x, y, z)
    
    return out;
 end
-
+------------------------------------------------------------------------------------
 function Mat.rotateX(angle)
    local out = Mat()
    
@@ -161,7 +164,7 @@ function Mat.rotateX(angle)
    
    return out;
 end
-
+------------------------------------------------------------------------------------
 function Mat.rotateY(angle)
    local out = Mat()
    
@@ -172,7 +175,7 @@ function Mat.rotateY(angle)
    
    return out;
 end
-
+------------------------------------------------------------------------------------
 function Mat.rotateZ(angle)
    local out = Mat()
    
@@ -183,3 +186,4 @@ function Mat.rotateZ(angle)
    
    return out;
 end
+------------------------------------------------------------------------------------
