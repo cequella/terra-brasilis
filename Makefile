@@ -1,10 +1,11 @@
 PROJECT="TerraBrasilis.love"
 
 all:
+	@rm ${PROJECT}
 	@echo "Collecting and adding source file..."
-	@zip ${PROJECT} -r -j src/main.lua
+	@cd src/; zip -r ../${PROJECT} *
 
-play:
+run:
 	@love ${PROJECT}
 
 clear:
