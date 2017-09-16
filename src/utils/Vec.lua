@@ -65,14 +65,10 @@ end
 
 
 function Vec.new(x, y, z, w)
-   local self = setmetatable({}, Vec)
-
    self.x = x or 0.0
    self.y = y or 0.0
    self.z = z or 0.0
    self.w = w or 0.0
-
-   return self
 end
 -------------------------------------------------------
 function Vec:clone()
