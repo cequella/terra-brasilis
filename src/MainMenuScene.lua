@@ -35,11 +35,15 @@ local function quit()
    love.event.quit()
 end
 ---------------------------------------------------------
-local function startMenu(menu)
-   menu:addOption("Novo jogo",     newGame)
-   menu:addOption("Continuar",     continue)
-   menu:addOption("Configurações", config)
-   menu:addOption("Sair",          quit)
+local function startMenu(self)
+   self.menu:addOption("Novo jogo",     newGame)
+	  :addOption("Continuar",     continue)
+	  :addOption("Configuracoes", config)
+	  :addOption("Sair",          quit)
+	  :normalColor(255, 255, 255, 255)
+	  :deactiveColor(0, 0, 0, 150)
+	  :selectedColor(255, 0, 0, 255)
+	  :setFont( love.graphics.newFont("assets/CoolinCheer.ttf", 40) )
 end
 ---------------------------------------------------------
 local function startObservers(self)
@@ -47,10 +51,10 @@ local function startObservers(self)
    self.observer.mouse:attach(self.menu)
 
    love.mousepressed = function(x, y, button, istouch)
-	  scene.observer.mouse:notify("click", x, y, button, istouch)
+	  self.observer.mouse:notify("click", x, y, button, istouch)
    end
    love.keypressed = function(button, key, scancode, isrepeat)
-	  scene.observer.keyboard:notify("press", key, scancode, isrepeat)
+	  self.observer.keyboard:notify("press", key, scancode, isrepeat)
    end
 end
 ---------------------------------------------------------
@@ -65,7 +69,7 @@ function MainMenuScene:new()
    self.observer = {mouse= MouseObserver(), keyboard= KeyboardObserver()}
    self.menu = Menu(100, 200)
 
-   startMenu(self.menu)
+   startMenu(self)
    startObservers(self)
 end
 ---------------------------------------------------------

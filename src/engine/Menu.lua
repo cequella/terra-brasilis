@@ -5,24 +5,23 @@ Menu.__index = Menu
 -- metatable
 
 setmetatable(Menu, {
-				__call = function(instance, x, y)
+				__call = function(instance, x, y, font, fontSize)
 				   local self = setmetatable({}, instance)
-				   instance:new(x, y)
+				   instance:new(x, y, font)
 				   return self
 				end
 				   }
 )
 --------------------------------------------------------------
-function Menu:new(x, y)
+function Menu:new(x, y, font)
    -- coord
    self.x = x or 0
    self.y = y or 0
    self.w = 0
-   self.h = 0
 
    -- font related
-   self.font       = love.graphics.getFont()
-   self.fontHeight = self.font:getHeight()
+   self.font = nil
+   self:setFont(font)
 
    -- options
    self.option  = {}
@@ -42,21 +41,44 @@ local function update(self)
    local mouseX = love.mouse.getX()
    local mouseY = love.mouse.getY()
 
+   local height = #self.option *self.font:getHeight()
    -- check if cursor isn't in the menu area
    if mouseX < self.x         then return end
-   if mouseX > self.x +self.w then return end
+   if mouseX > self.x +height then return end
    if mouseY < self.y         then return end
-   if mouseY > self.y +self.h then return end
+   if mouseY > self.y +height then return end
 
    -- if cursor is in menu area, get position
-   self.current = math.ceil( (mouseY-self.y)/self.fontHeight )
+   self.current = math.ceil( (mouseY-self.y)/self.font:getHeight() )
 end
 --------------------------------------------------------------
 
 
 -- methods
 
+function Menu:setFont(font)
+   self.font = font or love.graphics.getFont()
+   return self
+end
+--------------------------------------------------------------
+function Menu:normalColor(r, g, b, a)
+   self.color.normal = {r, g, b, a or 255}
 
+   return self
+end
+--------------------------------------------------------------
+function Menu:selectedColor(r, g, b, a)
+   self.color.selected = {r, g, b, a or 255}
+
+   return self
+end
+--------------------------------------------------------------
+function Menu:deactiveColor(r, g, b, a)
+   self.color.deactive = {r, g, b, a or 255}
+
+   return self
+end
+--------------------------------------------------------------
 function Menu:addOption(label, reaction, active)
    local last = #self.option +1
 
@@ -70,13 +92,13 @@ function Menu:addOption(label, reaction, active)
 	  self.w = width
    end
 
-   -- update menu height
-   self.h = self.h +self.fontHeight
+   return self
 end
 --------------------------------------------------------------
 function Menu:display()
    update(self)
-   
+
+   love.graphics.setFont(self.font)
    for i, option in ipairs(self.option) do
 
 	  -- set option color
@@ -90,7 +112,7 @@ function Menu:display()
 	  love.graphics.setColor(color[1], color[2], color[3], color[4])
 
 	  -- draw option
-	  local height = (i-1)*self.fontHeight
+	  local height = (i-1)*self.font:getHeight()
 	  love.graphics.print(option.label, self.x, self.y +height)
    end
 end
@@ -108,7 +130,7 @@ function Menu:onKeyPressed(mode, key, scancode, isrepeat)
    if key == "down" and self.current < #self.option then
 	  self.current = self.current +1
 
-   elseif key == "up" and self.current > 0 then
+   elseif key == "up" and self.current > 1 then
 	  self.current = self.current -1
 	  
    elseif key == "return" and self.current > 0 then
