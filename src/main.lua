@@ -1,15 +1,7 @@
-require "utils.Geometry"
-require "engine.Menu"
-require "engine.MouseObserver"
-require "engine.KeyboardObserver"
-require "engine.Scene"
+require "MainMenuScene"
 
 function love.load()
-   menu = Menu(100, 200)
-
-   menu:addOption("Novo jogo")
-   menu:addOption("Continuar")
-   menu:addOption("Sair")
+   scene = MainMenuScene()
 end
 function love.update()
    if love.keyboard.isDown("escape") then
@@ -17,6 +9,7 @@ function love.update()
    end
 end
 function love.draw()
-   menu:display()
+
+   scene:display()
    
 end

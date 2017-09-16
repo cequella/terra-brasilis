@@ -37,6 +37,22 @@ function Menu:new(x, y)
 end
 --------------------------------------------------------------
 
+--private
+local function update(self)
+   local mouseX = love.mouse.getX()
+   local mouseY = love.mouse.getY()
+
+   -- check if cursor isn't in the menu area
+   if mouseX < self.x         then return end
+   if mouseX > self.x +self.w then return end
+   if mouseY < self.y         then return end
+   if mouseY > self.y +self.h then return end
+
+   -- if cursor is in menu area, get position
+   self.current = math.ceil( (mouseY-self.y)/self.fontHeight )
+end
+--------------------------------------------------------------
+
 
 -- methods
 
@@ -59,7 +75,7 @@ function Menu:addOption(label, reaction, active)
 end
 --------------------------------------------------------------
 function Menu:display()
-   self:update()
+   update(self)
    
    for i, option in ipairs(self.option) do
 
@@ -79,26 +95,26 @@ function Menu:display()
    end
 end
 --------------------------------------------------------------
-function Menu:update()
-   local mouseX = love.mouse.getX()
-   local mouseY = love.mouse.getY()
-
-   -- check if cursor isn't in the menu area
-   self.current = 0
-   if mouseX < self.x         then return end
-   if mouseX > self.x +self.w then return end
-   if mouseY < self.y         then return end
-   if mouseY > self.y +self.h then return end
-
-   -- if cursor is in menu area, get position
-   self.current = math.ceil( (mouseY-self.y)/self.fontHeight )
-end
---------------------------------------------------------------
 function Menu:onClick(mode, x, y, button, istouch)  
    if button ~= 1 then return end
    if self.current == 0 then return end
 
    local reaction = self.option[self.current].react
    reaction()
+end
+--------------------------------------------------------------
+function Menu:onKeyPressed(mode, key, scancode, isrepeat)
+
+   if key == "down" and self.current < #self.option then
+	  self.current = self.current +1
+
+   elseif key == "up" and self.current > 0 then
+	  self.current = self.current -1
+	  
+   elseif key == "return" and self.current > 0 then
+	  local reaction = self.option[self.current].react
+	  reaction()
+	  
+   end
 end
 --------------------------------------------------------------

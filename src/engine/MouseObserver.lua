@@ -12,15 +12,14 @@ setmetatable(MouseObserver,{
 						   }
 )
 --------------------------------------------------------------
-function MouseObserver:new()
-   self.observable = {}
-end
---------------------------------------------------------------
 
 
 -- methods
 
-
+function MouseObserver:new()
+   self.observable = {}
+end
+--------------------------------------------------------------
 function MouseObserver:attach(observable)
 
    self.observable[ #self.observable +1 ] = observable
