@@ -25,14 +25,13 @@ function Menu.new(x, y)
    self.fontHeight = self.font:getHeight()
 
    -- options
-   self.optionLabel = {}
-   self.optionReact = {}
-   self.current     = 0
+   self.option  = {}
+   self.current = 0
 
    -- colors
-   self.normalColor   = {255, 255, 255, 255}
-   self.selectedColor = {255, 0,   0,   255}
-   self.disabledColor = {0,   0,   0,   150}
+   self.color = { normal   ={255, 255, 255, 255},
+				  deactive ={0,   0,   0,   150},
+				  selected ={255, 0,   0,   255}}
    
    return self
 end
@@ -42,10 +41,12 @@ end
 -- methods
 
 
-function Menu:addOption(label, reaction)
-   local last = #self.optionLabel +1
-   self.optionLabel[last] = label
-   self.optionReact[last] = reaction
+function Menu:addOption(label, reaction, active)
+   local last = #self.option +1
+
+   self.option[last] = {label  = label,
+						react  = reaction,
+						active = active == nil or active}
 
    -- get largest option to set as actually menu width
    local width = self.font:getWidth(label)
@@ -60,20 +61,21 @@ end
 function Menu:display()
    self:update()
    
-   for i, label in ipairs(self.optionLabel) do
+   for i, option in ipairs(self.option) do
 
 	  -- set option color
 	  local color = nil
-	  if i == self.current then
-		 color = self.selectedColor
+
+	  if self.option[i].active then
+		 color = self.current == i and self.color.selected or self.color.normal
 	  else
-		 color = self.normalColor
+		 color = self.color.deactive
 	  end
 	  love.graphics.setColor(color[1], color[2], color[3], color[4])
 
 	  -- draw option
 	  local height = (i-1)*self.fontHeight
-	  love.graphics.print(label, self.x, self.y +height)
+	  love.graphics.print(option.label, self.x, self.y +height)
    end
 end
 --------------------------------------------------------------
@@ -96,7 +98,7 @@ function Menu:onClick(mode, x, y, button, istouch)
    if button ~= 1 then return end
    if self.current == 0 then return end
 
-   local reaction = self.optionReact[self.current]
+   local reaction = self.option[self.current].react
    reaction()
 end
 --------------------------------------------------------------

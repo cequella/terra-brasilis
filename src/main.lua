@@ -8,7 +8,7 @@ function love.load()
    menu    = Menu.new(200, 300)
 
    menu:addOption("Novo Jogo",     function() print("Novo Jogo") end)
-   menu:addOption("Continuar",     function() print("Continuar") end)
+   menu:addOption("Continuar",     function() print("Continuar") end, false)
    menu:addOption("Configurações", function() print("Config")    end)
    menu:addOption("Sair",          function() love.event.quit()  end)
 
