@@ -1,4 +1,4 @@
-# terra-brasilis
+# Terra Brasilis
 Jogo de tabuleiro criado em LÖVE/Lua
 
 ## Informações
