@@ -9,13 +9,13 @@ MainMenuScene.__index = MainMenuScene
 -- metatable
 
 setmetatable(MainMenuScene, {
-				__index = Scene,
-				__call = function(instance)
-				   local self = setmetatable({}, instance)
-				   instance:new()
-				   return self
-				end
-						}
+		__index = Scene,
+		__call = function(instance)
+		   local self = setmetatable({}, instance)
+		   instance:new()
+		   return self
+		end
+			    }
 )
 
 -- private
@@ -53,7 +53,7 @@ local function startMenu(self)
       :normalColor(255, 255, 255, 255)
       :deactiveColor(0, 0, 0, 150)
       :selectedColor(255, 0, 0, 255)
-      :setFont( love.graphics.newFont("assets/CoolinCheer.ttf", 40) )
+
 end
 ---------------------------------------------------------
 
@@ -79,7 +79,7 @@ function MainMenuScene:new()
    Scene.new(self, "MainMenu")
 
    self.observer = {mouse= MouseObserver(), keyboard= KeyboardObserver()}
-   self.menu = Menu(100, 200)
+   self.menu = Menu(100, 200, "assets/CoolinCheer.ttf", 40)
 
    startMenu(self)
    startObservers(self)
@@ -96,7 +96,7 @@ end
 function MainMenuScene:onKeyPressed(key, scancode, isrepeat)
 
    if key == 'escape' then
-	  love.event.close()
+      love.event.close()
    end
 
 end

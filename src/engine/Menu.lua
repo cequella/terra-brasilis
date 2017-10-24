@@ -5,16 +5,16 @@ Menu.__index = Menu
 -- metatable
 
 setmetatable(Menu, {
-		__call = function(instance, x, y, font, fontSize)
+		__call = function(instance, x, y, fontName, fontSize)
 		   local self = setmetatable({}, instance)
-		   instance:new(x, y, font)
+		   instance:new(x, y, fontName, fontSize)
 		   return self
 		end
 		   }
 )
 
 --------------------------------------------------------------
-function Menu:new(x, y, font)
+function Menu:new(x, y, fontName, fontSize)
    -- coord
    self.x = x or 0
    self.y = y or 0
@@ -22,8 +22,7 @@ function Menu:new(x, y, font)
    self.h = 0
 
    -- font related
-   self.font = nil
-   self:setFont(font)
+   self.font = love.graphics.newFont(fontName, fontSize)
 
    -- options
    self.option  = {}
@@ -58,12 +57,6 @@ end
 
 
 -- methods
---------------------------------------------------------------
-function Menu:setFont(font)
-   self.font = font or love.graphics.getFont()
-   return self
-end
---------------------------------------------------------------
 
 --------------------------------------------------------------
 function Menu:normalColor(r, g, b, a)
@@ -107,9 +100,6 @@ end
 
 --------------------------------------------------------------
 function Menu:display()
-   --temp
-   love.graphics.rectangle('line', self.x, self.y, self.w, self.h)
-   
    update(self)
 
    love.graphics.setFont(self.font)
