@@ -1,7 +1,7 @@
 PROJECT="TerraBrasilis.love"
 
 all:
-	@rm ${PROJECT}
+	@rm -f ${PROJECT}
 	@echo "Collecting and adding source file..."
 	@cd src/; zip -r ../${PROJECT} *
 
