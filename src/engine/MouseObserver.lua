@@ -4,12 +4,12 @@ MouseObserver.__index = MouseObserver
 
 -- metatable
 setmetatable(MouseObserver,{
-				__call = function(instance)
-				   local self = setmetatable({}, instance)
-				   instance:new()
-				   return self
-				end
-						   }
+		__call = function(instance)
+		   local self = setmetatable({}, instance)
+		   instance:new()
+		   return self
+		end
+			   }
 )
 --------------------------------------------------------------
 
@@ -29,7 +29,7 @@ end
 function MouseObserver:detach(observable)
 
    for i=1, #self.observable do
-	  -- TODO
+      -- TODO
    end
 
 end
@@ -37,8 +37,8 @@ end
 function MouseObserver:notify(mode, x, y, button, istouch)
 
    for i=1, #self.observable do
-	  local current = self.observable[i]
-	  current:onClick(mode, x, y, button, istouch)
+      local current = self.observable[i]
+      current:onClick(mode, x, y, button, istouch)
    end
    
 end

@@ -1,6 +1,7 @@
 require "engine.MouseObserver"
 require "engine.KeyboardObserver"
 require "engine.Scene"
+require "engine.PieMenu"
 
 InGameScene = {}
 InGameScene.__index = InGameScene
@@ -61,21 +62,58 @@ local function angleUpdate(angle, update)
 end
 ---------------------------------------------------------
 
+---------------------------------------------------------
+local function startObservers(self)
+   --self.observer.keyboard:attach(self)
+   self.observer.mouse:attach(self)
+
+   love.mousepressed = function(x, y, button, istouch)
+      self.observer.mouse:notify("click", x, y, button, istouch)
+   end
+   --[[love.keypressed = function(button, key, scancode, isrepeat)
+      self.observer.keyboard:notify("press", key, scancode, isrepeat)
+      end--]]
+end
+---------------------------------------------------------
+
 -- methods
 
 ---------------------------------------------------------
 function InGameScene:new()
    Scene.new(self, "InGame")
 
+   self.observer = {mouse= MouseObserver(), keyboard= KeyboardObserver()}
    self.angle = 0.0;
+
+   -- pie menu
+   self.piemenu= PieMenu()
+   self.piemenu
+      :addOption()
+      :addOption()
+      --:addOption()
+      --:addOption()
+   
+   startObservers(self)
 end
 ---------------------------------------------------------
 
 ---------------------------------------------------------
 function InGameScene:display()
    drawTitle()
-   drawClock(love.window.getWidth()/2.0, 50.0, 100, self.angle)
-
+   drawClock(love.window.getWidth()/2.0, 50.0, 50, self.angle)
+   
+   self.piemenu:display()
    self.angle = angleUpdate(self.angle, 0.01);
+end
+---------------------------------------------------------
+
+---------------------------------------------------------
+function InGameScene:onClick(mode, x, y, button, istouch)
+   if button == 'r' then
+      self.piemenu.visible = true
+      self.piemenu.position = {x=x, y=y}
+   else
+      self.piemenu.visible = false
+   end
 end
 ---------------------------------------------------------
