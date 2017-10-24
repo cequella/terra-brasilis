@@ -1,9 +1,10 @@
 require "MainMenuScene"
+require "InGameScene"
 
 function love.load()
    love.window.setTitle("Terra Brasilis")
    
-   currentScene = MainMenuScene()
+   currentScene = InGameScene()
 end
 function love.draw()
    
