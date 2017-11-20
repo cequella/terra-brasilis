@@ -1,50 +1,25 @@
-System = {}
-System.__index = System
-setmetatable(System, {
-				__call = function(instance)
-				   local self = setmetatable({}, instance)
-				   self.methodList = {}
-				   return self
-				end
-					 }
-)
+return {
+   requires = function(dependence)
+	  assert(type(dependence) == "table")
+	  local System = {
+		 dependence = dependence
+	  }
 
-------------------------------------------------------------------
-function System:addMethod(method, dependence, ...)
-   local arg = {...}
+	  function System:match(entity)
+		 for i=1, #self.dependence do
+			local available = entity:check(self.dependence[i])
+			
+			if not available then return false end
+		 end
+		 return true
+	  end
+	  
+	  function System:load(entity)       end
+	  function System:update(dt, entity) end
+	  function System:draw(entity)       end
+	  function System:uiDraw(entity)     end
+	  function System:destroy(entity)    end
 
-   local id = #self.methodList +1
-   self.methodList[id] = {}
-   self.methodList[id].method = method
-   self.methodList[id].dependence = {}
-   self.methodList[id].dependence[1] = dependence   
-   
-   if #arg > 0 then
-	  for i=1, #arg do
-		 self.methodList[id].dependence[i+1] = arg[i]
-	  end	  
+	  return System
    end
-
-   return self
-end
-------------------------------------------------------------------
-
-------------------------------------------------------------------
-function System:execute(world, id)
-   local temp = self.methodList[id]
-
-   local entityList = world:getEntities(unpack(temp.dependence))
-   for i=1, #entityList do
-	  local entity = entityList[i]
-	  temp.method( entity:get(unpack(temp.dependence)) )
-   end
-end
-------------------------------------------------------------------
-
-------------------------------------------------------------------
-function System:executeAll(world)
-   for i=1, #self.methodList do
-	  self:execute(world, i)
-   end
-end
-------------------------------------------------------------------
+}
