@@ -27,15 +27,6 @@ function Sprite(image, x, y, width, height)
    return self
 end
 
-function Position(x, y)
-   local self = Component.new "Position"
-
-   self.x = x
-   self.y = y
-   
-   return self
-end
-
 function MouseListener(callback)
    local self = Component.new "MouseListener"
    self.oldState = nil
@@ -50,17 +41,37 @@ function SphereCollider(radius)
    return self
 end
 
-function CallActionMenu()
-   local self = Component.new "CallActionMenu"
-   self.menu = nil
+function ActionMenu()
+   local self = Component.new "ActionMenu"
+   self.caller = nil
+   return self
+end
+
+function PieMenuOption(callback)
+   local self = Component.new "PieMenuOption"
+   self.callback = callback
    return self
 end
 
 function PieMenu(x, y)
    local self = Component.new "PieMenu"
-
    self.x = x
    self.y = y
+   return self
+end
 
+function BoardTile()
+   local self = Component.new "BoardTile"
+   self.content = nil
+   return self
+end
+
+function Spawn()
+   local self = Component.new "Spawn"
+   return self
+end
+
+function Resource()
+   local self = Component.new "Resource"
    return self
 end

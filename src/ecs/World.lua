@@ -22,13 +22,14 @@ function World:unregister(system)
 end
 
 function World:getAllWith(requires)
+   assert( type(requires)=="table", "World:getAllWith argument must be a table" )
+   
    local match = {}
-
    for i=1, #self.entityList do
 	  local entity = self.entityList[i]
 	  local matches = true
 	  for j=1, #requires do
-		 if entity:get(requires[i]) == nil then
+		 if not entity:get(requires[j]) then
 			matches = false
 			break
 		 end
@@ -75,7 +76,6 @@ function World:multiAssemble(components)
    for i=1, #components do
 	  ent.childList[i] = self:assemble(components[i])
    end
-
    return ent
 end
 
@@ -122,7 +122,6 @@ function World:draw()
 			   system:draw(entity)
 			else
 			   system:load(entity)
-			   --entity.loaded = true --I don't know why
 			end
 		 end
 	  end
