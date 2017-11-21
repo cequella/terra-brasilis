@@ -112,6 +112,7 @@ function World:update(dt)
       end
    end
 end
+
 function World:draw()
    --for i=#self.entityList, 1, -1 do
    for i=1, #self.entityList do
@@ -136,8 +137,34 @@ function World:mouseChanged(x, y, state, button, isTouch)
       
       for _, system in ipairs(self.systemList) do
 	 if system:match(entity) then
+	    system:mouseChanged(entity, x, y, state, button, isTouch)
+	 end
+      end
+   end
+end
+
+function World:mouseMoved(x, y, dx, dy, isTouch)
+   --for i=#self.entityList, 1, -1 do
+   for i=1, #self.entityList do
+      local entity = self.entityList[i]
+      
+      for _, system in ipairs(self.systemList) do
+	 if system:match(entity) then
+	    system:mouseMoved(entity, x, y, dx, dy, isTouch)
+	 end
+      end
+   end
+end
+
+function World:mouseWheel(x, y)
+   --for i=#self.entityList, 1, -1 do
+   for i=1, #self.entityList do
+      local entity = self.entityList[i]
+      
+      for _, system in ipairs(self.systemList) do
+	 if system:match(entity) then
 	    if entity.loaded then
-	       system:mouseChanged(entity, x, y, state, button, isTouch)
+	       system:mouseWheel(entity, x, y)
 	    end
 	 end
       end

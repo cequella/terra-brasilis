@@ -40,12 +40,6 @@ function SphereCollider(radius)
    return self
 end
 
-function ActionMenu()
-   local self = Component.new "ActionMenu"
-   self.caller = nil
-   return self
-end
-
 function ButtonCallback(callback)
    local self = Component.new "ButtonCallback"
    self.callback = callback
@@ -64,5 +58,10 @@ end
 
 function Resource()
    local self = Component.new "Resource"
+   return self
+end
+
+function ActionOption()
+   local self = Component.new "ActionOption"
    return self
 end

@@ -27,6 +27,12 @@ end
 function love.mousereleased(x, y, button, istouch)
    world:mouseChanged(x, y, "Up", button, istouch)
 end
+function love.mousemoved(x, y, dx, dy, istouch)
+   world:mouseMoved(x, y, dx, dy, istouch)
+end
+function love.wheelmoved(x, y)
+   world:mouseWheel(x, y)
+end
 function love.keypressed(key, scancode, isrepeat)
    world:keyboardChanged(key, "Down")
 
@@ -48,10 +54,14 @@ function love.load()
       :register( roundHighlight() )
       :register( callActionMenu() )
    
-   board = Board(100, 100, 3, 3)
+   board = Board(100, 100, 6, 6)
 end
 function love.update(dt)
    world:update(dt)
+
+   if( select(2, love.getVersion())<10 ) then
+      world:mouseMoved(x, y, 0, 0, istouch)
+   end
 end
 function love.draw()
    world:draw()

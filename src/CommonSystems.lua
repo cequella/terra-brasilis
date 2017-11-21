@@ -26,6 +26,14 @@ end
 function roundHighlight()
    local self = System.requires {"Sprite", "MouseListener", "SphereCollider"}
 
+   function self:mouseMoved(entity, x, y)
+      local listener = entity:get "MouseListener"
+      local sprite   = entity:get "Sprite"
+      local collider = entity:get "SphereCollider"
+      listener.over  = checkDotInSphere(love.mouse.getX()-(sprite.x+sprite.width/2),
+					love.mouse.getY()-(sprite.y+sprite.height/2),
+					collider.radius)      
+   end
    function self:load(entity)
       local listener = entity:get "MouseListener"
       local sprite   = entity:get "Sprite"
@@ -36,10 +44,6 @@ function roundHighlight()
       local sprite   = entity:get "Sprite"
       local collider = entity:get "SphereCollider"
       local listener = entity:get "MouseListener"
-
-      listener.over = checkDotInSphere(love.mouse.getX()-(sprite.x+sprite.width/2),
-				       love.mouse.getY()-(sprite.y+sprite.height/2),
-				       collider.radius)
 
       if listener.over then
 	 sprite.state = "MouseOver"
@@ -67,11 +71,12 @@ function callActionMenu()
 	 ["MouseOver"] = love.graphics.newImage("assets/tempButtonO.png"),
       }
 
-      local callback = function() print("Ola") end
+      local callback = function() print("Clicou, clicou, clicou... pode comemorar!") end
       for i=1, 4 do
 	 local xDisp = PIEMENU_DIAMETER*math.cos(i*math.pi/2) 
 	 local yDisp = PIEMENU_DIAMETER*math.sin(i*math.pi/2)
-	 world:assemble( RoundButton(buttonStates, posX+xDisp, posY+yDisp, PIEMENU_BUTTON_SIZE, callback) )
+	 local temp = world:assemble( RoundButton(buttonStates, posX+xDisp, posY+yDisp, PIEMENU_BUTTON_SIZE, callback) )
+	 temp:add( ActionOption() )
       end
 
       world:register( Test() )
@@ -87,15 +92,21 @@ function Test()
    function self:update(entity, dt)
       local listener = entity:get "MouseListener"
       if not VersionFlavour.leftClick() then return end
-
-      print("Fora")
+      
       if listener.over then
-	 print("Dentro")
 	 local button = entity:get "ButtonCallback"
 	 button.callback()
       end
+      
+      --[[
+      local list = world:getAllWith {"ActionOption"}
+      for _, option in ipairs(list) do
+	 option:destroy()
+      end
+
       world:register( callActionMenu() )
-      world:unregister( self )      
+      world:unregister( self )
+      --]]
    end
 
    return self
