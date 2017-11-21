@@ -5,9 +5,9 @@ function Sprite(image, x, y, width, height)
 
    self.image = {}
    if type(image) ~= "table" then
-	  self.image["Default"] = image
+      self.image["Default"] = image
    else
-	  self.image = image
+      self.image = image
    end
    self.state = "Default"
 
@@ -19,10 +19,10 @@ function Sprite(image, x, y, width, height)
    self.sy = 1.0
 
    if width and height then
-	  self.sx = width/self.width
-	  self.sy = height/self.height
-	  self.width  = width
-	  self.height = height
+      self.sx = width/self.width
+      self.sy = height/self.height
+      self.width  = width
+      self.height = height
    end
    return self
 end
@@ -30,7 +30,6 @@ end
 function MouseListener(callback)
    local self = Component.new "MouseListener"
    self.oldState = nil
-   self.callback = callback
    self.over     = false
    return self
 end
@@ -47,19 +46,11 @@ function ActionMenu()
    return self
 end
 
-function PieMenuOption(callback)
-   local self = Component.new "PieMenuOption"
+function ButtonCallback(callback)
+   local self = Component.new "ButtonCallback"
    self.callback = callback
    return self
 end
-
-function PieMenu(x, y)
-   local self = Component.new "PieMenu"
-   self.x = x
-   self.y = y
-   return self
-end
-
 function BoardTile()
    local self = Component.new "BoardTile"
    self.content = nil

@@ -13,11 +13,14 @@ return {
 		 end
 		 return true
 	  end
+
+	  function System:mouseChanged(entity, x, y, state, button, isTouch) end
+	  
+	  function System:keyboardChanged(entity, key, state) end
 	  
 	  function System:load(entity)       end
 	  function System:update(dt, entity) end
 	  function System:draw(entity)       end
-	  function System:uiDraw(entity)     end
 	  function System:destroy(entity)    end
 
 	  return System
