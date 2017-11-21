@@ -1,4 +1,5 @@
 local DEBUG = true
+GAMA_MOUSE_DOWNW = false;
 
 world     = require "ecs.World"
 Component = require "ecs.Component"
@@ -20,11 +21,16 @@ function debugHUD()
    love.graphics.print("RightButton= "..tostring(rightButton), 0, 24)
 end
 
-
 function love.mousepressed(x, y, button, istouch)
+   GAMA_MOUSE_DOWN = true
    world:mouseChanged(x, y, "Down", button, istouch)
 end
 function love.mousereleased(x, y, button, istouch)
+   if GAMA_MOUSE_DOWN then
+      GAMA_MOUSE_DOWN = false
+      love.mouseclick()
+      world:mouseClick(x, yistouch)
+   end
    world:mouseChanged(x, y, "Up", button, istouch)
 end
 function love.mousemoved(x, y, dx, dy, istouch)

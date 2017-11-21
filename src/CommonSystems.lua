@@ -97,8 +97,7 @@ function Test()
 	 local button = entity:get "ButtonCallback"
 	 button.callback()
       end
-      
-      --[[
+
       local list = world:getAllWith {"ActionOption"}
       for _, option in ipairs(list) do
 	 option:destroy()
@@ -106,7 +105,6 @@ function Test()
 
       world:register( callActionMenu() )
       world:unregister( self )
-      --]]
    end
 
    return self
