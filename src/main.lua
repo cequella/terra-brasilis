@@ -5,6 +5,7 @@ world     = require "ecs.World"
 Component = require "ecs.Component"
 System    = require "ecs.System"
 
+require "Singleton"
 require "CommonComponents"
 require "CommonSystems"
 require "CommonEntities"
@@ -52,12 +53,14 @@ function love.keyreleased(key, scancode, isrepeat)
    world:keyboardChanged(key, "Up")
 end
 function love.load()
+   cache = Singleton()
+   
    love.window.setTitle("Terra Brasilis")
    
    world
       :register( render() )
       :register( roundHighlight() )
-      :register( callActionMenu() )
+      :register( tilePieMenu() )
    
    board = Board(100, 100, 6, 6)
 end

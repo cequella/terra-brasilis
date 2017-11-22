@@ -1,6 +1,6 @@
 Component = require "ecs.Component"
 
-function Sprite(image, x, y, width, height)
+function Sprite(image, x, y, width, height, state)
    local self = Component.new "Sprite"
 
    self.image = {}
@@ -9,7 +9,7 @@ function Sprite(image, x, y, width, height)
    else
       self.image = image
    end
-   self.state = "Default"
+   self.state = (state==nil) and "Default" or state
 
    self.x = x or 0
    self.y = y or 0
@@ -34,9 +34,11 @@ function MouseListener(callback)
    return self
 end
 
-function SphereCollider(radius)
+function SphereCollider(centerX, centerY, radius)
    local self = Component.new "SphereCollider"
-   self.radius = radius
+   self.x = centerX
+   self.y = centerY
+   self.radius  = radius
    return self
 end
 
@@ -61,7 +63,8 @@ function Resource()
    return self
 end
 
-function ActionOption()
-   local self = Component.new "ActionOption"
+function Player()
+   local self = Component.new "Player"
+   self.faction = "Guarani"
    return self
 end

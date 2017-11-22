@@ -4,29 +4,38 @@ Component = require "ecs.Component"
 local TILE_SIZE = 96
 local PIE_BUTTON_SIZE = 30
 
-function Guarani(x, y)
+function Paw(faction, x, y)
+   local charset = (faction=="Guarani") and cache.guarani or nil
+   
    return {
-      {Sprite, love.graphics.newImage("assets/bart.png"), x, y, 64, 64}
+	  {Sprite, charset, x, y, cache.PAW_SIZE, cache.PAW_SIZE}
    }
 end
 
 function Tile(tileStates, x, y, size)
+   local hSize = size/2
    return {
-      {Sprite, tileStates, x, y, TILE_SIZE, TILE_SIZE},
-      {SphereCollider, TILE_SIZE*0.3},
-      {MouseListener},
-      {BoardTile},
-      {ActionMenu}
+      {Sprite, tileStates, x, y, size, size},
+      {SphereCollider, x +hSize, y +hSize, size*0.3},
+	  {BoardTile}
    }
 end
 
 function RoundButton(buttonStates, x, y, size, callback)
-   return {
-      {Sprite, buttonStates, x, y, size, size},
-      {SphereCollider, size/2},
-      {ButtonCallback, callback},
-      {MouseListener}
-   }
+   local hSize = size/2
+
+   if callback then
+	  return {
+		 {Sprite, buttonStates, x, y, size, size},
+		 {SphereCollider, x +hSize, y +hSize, hSize},
+		 {ButtonCallback, callback},
+		 {MouseListener}
+	  }
+   else
+	  return {
+		 {Sprite, buttonStates, x, y, size, size, "MouseOver"},
+	  }
+   end
 end
 
 ---------------------------------------------------------------------------
@@ -34,11 +43,6 @@ end
 function Board(x, y, xCount, yCount)
    local temp = {}
 
-   local tileStates = {
-      ["Default"]   = love.graphics.newImage("assets/tile.png"),
-      ["MouseOver"] = love.graphics.newImage("assets/tileS.png"),
-      ["Denied"]    = love.graphics.newImage("assets/tileD.png")
-   }
    local xDisplacement = TILE_SIZE*0.875 --precalculed
    local yDisplacement = TILE_SIZE*0.75  --precalculed
    
@@ -47,7 +51,7 @@ function Board(x, y, xCount, yCount)
 	 local posX = (i%2==0) and x +j*xDisplacement or x +xDisplacement*(j+0.5)
 	 local posY = y +i*yDisplacement
 	 
-	 temp[i+j*xCount +1] = Tile(tileStates, posX, posY)
+	 temp[i+j*xCount +1] = Tile(cache.tileImage, posX, posY, TILE_SIZE)
       end
    end
 
