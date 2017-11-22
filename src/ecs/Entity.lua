@@ -39,18 +39,6 @@ return {
       function Entity:check(id)
 	 return (self.tagList[id]==nil) and false or self.tagList[id]
       end
-
-      function Entity:enable(id)
-	 if self:get(id)~= nil then
-	    self.tagList[id] = true
-	 end
-      end
-
-      function Entity:disable(id)
-	 if self:get(id)~= nil then
-	    self.tagList[id] = false
-	 end
-      end
       
       return Entity
    end

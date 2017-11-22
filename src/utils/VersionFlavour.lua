@@ -20,3 +20,19 @@ function VersionFlavour.rightClick()
       return love.mouse.isDown("r")
    end
 end
+
+function VersionFlavour.isLeft(button)
+   if VersionFlavour.v10() then
+      return button==1
+   else
+      return button=="l"
+   end
+end
+
+function VersionFlavour.isRight(button)
+   if VersionFlavour.v10() then
+      return button==2
+   else
+      return button=="r"
+   end
+end

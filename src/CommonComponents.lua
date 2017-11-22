@@ -68,3 +68,11 @@ function Player()
    self.faction = "Guarani"
    return self
 end
+
+function UIHelp(message, position)
+   local self = Component.new "UIHelp"
+   self.message  = message
+   self.position = position
+   self.timeOver = 0
+   return self
+end
