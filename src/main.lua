@@ -1,5 +1,6 @@
 local DEBUG           = true
 local GAMA_MOUSE_DOWN = false;
+local WORLD_CLOCK     = 0
 
 world     = require "ecs.World"
 Component = require "ecs.Component"
@@ -12,7 +13,25 @@ require "CommonEntities"
 require "utils.Utils"
 require "utils.VersionFlavour"
 
-function debugHUD()
+function drawClock()
+   local image = cache.clock
+   local posX  = ( love.graphics.getWidth()-image:getWidth() )/2
+   local posY  = -image:getHeight()/2
+   local angle = 0.166*WORLD_CLOCK
+
+   love.graphics.push()
+   love.graphics.translate(love.graphics.getWidth()/2, 0)
+   love.graphics.scale(0.7, 0.7)
+   love.graphics.rotate(angle)
+   love.graphics.translate(-image:getWidth()/2, -image:getHeight()/2)
+   love.graphics.draw(cache.clock)
+   love.graphics.pop()
+end
+function drawActiveAdversity()
+   love.graphics.draw(cache.card, 200, 0, 0, 0.2, 0.2)
+end
+
+function drawDebugHUD()
    love.graphics.print("FPS= "..love.timer.getFPS(), 0, 0)
 
    local leftButton = VersionFlavour.leftClick()
@@ -70,12 +89,15 @@ function love.update(dt)
    if not VersionFlavour.v10() then
       world:mouseMoved(x, y, 0, 0, istouch)
    end
+
+   WORLD_CLOCK = WORLD_CLOCK + 0.1
 end
 function love.draw()
    world:draw()
 
+   drawClock()
+   drawActiveAdversity()
+
    -- Debug HUD
-   if DEBUG then
-      debugHUD()
-   end
+   if DEBUG then drawDebugHUD() end
 end
