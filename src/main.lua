@@ -1,5 +1,5 @@
-local DEBUG = true
-GAMA_MOUSE_DOWNW = false;
+local DEBUG           = true
+local GAMA_MOUSE_DOWN = false;
 
 world     = require "ecs.World"
 Component = require "ecs.Component"
@@ -14,10 +14,10 @@ require "utils.VersionFlavour"
 function debugHUD()
    love.graphics.print("FPS= "..love.timer.getFPS(), 0, 0)
 
-   local leftButton = (select(1, love.getVersion())==10) and love.mouse.isDown(1) or love.mouse.isDown("l")
+   local leftButton = VersionFlavour.leftClick()
    love.graphics.print("LeftButton= "..tostring(leftButton), 0, 12)
 
-   local rightButton = (select(1, love.getVersion())==10) and love.mouse.isDown(2) or love.mouse.isDown("r")
+   local rightButton = VersionFlavour.rightClick()
    love.graphics.print("RightButton= "..tostring(rightButton), 0, 24)
 end
 
@@ -28,8 +28,7 @@ end
 function love.mousereleased(x, y, button, istouch)
    if GAMA_MOUSE_DOWN then
       GAMA_MOUSE_DOWN = false
-      love.mouseclick()
-      world:mouseClick(x, yistouch)
+      world:mouseClick(x, y, button, istouch)
    end
    world:mouseChanged(x, y, "Up", button, istouch)
 end
@@ -65,7 +64,7 @@ end
 function love.update(dt)
    world:update(dt)
 
-   if( select(2, love.getVersion())<10 ) then
+   if not VersionFlavour.v10() then
       world:mouseMoved(x, y, 0, 0, istouch)
    end
 end

@@ -1,7 +1,12 @@
 VersionFlavour = {}
 
+function VersionFlavour.v10()
+   local aux = select(2, love.getVersion())
+   return aux==10
+end
+
 function VersionFlavour.leftClick()
-   if select(1, love.getVersion())==10 then
+   if VersionFlavour.v10() then
       return love.mouse.isDown(1)
    else
       return love.mouse.isDown("l")
@@ -9,7 +14,7 @@ function VersionFlavour.leftClick()
 end
 
 function VersionFlavour.rightClick()
-   if select(1, love.getVersion())==10 then
+   if VersionFlavour.v10() then
       return love.mouse.isDown(2)
    else
       return love.mouse.isDown("r")

@@ -15,9 +15,9 @@ function render()
       local sprite   = entity:get "Sprite"
 
       love.graphics.draw(sprite.image[sprite.state],
-			 sprite.x, sprite.y,
-			 0,
-			 sprite.sx, sprite.sy)
+						 sprite.x, sprite.y,
+						 0,
+						 sprite.sx, sprite.sy)
    end
 
    return self
@@ -31,8 +31,8 @@ function roundHighlight()
       local sprite   = entity:get "Sprite"
       local collider = entity:get "SphereCollider"
       listener.over  = checkDotInSphere(love.mouse.getX()-(sprite.x+sprite.width/2),
-					love.mouse.getY()-(sprite.y+sprite.height/2),
-					collider.radius)      
+										love.mouse.getY()-(sprite.y+sprite.height/2),
+										collider.radius)      
    end
    function self:load(entity)
       local listener = entity:get "MouseListener"
@@ -46,10 +46,10 @@ function roundHighlight()
       local listener = entity:get "MouseListener"
 
       if listener.over then
-	 sprite.state = "MouseOver"
+		 sprite.state = "MouseOver"
       else
-	 sprite.state = listener.oldState
-	 listener.oldState = sprite.state
+		 sprite.state = listener.oldState
+		 listener.oldState = sprite.state
       end
    end
 
@@ -59,48 +59,52 @@ end
 function callActionMenu()
    local self = System.requires {"BoardTile", "MouseListener"}
    
-   function self:update(entity, dt)
+   function self:mouseClick(entity, x, y, button)
+	  if button ~= 1 then return end
+	  
       local listener  = entity:get "MouseListener"
-      if not (VersionFlavour.leftClick() and listener.over) then return end
+      if not listener.over then return end
 
       local sprite       = entity:get "Sprite"
       local posX         = sprite.x -PIEMENU_BUTTON_SIZE/2 +sprite.width/2 
       local posY         = sprite.y -PIEMENU_BUTTON_SIZE/2 +sprite.height/2
       local buttonStates = {
-	 ["Default"]   = love.graphics.newImage("assets/tempButton.png"),
-	 ["MouseOver"] = love.graphics.newImage("assets/tempButtonO.png"),
+		 ["Default"]   = love.graphics.newImage("assets/tempButton.png"),
+		 ["MouseOver"] = love.graphics.newImage("assets/tempButtonO.png"),
       }
 
       local callback = function() print("Clicou, clicou, clicou... pode comemorar!") end
       for i=1, 4 do
-	 local xDisp = PIEMENU_DIAMETER*math.cos(i*math.pi/2) 
-	 local yDisp = PIEMENU_DIAMETER*math.sin(i*math.pi/2)
-	 local temp = world:assemble( RoundButton(buttonStates, posX+xDisp, posY+yDisp, PIEMENU_BUTTON_SIZE, callback) )
-	 temp:add( ActionOption() )
+		 local xDisp = PIEMENU_DIAMETER*math.cos(i*math.pi/2) 
+		 local yDisp = PIEMENU_DIAMETER*math.sin(i*math.pi/2)
+
+		 local temp = RoundButton(buttonStates, posX+xDisp, posY+yDisp, PIEMENU_BUTTON_SIZE, callback)
+		 temp = world:assemble( temp )
+		 temp:add( ActionOption() )
       end
 
-      world:register( Test() )
+      world:register( piemenuManagement() )
       world:unregister( self )
    end
 
    return self
 end
 
-function Test()
+function piemenuManagement()
    local self = System.requires {"ButtonCallback", "MouseListener"}
 
-   function self:update(entity, dt)
-      local listener = entity:get "MouseListener"
-      if not VersionFlavour.leftClick() then return end
-      
+   function self:mouseClick(entity, x, y, button)
+	  if button ~= 1 then return end
+
+	  local listener = entity:get "MouseListener"
       if listener.over then
-	 local button = entity:get "ButtonCallback"
-	 button.callback()
+		 local button = entity:get "ButtonCallback"
+		 button.callback()
       end
 
       local list = world:getAllWith {"ActionOption"}
       for _, option in ipairs(list) do
-	 option:destroy()
+		 option:destroy()
       end
 
       world:register( callActionMenu() )
