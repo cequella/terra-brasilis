@@ -20,15 +20,28 @@ function drawClock(size)
    local angle = 0.166*WORLD_CLOCK
 
    love.graphics.push()
-   love.graphics.translate(love.graphics.getWidth()/2, size*0.15)
+   love.graphics.translate(love.graphics.getWidth()/2, size*0.15 -35)
    love.graphics.scale(size/image:getWidth(), size/image:getHeight())
    love.graphics.rotate(angle)
-   love.graphics.translate(-image:getWidth()/2, -image:getHeight()/2)
+   love.graphics.translate(-image:getWidth()/2, -image:getHeight()/2 -180)
    love.graphics.draw(cache.clock)
    love.graphics.pop()
 end
 function drawActiveAdversity()
    love.graphics.draw(cache.card, 200, 0, 0, 0.2, 0.2)
+end
+function drawResourceCollect()
+   local spacement = 0.025*love.graphics.getWidth()
+   local cWidth    = 0.750*(love.graphics.getWidth()-2*spacement)/3
+   local cHeight   = 1.618*cWidth
+   local initX     = 0.125*love.graphics.getWidth()
+
+   for i=0, 2 do
+      love.graphics.draw(cache.card,
+			 initX+i*(spacement+cWidth), 100,
+			 0,
+			 cWidth/cache.card:getWidth(), cHeight/cache.card:getHeight())
+   end
 end
 
 function drawDebugHUD()
@@ -64,9 +77,6 @@ function love.keypressed(key, scancode, isrepeat)
    if key=="escape" then
       love.event.quit()
    end
-
-   if key=="space" then
-   end
 end
 function love.keyreleased(key, scancode, isrepeat)
    world:keyboardChanged(key, "Up")
@@ -78,11 +88,13 @@ function love.load()
    
    world
       :register( render() )
+      :register( playerUI() )
       :register( roundHighlight() )
       :register( tilePieMenu() )
-      :register( uiHelp() )
+      :register( showHelp() )
    
    board = Board(100, 100, 6, 6)
+   player = world:assemble( Player() )
 end
 function love.update(dt)
    world:update(dt)
@@ -96,9 +108,10 @@ end
 function love.draw()
    world:draw()
 
-   drawClock(150)
-   drawActiveAdversity()
-
+   --drawClock(200)
+   --drawActiveAdversity()
+   --drawResourceCollect()
+   
    -- Debug HUD
    if DEBUG then drawDebugHUD() end
 end

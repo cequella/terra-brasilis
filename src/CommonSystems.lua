@@ -1,3 +1,5 @@
+require "PieMenuSystem"
+
 world     = require "ecs.World"
 Component = require "ecs.Component"
 System    = require "ecs.System"
@@ -17,7 +19,41 @@ function render()
    return self
 end
 
-function uiHelp()
+function playerUI()
+   local self = System.requires {"Player"}
+
+   function self:load(entity)
+      local player = entity:get "Player"
+
+      player.clockEntity = world:assemble( WorldClock() )
+   end
+   
+   function self:update(entity)
+      local player = entity:get "Player"
+
+      -- Update Clock
+      player.clock = player.clock +0.1
+
+      -- Show Resources Options
+      if player.state == "ResourceCollecting" then
+	 local windowWidth = love.graphics.getWidth()
+	 local spacement = 0.025*windowWidth
+	 local cWidth    = 0.750*(windowWidth -2*spacement)/3
+	 local cHeight   = 1.618*cWidth
+	 local initX     = 0.125*windowWidth
+
+	 for i=0, 2 do
+	    world:assemble( ResourceCard(initX +i*(spacement+cWidth), 100) )
+	 end
+
+	 player.state = nil
+      end
+   end
+
+   return self
+end
+
+function showHelp()
    local self = System.requires {"Sprite", "UIHelp"}
 
    function self:draw(entity)
@@ -51,7 +87,6 @@ function uiHelp()
    return self
 end
 
-
 function roundHighlight()
    local self = System.requires {"Sprite", "SphereCollider"}
 
@@ -68,122 +103,6 @@ function roundHighlight()
    return self
 end
 
-function tilePieMenu()
-   local self = System.requires {"BoardTile", "SphereCollider"}
-
-   local function moveSelected(tile, sprite)
-      local stateList = cache.pieMenu.move
-      local callback
-      
-      if tile.content then -- not empty
-	 callback = nil
-      else
-	 local posX = sprite.x +(sprite.width-cache.PAW_SIZE)/2
-	 local posY = sprite.y +(sprite.height-cache.PAW_SIZE)/2
-	 
-	 callback = function()
-	    tile.content = world:assemble( Paw("Guarani", posX, posY) )
-	 end   
-      end
-
-      return stateList, callback, "Move"
-   end
+function callResourceCollection()
    
-   function self:mouseClick(entity, x, y, button)
-      if not VersionFlavour.isLeft(button) then return end
-
-      local tile     = entity:get "BoardTile"
-      local collider = entity:get "SphereCollider"
-      local sprite   = entity:get "Sprite"
-      local over     = checkDotInSphere(x -collider.x,
-					y -collider.y,
-					collider.radius)
-      if not over then return end
-
-      local centerX = sprite.x -cache.PIEMENU_BUTTON_SIZE/2 +sprite.width/2 
-      local centerY = sprite.y -cache.PIEMENU_BUTTON_SIZE/2 +sprite.height/2
-
-      entity.piemenu = {}
-      for i=1, 4 do
-	 local xDisp = cache.PIEMENU_RADIUS*math.cos(i*math.pi/2) 
-	 local yDisp = cache.PIEMENU_RADIUS*math.sin(i*math.pi/2)
-
-	 -- Spawn option
-	 local stateList, callback, help
-	 if i == 1 then
-	    stateList, callback, help = moveSelected(tile, sprite)
-	 elseif i == 2 then
-	    help = "Attack"
-	    callback = function() print("Attack") end
-	    stateList = cache.pieMenu.attack
-	 elseif i == 3 then
-	    help = "Resource"
-	    callback = function() print("Resource") end
-	    stateList = cache.pieMenu.resource
-	 else --if i == 4 then
-	    help = "Upgrade"
-	    callback = function() print("Upgrade") end
-	    stateList = cache.pieMenu.upgrade
-	 end
-
-	 local temp = RoundButton(cache.pieMenu.move,
-				  centerX +xDisp, centerY +yDisp,
-				  cache.PIEMENU_BUTTON_SIZE,
-				  callback, help)
-	 table.insert(entity.piemenu, world:assemble(temp))
-      end
-
-      world:register( pieMenuManagement(entity, collider.x, collider.y) )
-      world:unregister( self )
-   end
-
-   return self
-end
-
-function pieMenuManagement(owner, centerX, centerY)
-   local self = System.requires {"ButtonCallback", "SphereCollider", "UIHelp"}
-
-   function self:mouseMoved(entity, x, y)
-      local collider = entity:get "SphereCollider"
-      local button   = entity:get "ButtonCallback"
-      local uiHelp   = entity:get "UIHelp"
-
-      local over = checkDotInSphere(x -collider.x,
-				    y -collider.y,
-				    collider.radius)
-
-      if over then
-	 if uiHelp.timeOver==0 then
-	    uiHelp.timeOver = love.timer.getTime()
-	 end
-      else
-	 uiHelp.timeOver = 0
-      end
-   end
-   function self:mouseClick(entity, x, y, button)
-      if not VersionFlavour.isLeft(button) then return end
-
-      local collider = entity:get "SphereCollider"
-      local over = checkDotInSphere(x -collider.x,
-				    y -collider.y,
-				    collider.radius)
-      local inPieRadius = checkDotInSphere(x -centerX,
-					   y -centerY,
-					   cache.PIEMENU_RADIUS +cache.PIEMENU_BUTTON_SIZE)
-      
-      if over then
-	 local button = entity:get "ButtonCallback"
-	 button.callback()
-      end
-      if over == inPieRadius then -- if over XOR !inPieRadius (clear)
-	 for _, option in ipairs(owner.piemenu) do
-	    option:destroy()
-	 end
-	 
-	 world:register( tilePieMenu() )
-	 world:unregister( self )
-      end
-   end
-
-   return self
 end

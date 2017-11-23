@@ -20,6 +20,12 @@ function Tile(tileStates, x, y, size)
    }
 end
 
+function Player()
+   return {
+      {PlayerComponent}
+   }
+end
+
 function RoundButton(buttonStates, x, y, size, callback, help)
    local hSize = size/2
 
@@ -36,6 +42,25 @@ function RoundButton(buttonStates, x, y, size, callback, help)
 	 {Sprite, buttonStates, x, y, size, size, "Unable"},
       }
    end
+end
+
+function ResourceCard(x, y)
+   local spacement = 0.025*love.graphics.getWidth()
+   local cWidth    = 0.750*(love.graphics.getWidth()-2*spacement)/3
+   local cHeight   = 1.618*cWidth
+
+   return {
+      {Sprite, cache.card, x, y, cWidth, cHeight}
+   }
+end
+
+function WorldClock()
+   local image = cache.clock
+   local posX = (love.graphics.getWidth()-image:getWidth() )/2
+   local posY = -image:getHeight()/2
+   return {
+      {Sprite, image, posX, posY, 200, 200}
+   }
 end
 
 ---------------------------------------------------------------------------

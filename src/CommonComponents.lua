@@ -1,5 +1,13 @@
 Component = require "ecs.Component"
 
+function PlayerComponent()
+   local self = Component.new "Player"
+   self.state = "ResourceCollecting"
+   self.currentAdversity = nil
+   self.clock            = 0
+   return self
+end
+
 function Sprite(image, x, y, width, height, state)
    local self = Component.new "Sprite"
 
@@ -60,12 +68,6 @@ end
 
 function Resource()
    local self = Component.new "Resource"
-   return self
-end
-
-function Player()
-   local self = Component.new "Player"
-   self.faction = "Guarani"
    return self
 end
 
