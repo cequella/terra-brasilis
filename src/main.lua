@@ -21,9 +21,9 @@ function drawResourceCollect()
 
    for i=0, 2 do
       love.graphics.draw(cache.card,
-						 initX+i*(spacement+cWidth), 100,
-						 0,
-						 cWidth/cache.card:getWidth(), cHeight/cache.card:getHeight())
+			 initX+i*(spacement+cWidth), 100,
+			 0,
+			 cWidth/cache.card:getWidth(), cHeight/cache.card:getHeight())
    end
 end
 
@@ -42,7 +42,7 @@ function drawDebugHUD()
    love.graphics.print("RightButton= "..tostring(rightButton), 0, 24)
 
    love.graphics.print("Window= "..tostring(love.graphics.getWidth()).."x"..
-						  tostring(love.graphics.getHeight()), 0, 36)
+			  tostring(love.graphics.getHeight()), 0, 36)
 end
 
 function love.mousepressed(x, y, button, istouch)
@@ -70,11 +70,11 @@ function love.keypressed(key, scancode, isrepeat)
    end
 
    if key == '1' then
-	  message = nil
+      message = nil
    elseif key=='2' then
-	  message = cache.winMessage
+      message = cache.winMessage
    elseif key=='3' then
-	  message = cache.loseMessage
+      message = cache.loseMessage
    end
 end
 function love.keyreleased(key, scancode, isrepeat)
@@ -90,7 +90,7 @@ function love.load()
       :register( render() )
       :register( gameUI() )
       :register( roundHighlight() )
-	  :register( squareHighlight() )
+      :register( squareHighlight() )
       :register( tilePieMenu() )
       :register( showHelp() )
    

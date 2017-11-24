@@ -5,7 +5,7 @@ function GameState()
    self.currentAdversity = nil
    self.clock  = 0
    self.boardDimen = {
-	  x = 100,
+	  x = 120,
 	  y = 130,
 	  width = 6,
 	  height = 5,

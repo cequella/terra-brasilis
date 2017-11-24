@@ -28,7 +28,7 @@ end
 
 function ResourceMarker()
    return {
-	  {Sprite, cache.resourceMarker, 0, 405, 30, 50}
+      {Sprite, cache.resourceMarker, 0, 405, 109, 92}
    }
 end
 
@@ -37,15 +37,15 @@ function RoundButton(buttonStates, x, y, size, callback, help, helpPosition)
 
    if callback then
       return {
-		 {Sprite, buttonStates, x, y, size, size},
-		 {SphereCollider, x +hSize, y +hSize, hSize, {255, 255, 0}},
-		 {ButtonCallback, callback},
-		 {UIHelp, help, helpPosition},
-		 {MouseListener}
+	 {Sprite, buttonStates, x, y, size, size},
+	 {SphereCollider, x +hSize, y +hSize, hSize, {255, 255, 0}},
+	 {ButtonCallback, callback},
+	 {UIHelp, help, helpPosition},
+	 {MouseListener}
       }
    else
       return {
-		 {Sprite, buttonStates, x, y, size, size, "Unable"},
+	 {Sprite, buttonStates, x, y, size, size, "Unable"},
       }
    end
 end
@@ -57,7 +57,7 @@ function ResourceCard(x, y)
 
    return {
       {Sprite, cache.card, x, y, cWidth, cHeight},
-	  {AABBCollider, x, y, x+cWidth, y+cHeight}
+      {AABBCollider, x, y, x+cWidth, y+cHeight}
    }
 end
 
@@ -65,8 +65,8 @@ function AdversityCard(x, y, width)
    local height = 1.618*width
    return {
       {Sprite, cache.card, x, y, width, height},
-	  {AABBCollider, x, y, width, height, {255, 255, 0}},
-	  {UIHelp, nil, "Adversidade ativa", "AtBottom"}
+      {AABBCollider, x, y, width, height, {255, 255, 0}},
+      {UIHelp, nil, "Adversidade ativa", "AtBottom"}
    }
 end
 
