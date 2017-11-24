@@ -12,9 +12,10 @@ function Paw(faction, x, y)
 end
 
 function Tile(tileStates, x, y)
+   local hSize = cache.TILE_SIZE/2
    return {
       {Sprite, tileStates, x, y, cache.TILE_SIZE, cache.TILE_SIZE},
-      {SphereCollider, x +cache.TILE_SIZE/2, y +cache.TILE_SIZE/2, cache.TILE_SIZE*0.3},
+      {SphereCollider, x +hSize, y +hSize, cache.TILE_SIZE*0.3, {0, 255, 255}},
       {BoardTile}
    }
 end
@@ -22,6 +23,12 @@ end
 function Game()
    return {
       {GameState}
+   }
+end
+
+function ResourceMarker()
+   return {
+	  {Sprite, cache.resourceMarker, 0, 405, 30, 50}
    }
 end
 
@@ -65,10 +72,10 @@ end
 
 function WorldClock()
    local image  = cache.clock
-   local width  = image:getWidth()*0.15
-   local height = image:getHeight()*0.15
+   local width  = image:getWidth()*0.3
+   local height = image:getHeight()*0.3
    local posX   = (love.graphics.getWidth()-width)/2
-   local posY   = -0.07*image:getHeight()
+   local posY   = -200
    return {
       {Sprite, image, posX, posY, width, height}
    }

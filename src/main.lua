@@ -28,6 +28,9 @@ function drawResourceCollect()
 end
 
 function drawDebugHUD()
+   love.graphics.setColor(0, 0, 0, 180)
+   love.graphics.rectangle("fill", 0, 0, 120, 50)
+   
    love.graphics.setColor(255, 255, 255)
    
    love.graphics.print("FPS= "..love.timer.getFPS(), 0, 0)
@@ -37,6 +40,9 @@ function drawDebugHUD()
 
    local rightButton = VersionFlavour.rightClick()
    love.graphics.print("RightButton= "..tostring(rightButton), 0, 24)
+
+   love.graphics.print("Window= "..tostring(love.graphics.getWidth()).."x"..
+						  tostring(love.graphics.getHeight()), 0, 36)
 end
 
 function love.mousepressed(x, y, button, istouch)
@@ -62,11 +68,20 @@ function love.keypressed(key, scancode, isrepeat)
    if key=="escape" then
       love.event.quit()
    end
+
+   if key == '1' then
+	  message = nil
+   elseif key=='2' then
+	  message = cache.winMessage
+   elseif key=='3' then
+	  message = cache.loseMessage
+   end
 end
 function love.keyreleased(key, scancode, isrepeat)
    world:keyboardChanged(key, "Up")
 end
 function love.load()
+   background = love.graphics.newImage("assets/background2.jpg")
    cache = Singleton()
    
    love.window.setTitle("Terra Brasilis")
@@ -89,7 +104,9 @@ function love.update(dt)
    end
 end
 function love.draw()
+   love.graphics.draw(background)
    world:draw()
+   if message then love.graphics.draw(message) end
 
    --drawClock(200)
    --drawActiveAdversity()

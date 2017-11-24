@@ -21,6 +21,9 @@ function gameUI()
 
 	  -- Create a clock
       game.clockEntity = world:assemble( WorldClock() )
+
+	  -- Create a resource marker
+	  game.resouceMarker = world:assemble( ResourceMarker() )
    end
    
    function self:update(entity)
@@ -32,11 +35,11 @@ function gameUI()
 
    function self:draw(entity)
 	  love.graphics.setColor(255, 0, 0)
-	  love.graphics.print("Carne= 0", 0, 400)
+	  love.graphics.print("= 0", 30, 412)
 	  love.graphics.setColor(0, 255, 0)
-	  love.graphics.print("Ervas= 0", 0, 412)
+	  love.graphics.print("= 0", 30, 424)
 	  love.graphics.setColor(0, 0, 255)
-	  love.graphics.print("Minério= 0", 0, 424)
+	  love.graphics.print("= 0", 30, 436)
 	  love.graphics.setColor(255, 255, 255)
    end
 

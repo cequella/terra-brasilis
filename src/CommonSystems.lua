@@ -67,7 +67,8 @@ function showHelp()
 		 love.graphics.setColor(0, 0, 0, 180)
 		 love.graphics.rectangle("fill",
 								 posX -5, posY -5,
-								 font:getWidth(uiHelp.message) +10, font:getHeight() +10)
+								 font:getWidth(uiHelp.message) +10, font:getHeight() +10,
+								 6,6,3)
 		 
 		 -- Write text
 		 love.graphics.setColor(255, 255, 255)

@@ -6,7 +6,7 @@ function GameState()
    self.clock  = 0
    self.boardDimen = {
 	  x = 100,
-	  y = 100,
+	  y = 130,
 	  width = 6,
 	  height = 5,
 	  xStep = cache.TILE_SIZE*0.875,
