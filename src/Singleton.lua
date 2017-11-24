@@ -15,46 +15,21 @@ function Singleton.new(instance)
    self.PIEMENU_RADIUS      = 48
    self.PAW_SIZE            = 64
 
-   self.card  = love.graphics.newImage("assets/card.jpg")
-   self.clock = love.graphics.newImage("assets/SunAndMoon.png")
-   self.tileImage = {
-      ["Default"]   = love.graphics.newImage("assets/tile.png"),
-      ["MouseOver"] = love.graphics.newImage("assets/tileS.png"),
-      ["Denied"]    = love.graphics.newImage("assets/tileD.png")
-   }
-   self.pieMenu = {
-      spawn = {
-	 ["Default"]   = love.graphics.newImage("assets/tempButton.png"),
-	 ["MouseOver"] = love.graphics.newImage("assets/tempButtonO.png"),
-	 ["Unable"]    = love.graphics.newImage("assets/tempButtonU.png")
-      },
-      move = {
-	 ["Default"]   = love.graphics.newImage("assets/tempButton.png"),
-	 ["MouseOver"] = love.graphics.newImage("assets/tempButtonO.png"),
-	 ["Unable"]    = love.graphics.newImage("assets/tempButtonU.png")
-      },
-      attack = {
-	 ["Default"]   = love.graphics.newImage("assets/tempButton.png"),
-	 ["MouseOver"] = love.graphics.newImage("assets/tempButtonO.png"),
-	 ["Unable"]    = love.graphics.newImage("assets/tempButtonU.png")
-      },
-      upgrade = {
-	 ["Default"]   = love.graphics.newImage("assets/tempButton.png"),
-	 ["MouseOver"] = love.graphics.newImage("assets/tempButtonO.png"),
-	 ["Unable"]    = love.graphics.newImage("assets/tempButtonU.png")
-      },
-      craft = {
-	 ["Default"]   = love.graphics.newImage("assets/tempButton.png"),
-	 ["MouseOver"] = love.graphics.newImage("assets/tempButtonO.png"),
-	 ["Unable"]    = love.graphics.newImage("assets/tempButtonU.png")
-      },
-      resourceCollect = {
-	 ["Default"]   = love.graphics.newImage("assets/tempButton.png"),
-	 ["MouseOver"] = love.graphics.newImage("assets/tempButtonO.png"),
-	 ["Unable"]    = love.graphics.newImage("assets/tempButtonU.png")
-      }
-   }
+   -- Cognition
+   self.feedback = 0.4 --seconds
 
+   self.clock     = love.graphics.newImage("assets/SunAndMoon.png")
+   self.card      = love.graphics.newImage("assets/card.jpg")
+   self.tileImage = love.graphics.newImage("assets/tile.png")
+   self.pieMenu = {
+      spawn           = love.graphics.newImage("assets/tempButton.png"),
+      move            = love.graphics.newImage("assets/tempButton.png"),
+      attack          = love.graphics.newImage("assets/tempButton.png"),
+      upgrade         = love.graphics.newImage("assets/tempButton.png"),
+      craft           = love.graphics.newImage("assets/tempButton.png"),
+      resourceCollect = love.graphics.newImage("assets/tempButton.png"),
+   }
+   self.pieMenuDisabled = love.graphics.newImage("assets/tempButtonU.png")
    self.guarani = love.graphics.newImage("assets/bart.png")
 
    return self

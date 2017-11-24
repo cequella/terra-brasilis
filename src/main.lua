@@ -13,23 +13,6 @@ require "CommonEntities"
 require "utils.Utils"
 require "utils.VersionFlavour"
 
-function drawClock(size)
-   local image = cache.clock
-   local posX  = ( love.graphics.getWidth()-image:getWidth() )/2
-   local posY  = -image:getHeight()/2
-   local angle = 0.166*WORLD_CLOCK
-
-   love.graphics.push()
-   love.graphics.translate(love.graphics.getWidth()/2, size*0.15 -35)
-   love.graphics.scale(size/image:getWidth(), size/image:getHeight())
-   love.graphics.rotate(angle)
-   love.graphics.translate(-image:getWidth()/2, -image:getHeight()/2 -180)
-   love.graphics.draw(cache.clock)
-   love.graphics.pop()
-end
-function drawActiveAdversity()
-   love.graphics.draw(cache.card, 200, 0, 0, 0.2, 0.2)
-end
 function drawResourceCollect()
    local spacement = 0.025*love.graphics.getWidth()
    local cWidth    = 0.750*(love.graphics.getWidth()-2*spacement)/3
@@ -38,13 +21,15 @@ function drawResourceCollect()
 
    for i=0, 2 do
       love.graphics.draw(cache.card,
-			 initX+i*(spacement+cWidth), 100,
-			 0,
-			 cWidth/cache.card:getWidth(), cHeight/cache.card:getHeight())
+						 initX+i*(spacement+cWidth), 100,
+						 0,
+						 cWidth/cache.card:getWidth(), cHeight/cache.card:getHeight())
    end
 end
 
 function drawDebugHUD()
+   love.graphics.setColor(255, 255, 255)
+   
    love.graphics.print("FPS= "..love.timer.getFPS(), 0, 0)
 
    local leftButton = VersionFlavour.leftClick()
@@ -88,13 +73,13 @@ function love.load()
    
    world
       :register( render() )
-      :register( playerUI() )
+      :register( gameUI() )
       :register( roundHighlight() )
+	  :register( squareHighlight() )
       :register( tilePieMenu() )
       :register( showHelp() )
    
-   board = Board(100, 100, 6, 6)
-   player = world:assemble( Player() )
+   game = world:assemble( Game() )
 end
 function love.update(dt)
    world:update(dt)
@@ -102,8 +87,6 @@ function love.update(dt)
    if not VersionFlavour.v10() then
       world:mouseMoved(love.mouse.getX(), love.mouse.getY(), 0, 0, istouch)
    end
-
-   WORLD_CLOCK = WORLD_CLOCK +0.1
 end
 function love.draw()
    world:draw()

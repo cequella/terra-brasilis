@@ -11,35 +11,34 @@ function Paw(faction, x, y)
    }
 end
 
-function Tile(tileStates, x, y, size)
-   local hSize = size/2
+function Tile(tileStates, x, y)
    return {
-      {Sprite, tileStates, x, y, size, size},
-      {SphereCollider, x +hSize, y +hSize, size*0.3},
+      {Sprite, tileStates, x, y, cache.TILE_SIZE, cache.TILE_SIZE},
+      {SphereCollider, x +cache.TILE_SIZE/2, y +cache.TILE_SIZE/2, cache.TILE_SIZE*0.3},
       {BoardTile}
    }
 end
 
-function Player()
+function Game()
    return {
-      {PlayerComponent}
+      {GameState}
    }
 end
 
-function RoundButton(buttonStates, x, y, size, callback, help)
+function RoundButton(buttonStates, x, y, size, callback, help, helpPosition)
    local hSize = size/2
 
    if callback then
       return {
-	 {Sprite, buttonStates, x, y, size, size},
-	 {SphereCollider, x +hSize, y +hSize, hSize},
-	 {ButtonCallback, callback},
-	 {UIHelp, help, "right"},
-	 {MouseListener}
+		 {Sprite, buttonStates, x, y, size, size},
+		 {SphereCollider, x +hSize, y +hSize, hSize, {255, 255, 0}},
+		 {ButtonCallback, callback},
+		 {UIHelp, help, helpPosition},
+		 {MouseListener}
       }
    else
       return {
-	 {Sprite, buttonStates, x, y, size, size, "Unable"},
+		 {Sprite, buttonStates, x, y, size, size, "Unable"},
       }
    end
 end
@@ -50,36 +49,27 @@ function ResourceCard(x, y)
    local cHeight   = 1.618*cWidth
 
    return {
-      {Sprite, cache.card, x, y, cWidth, cHeight}
+      {Sprite, cache.card, x, y, cWidth, cHeight},
+	  {AABBCollider, x, y, x+cWidth, y+cHeight}
+   }
+end
+
+function AdversityCard(x, y, width)
+   local height = 1.618*width
+   return {
+      {Sprite, cache.card, x, y, width, height},
+	  {AABBCollider, x, y, width, height, {255, 255, 0}},
+	  {UIHelp, nil, "Adversidade ativa", "AtBottom"}
    }
 end
 
 function WorldClock()
-   local image = cache.clock
-   local posX = (love.graphics.getWidth()-image:getWidth() )/2
-   local posY = -image:getHeight()/2
+   local image  = cache.clock
+   local width  = image:getWidth()*0.15
+   local height = image:getHeight()*0.15
+   local posX   = (love.graphics.getWidth()-width)/2
+   local posY   = -0.07*image:getHeight()
    return {
-      {Sprite, image, posX, posY, 200, 200}
+      {Sprite, image, posX, posY, width, height}
    }
-end
-
----------------------------------------------------------------------------
-
-function Board(x, y, xCount, yCount)
-   local temp = {}
-
-   local xDisplacement = TILE_SIZE*0.875 --precalculed
-   local yDisplacement = TILE_SIZE*0.750 --precalculed
-   
-   for i=0, xCount-1 do
-      for j=0, yCount-1 do
-	 local posX = (i%2==0) and x +j*xDisplacement or x +xDisplacement*(j+0.5)
-	 local posY = y +i*yDisplacement
-	 
-	 temp[i+j*xCount +1] = Tile(cache.tileImage, posX, posY, TILE_SIZE)
-      end
-   end
-
-   local out = world:multiAssemble( temp )
-   return out
 end
