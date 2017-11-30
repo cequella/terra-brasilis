@@ -39,7 +39,8 @@ function showHelp()
    function self:draw(entity)
       local sprite = entity:get "Sprite"
       local uiHelp = entity:get "UIHelp"
-      
+
+	  if not uiHelp.message then return end
       if uiHelp.timeOver>0 then
 		 local font   = love.graphics.getFont()
 		 local deltaT = love.timer.getTime() -uiHelp.timeOver

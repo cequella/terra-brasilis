@@ -2,10 +2,19 @@ require "utils.Utils"
 
 local Entity = require "ecs.Entity"
 
-local World = {
-   entityList = {},
-   systemList = {}
-}
+World = {}
+World.__index = World
+setmetatable(World, {
+				__call = function(instance)
+				   local self = setmetatable({}, instance)
+
+				   self.entityList = {}
+				   self.systemList = {}
+
+				   return self
+				end
+					}
+)
 
 function World:register(system)
    table.insert(self.systemList, system)
@@ -198,5 +207,3 @@ function World:keyboardChanged(key, state)
       end
    end
 end
-
-return World

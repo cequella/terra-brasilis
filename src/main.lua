@@ -2,10 +2,6 @@ local DEBUG           = true
 local GAMA_MOUSE_DOWN = false;
 local WORLD_CLOCK     = 0
 
-world     = require "ecs.World"
-Component = require "ecs.Component"
-System    = require "ecs.System"
-
 require "Singleton"
 require "CommonComponents"
 require "CommonSystems"
@@ -13,19 +9,8 @@ require "CommonEntities"
 require "utils.Utils"
 require "utils.VersionFlavour"
 
-function drawResourceCollect()
-   local spacement = 0.025*love.graphics.getWidth()
-   local cWidth    = 0.750*(love.graphics.getWidth()-2*spacement)/3
-   local cHeight   = 1.618*cWidth
-   local initX     = 0.125*love.graphics.getWidth()
-
-   for i=0, 2 do
-      love.graphics.draw(cache.card,
-			 initX+i*(spacement+cWidth), 100,
-			 0,
-			 cWidth/cache.card:getWidth(), cHeight/cache.card:getHeight())
-   end
-end
+require "InGameWorld"
+require "MainMenuWorld"
 
 function drawDebugHUD()
    love.graphics.setColor(0, 0, 0, 180)
@@ -64,37 +49,13 @@ function love.wheelmoved(x, y)
 end
 function love.keypressed(key, scancode, isrepeat)
    world:keyboardChanged(key, "Down")
-
-   if key=="escape" then
-      love.event.quit()
-   end
-
-   if key == '1' then
-      message = nil
-   elseif key=='2' then
-      message = cache.winMessage
-   elseif key=='3' then
-      message = cache.loseMessage
-   end
 end
 function love.keyreleased(key, scancode, isrepeat)
    world:keyboardChanged(key, "Up")
 end
 function love.load()
-   background = love.graphics.newImage("assets/background2.jpg")
    cache = Singleton()
-   
-   love.window.setTitle("Terra Brasilis")
-   
-   world
-      :register( render() )
-      :register( gameUI() )
-      :register( roundHighlight() )
-      :register( squareHighlight() )
-      :register( tilePieMenu() )
-      :register( showHelp() )
-   
-   game = world:assemble( Game() )
+   world = MainMenuWorld()
 end
 function love.update(dt)
    world:update(dt)
@@ -104,14 +65,7 @@ function love.update(dt)
    end
 end
 function love.draw()
-   love.graphics.draw(background)
    world:draw()
-   if message then love.graphics.draw(message) end
 
-   --drawClock(200)
-   --drawActiveAdversity()
-   --drawResourceCollect()
-   
-   -- Debug HUD
    if DEBUG then drawDebugHUD() end
 end

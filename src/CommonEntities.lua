@@ -20,6 +20,12 @@ function Tile(tileStates, x, y)
    }
 end
 
+function Background(background)
+   return {
+	  {Sprite, background, 0, 0, love.graphics.getWidth(), love.graphics.getHeight()}
+   }
+end
+
 function Game()
    return {
       {GameState}
@@ -37,15 +43,29 @@ function RoundButton(buttonStates, x, y, size, callback, help, helpPosition)
 
    if callback then
       return {
-	 {Sprite, buttonStates, x, y, size, size},
-	 {SphereCollider, x +hSize, y +hSize, hSize, {255, 255, 0}},
-	 {ButtonCallback, callback},
-	 {UIHelp, help, helpPosition},
-	 {MouseListener}
+		 {Sprite, buttonStates, x, y, size, size},
+		 {SphereCollider, x +hSize, y +hSize, hSize, {255, 255, 0}},
+		 {ButtonCallback, callback},
+		 {UIHelp, help, helpPosition}
       }
    else
       return {
-	 {Sprite, buttonStates, x, y, size, size, "Unable"},
+		 {Sprite, buttonStates, x, y, size, size, "Unable"},
+      }
+   end
+end
+
+function RectangleButton(buttonStates, x, y, width, height, callback, help, helpPosition)
+   if callback then
+      return {
+		 {Sprite, buttonStates, x, y, size, size},
+		 {AABBCollider, x, y, width, height, {255, 255, 0}},
+		 {ButtonCallback, callback},
+		 {UIHelp, help, helpPosition}
+      }
+   else
+      return {
+		 {Sprite, buttonStates, x, y, width, height, "Unable"},
       }
    end
 end

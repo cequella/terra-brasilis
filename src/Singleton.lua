@@ -33,8 +33,15 @@ function Singleton.new(instance)
    self.guarani = love.graphics.newImage("assets/bart.png")
    self.resourceMarker = love.graphics.newImage("assets/resourceTable.png")
 
+   self.startButton    = love.graphics.newImage("assets/StartGameButton.png")
+   self.tutorialButton = love.graphics.newImage("assets/TutorialButton.png")
+   self.configButton   = love.graphics.newImage("assets/ConfigButton.png")
+   self.quitButton     = love.graphics.newImage("assets/QuitButton.png")
+   
    self.winMessage  = love.graphics.newImage("assets/win.png")
    self.loseMessage = love.graphics.newImage("assets/lose.png")
+
+   self.background = love.graphics.newImage("assets/background2.jpg")
 
    return self
 end
