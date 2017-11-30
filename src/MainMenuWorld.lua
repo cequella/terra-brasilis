@@ -51,7 +51,7 @@ function MainMenuWorld.interation()
 									  collider.width, collider.height)
 	  if over then
 		 local button = entity:get "ButtonCallback"
-		 world:unregister(self)
+		 --world:unregister(self)
 		 button.callback()
       end
 
