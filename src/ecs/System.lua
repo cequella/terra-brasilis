@@ -14,7 +14,7 @@ return {
 	 return true
       end
 
-	  function System:mouseClick(entity, x, y, button, isTouch)          end
+      function System:mouseClick(entity, x, y, button, isTouch)          end
       function System:mouseChanged(entity, x, y, state, button, isTouch) end
       function System:mouseMoved(entity, x, y, dx, dy, isTouch)          end
       function System:mouseWheel(entity, x, y)                           end
@@ -23,6 +23,7 @@ return {
       function System:load(entity)       end
       function System:update(dt, entity) end
       function System:draw(entity)       end
+      function System:drawUI(entity)     end
       function System:destroy(entity)    end
 
       return System

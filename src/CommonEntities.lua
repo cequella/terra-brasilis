@@ -22,13 +22,13 @@ end
 
 function BackgroundSound(sound, state)
    return {
-	  {Sound, sound, state}
+      {Sound, sound, state}
    }
 end
 
 function Prop(prop, x, y, width, height)
    return {
-	  {Sprite, prop, x, y, width, height}
+      {Sprite, prop, x, y, width, height}
    }
 end
 
@@ -49,14 +49,14 @@ function RoundButton(buttonStates, x, y, size, callback, help, helpPosition)
 
    if callback then
       return {
-		 {Sprite, buttonStates, x, y, size, size},
-		 {SphereCollider, x +hSize, y +hSize, hSize, {255, 255, 0}},
-		 {ButtonCallback, callback},
-		 {UIHelp, help, helpPosition}
+	 {Sprite, buttonStates, x, y, size, size},
+	 {SphereCollider, x +hSize, y +hSize, hSize, {255, 255, 0}},
+	 {ButtonCallback, callback},
+	 {UIHelp, help, helpPosition}
       }
    else
       return {
-		 {Sprite, buttonStates, x, y, size, size, "Unable"},
+	 {Sprite, buttonStates, x, y, size, size, "Unable"},
       }
    end
 end
@@ -64,14 +64,14 @@ end
 function RectangleButton(buttonStates, x, y, width, height, callback, help, helpPosition)
    if callback then
       return {
-		 {Sprite, buttonStates, x, y, width, height},
-		 {AABBCollider, x, y, width, height, {255, 255, 0}},
-		 {ButtonCallback, callback},
-		 {UIHelp, help, helpPosition}
+	 {Sprite, buttonStates, x, y, width, height},
+	 {AABBCollider, x, y, width, height, {255, 255, 0}},
+	 {ButtonCallback, callback},
+	 {UIHelp, help, helpPosition}
       }
    else
       return {
-		 {Sprite, buttonStates, x, y, width, height, "Unable"},
+	 {Sprite, buttonStates, x, y, width, height, "Unable"},
       }
    end
 end

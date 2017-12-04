@@ -9,8 +9,8 @@ require "CommonEntities"
 require "utils.Utils"
 require "utils.VersionFlavour"
 
-require "MainMenuWorld"
---require "InGameWorld"
+--require "MainMenuWorld"
+require "InGameWorld"
 --require "AudioConfigWorld"
 
 function drawDebugHUD()
@@ -56,7 +56,7 @@ function love.keyreleased(key, scancode, isrepeat)
 end
 function love.load()
    cache = Singleton()
-   world = MainMenuWorld()
+   world = InGameWorld()
 end
 function love.update(dt)
    world:update(dt)
@@ -67,6 +67,7 @@ function love.update(dt)
 end
 function love.draw()
    world:draw()
+   world:drawUI()
 
    if DEBUG then drawDebugHUD() end
 end

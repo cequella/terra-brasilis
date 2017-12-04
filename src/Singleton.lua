@@ -29,10 +29,11 @@ function Singleton.new(instance)
       craft           = love.graphics.newImage("assets/craftIcon.png"),
       resourceCollect = love.graphics.newImage("assets/explorarIconn.png"),
    }
-   self.pieMenuDisabled = love.graphics.newImage("assets/tempButtonU.png")
+   self.pieMenuDisabled = love.graphics.newImage("assets/unabledButton.png")
    self.guarani = love.graphics.newImage("assets/bart.png")
    self.resourceMarker = love.graphics.newImage("assets/resourceTable.png")
    self.logo = love.graphics.newImage("assets/logo.png")
+   self.frame = love.graphics.newImage("assets/InGameFrame.png")
 
    -- Buttons
    self.startButton    = love.graphics.newImage("assets/StartGameButton.png")
@@ -51,6 +52,12 @@ function Singleton.new(instance)
    self.menuBackground = love.graphics.newImage("assets/menuBG.png")
 
    self.nightSound = love.audio.newSource("assets/night.ogg")
-   
+
+   -- Font
+   self.uiFont = love.graphics.newFont("assets/CoolinCheer.ttf", 22)
+
+   -- Adversity Cards
+   self.rain = love.graphics.newImage("assets/rainAdv.png")
+
    return self
 end

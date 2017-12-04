@@ -2,7 +2,10 @@ Component = require "ecs.Component"
 
 function GameState()
    local self = Component.new "GameState"
-   self.currentAdversity = nil
+   self.resource = {5, 3, 2}
+   self.currentAdversity = cache.rain
+   --[[
+      self.currentAdversity = nil
    self.clock  = 0
    self.boardDimen = {
 	  x = 120,
@@ -13,6 +16,7 @@ function GameState()
 	  yStep = cache.TILE_SIZE*0.750
    }
    self.board = {}
+   --]]
    return self
 end
 
