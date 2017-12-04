@@ -26,9 +26,9 @@ function BackgroundSound(sound, state)
    }
 end
 
-function Background(background)
+function Prop(prop, x, y, width, height)
    return {
-	  {Sprite, background, 0, 0, love.graphics.getWidth(), love.graphics.getHeight()}
+	  {Sprite, prop, x, y, width, height}
    }
 end
 

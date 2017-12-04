@@ -5,75 +5,80 @@ require "CommonSystems"
 
 VideoConfigWorld = {}
 setmetatable(VideoConfigWorld, {
-				__index = VideoConfigWorld,
-				__call = function(instance)
-				   local self = World()
+		__index = VideoConfigWorld,
+		__call = function(instance)
+		   local self = World()
 
-				   self
-					  :register( render() )
-					  :register( squareHighlight() )
-					  :register( playSound() )
-					  :register( rectButtonCallbackExecute() )
+		   self
+		      :register( render() )
+		      :register( squareHighlight() )
+		      :register( playSound() )
+		      :register( rectButtonCallbackExecute() )
 
-				   local backToConfigMenu = function()
-					  world = ConfigWorld()
-				   end
-				   local bla = function()
-					  print("Clicou")
-				   end
-				   --[[
-				   local quit = function()
-					  love.event.quit()
-				   end
-				   --]]
+		   local backToConfigMenu = function()
+		      world = ConfigWorld()
+		   end
+		   local bla = function()
+		      print("Clicou")
+		   end
+		   --[[
+		      local quit = function()
+		      love.event.quit()
+		      end
+		   --]]
 
-				   local factor = 0.8
-				   local topMargin = 400
+		   local factor = 0.8
+		   local topMargin = 400
 
-				   local function hCenter(image)
-					  return (800 -image:getWidth()*factor)/2
-				   end
+		   local function hCenter(image)
+		      return (800 -image:getWidth()*factor)/2
+		   end
 
 
-				   self:assemble( Background(cache.menuBackground) )
-				   self:assemble( RectangleButton(cache.acceptButton,
-												  hCenter(cache.acceptButton),
-												  topMargin,
-												  cache.acceptButton:getWidth() *factor,
-												  cache.acceptButton:getHeight() *factor,
-												  bla) )
-				   self:assemble( RectangleButton(cache.backButton,
-												  hCenter(cache.backButton),
-												  topMargin +70,
-												  cache.backButton:getWidth() *factor,
-												  cache.backButton:getHeight() *factor,
-												  backToConfigMenu) )
-				   --self:assemble( BackgroundSound(cache.nightSound, "Play") )
-				   
-				   return self
-				end
-							}
+		   self:assemble( Prop(cache.menuBackground, 0, 0, cache.menuBackground:getWidth(), cache.menuBackground:getHeight()) )
+		   self:assemble( Prop(cache.logo,
+				       (800 -cache.logo:getWidth())/2,
+				       50,
+				       cache.logo:getWidth(),
+				       cache.logo:getHeight()) )
+		   self:assemble( RectangleButton(cache.acceptButton,
+						  hCenter(cache.acceptButton),
+						  topMargin,
+						  cache.acceptButton:getWidth() *factor,
+						  cache.acceptButton:getHeight() *factor,
+						  bla) )
+		   self:assemble( RectangleButton(cache.backButton,
+						  hCenter(cache.backButton),
+						  topMargin +70,
+						  cache.backButton:getWidth() *factor,
+						  cache.backButton:getHeight() *factor,
+						  backToConfigMenu) )
+		   --self:assemble( BackgroundSound(cache.nightSound, "Play") )
+		   
+		   return self
+		end
+			       }
 )
 
 --[[
-function VideoConfigWorld.interation()
+   function VideoConfigWorld.interation()
    local self = System.requires {"ButtonCallback", "AABBCollider"}
 
    function self:mouseClick(entity, x, y, button)
-	  if not VersionFlavour.isLeft(button) then return end
+   if not VersionFlavour.isLeft(button) then return end
 
-	  local collider = entity:get "AABBCollider"
-      local over     = checkDotInRect(x,              y,
-									  collider.x,     collider.y,
-									  collider.width, collider.height)
-	  if over then
-		 local button = entity:get "ButtonCallback"
-		 --world:unregister(self)
-		 button.callback()
-      end
+   local collider = entity:get "AABBCollider"
+   local over     = checkDotInRect(x,              y,
+   collider.x,     collider.y,
+   collider.width, collider.height)
+   if over then
+   local button = entity:get "ButtonCallback"
+   --world:unregister(self)
+   button.callback()
+   end
 
    end
    
    return self
-end
+   end
 --]]

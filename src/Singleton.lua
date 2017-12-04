@@ -32,6 +32,7 @@ function Singleton.new(instance)
    self.pieMenuDisabled = love.graphics.newImage("assets/tempButtonU.png")
    self.guarani = love.graphics.newImage("assets/bart.png")
    self.resourceMarker = love.graphics.newImage("assets/resourceTable.png")
+   self.logo = love.graphics.newImage("assets/logo.png")
 
    -- Buttons
    self.startButton    = love.graphics.newImage("assets/StartGameButton.png")

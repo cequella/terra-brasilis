@@ -5,20 +5,22 @@ require "CommonEntities"
 
 InGameWorld = {}
 setmetatable(InGameWorld,{
-				__index = InGameWorld,
-				__call = function(instance)
-				   local self = World()
+		__index = InGameWorld,
+		__call = function(instance)
+		   local self = World()
 
-				   self
-					  :register( render() )
-					  :register( gameUI() )
-					  :register( roundHighlight() )
-					  :register( squareHighlight() )
-					  :register( tilePieMenu() )
-					  :register( showHelp() )
-					  :assemble( Game() )
+		   self
+		      :register( render() )
+		      :register( gameUI() )
+		      :register( roundHighlight() )
+		      :register( squareHighlight() )
+		      :register( tilePieMenu() )
+		      :register( showHelp() )
 
-				   return self
-				end
-						 }
+		   self:assemble( Prop(cache.background, 0, 0, cache.background:getWidth(), cache.background:getHeight()) )
+		   self:assemble( Game() )
+
+		   return self
+		end
+			 }
 )
