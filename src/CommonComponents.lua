@@ -39,6 +39,13 @@ function Sprite(image, x, y, width, height, startState)
    return self
 end
 
+function Sound(content, state)
+   local self = Component.new "Sound"
+   self.content = content
+   self.state = state
+   return self
+end
+
 function SphereCollider(centerX, centerY, radius, color)
    local self = Component.new "SphereCollider"
    self.x = centerX

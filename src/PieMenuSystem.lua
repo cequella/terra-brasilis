@@ -54,8 +54,8 @@ function tilePieMenu()
       local tile     = entity:get "BoardTile"
       local collider = entity:get "SphereCollider"
       local sprite   = entity:get "Sprite"
-      local over     = checkDotInSphere(x -collider.x,
-										y -collider.y,
+      local over     = checkDotInSphere(x,          y,
+										collider.x, collider.y,
 										collider.radius)
       if not over then return end
 
@@ -100,11 +100,11 @@ function pieMenuManagement(owner, centerX, centerY)
       if not VersionFlavour.isLeft(button) then return end
 
       local collider = entity:get "SphereCollider"
-      local over     = checkDotInSphere(x -collider.x,
-										y -collider.y,
+      local over     = checkDotInSphere(x,          y,
+										collider.x, collider.y,
 										collider.radius)
-      local inPieRadius = checkDotInSphere(x -centerX,
-										   y -centerY,
+      local inPieRadius = checkDotInSphere(x,       y,
+										   centerX, centerY,
 										   cache.PIEMENU_RADIUS +cache.PIEMENU_BUTTON_SIZE)
       
       if over then

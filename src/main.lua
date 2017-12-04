@@ -1,5 +1,5 @@
 local DEBUG           = true
-local GAMA_MOUSE_DOWN = false;
+local GAMA_MOUSE_DOWN = false
 local WORLD_CLOCK     = 0
 
 require "Singleton"
@@ -9,8 +9,9 @@ require "CommonEntities"
 require "utils.Utils"
 require "utils.VersionFlavour"
 
-require "InGameWorld"
 require "MainMenuWorld"
+--require "InGameWorld"
+--require "AudioConfigWorld"
 
 function drawDebugHUD()
    love.graphics.setColor(0, 0, 0, 180)

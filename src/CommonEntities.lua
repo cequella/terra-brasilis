@@ -20,6 +20,12 @@ function Tile(tileStates, x, y)
    }
 end
 
+function BackgroundSound(sound, state)
+   return {
+	  {Sound, sound, state}
+   }
+end
+
 function Background(background)
    return {
 	  {Sprite, background, 0, 0, love.graphics.getWidth(), love.graphics.getHeight()}
@@ -58,7 +64,7 @@ end
 function RectangleButton(buttonStates, x, y, width, height, callback, help, helpPosition)
    if callback then
       return {
-		 {Sprite, buttonStates, x, y, size, size},
+		 {Sprite, buttonStates, x, y, width, height},
 		 {AABBCollider, x, y, width, height, {255, 255, 0}},
 		 {ButtonCallback, callback},
 		 {UIHelp, help, helpPosition}

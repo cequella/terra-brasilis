@@ -4,6 +4,7 @@ require "CommonEntities"
 require "CommonSystems"
 
 require "InGameWorld"
+require "ConfigWorld"
 
 MainMenuWorld = {}
 setmetatable(MainMenuWorld, {
@@ -14,10 +15,14 @@ setmetatable(MainMenuWorld, {
 				   self
 					  :register( render() )
 					  :register( squareHighlight() )
-					  :register( showHelp() )
+					  :register( playSound() )
+					  :register( rectButtonCallbackExecute() )
 
 				   local startNewGame = function()
 					  world = InGameWorld()
+				   end
+				   local openConfigMenu = function()
+					  world = ConfigWorld()
 				   end
 				   local bla = function()
 					  print("Clicou")
@@ -26,36 +31,41 @@ setmetatable(MainMenuWorld, {
 					  love.event.quit()
 				   end
 
-				   self:assemble( Background(cache.background) )
-				   self:assemble( RectangleButton(cache.startButton, 0, 0*117, 208, 117, startNewGame) )
-				   self:assemble( RectangleButton(cache.startButton, 0, 1*117, 208, 117, bla) )
-				   self:assemble( RectangleButton(cache.startButton, 0, 2*117, 208, 117, bla) )
-				   self:assemble( RectangleButton(cache.startButton, 0, 3*117, 208, 117, quit) )
+				   local factor    = 0.8
+				   local topMargin = 280
 
-				   self:register( MainMenuWorld.interation() )
+				   local function hCenter(image)
+					  return (800 -image:getWidth()*factor)/2
+				   end
+				   
+				   self:assemble( Background(cache.menuBackground) )
+				   self:assemble( RectangleButton(cache.startButton,
+												  hCenter(cache.startButton),
+												  topMargin,
+												  cache.startButton:getWidth() *factor,
+												  cache.startButton:getHeight() *factor,
+												  startNewGame) )
+				   self:assemble( RectangleButton(cache.tutorialButton,
+												  hCenter(cache.tutorialButton),
+												  topMargin+90,
+												  cache.tutorialButton:getWidth() *factor,
+												  cache.tutorialButton:getHeight() *factor,
+												  bla) )
+				   self:assemble( RectangleButton(cache.configButton,
+												  hCenter(cache.configButton),
+												  topMargin+170,
+												  cache.configButton:getWidth() *factor,
+												  cache.configButton:getHeight() *factor,
+												  openConfigMenu) )
+				   self:assemble( RectangleButton(cache.quitButton,
+												  hCenter(cache.quitButton),
+												  topMargin+240,
+												  cache.quitButton:getWidth() *factor,
+												  cache.quitButton:getHeight() *factor,
+												  quit) )
+				   --self:assemble( BackgroundSound(cache.nightSound, "Play") )
 				   
 				   return self
 				end
 							}
 )
-
-function MainMenuWorld.interation()
-   local self = System.requires {"ButtonCallback", "AABBCollider"}
-
-   function self:mouseClick(entity, x, y, button)
-	  if not VersionFlavour.isLeft(button) then return end
-
-	  local collider = entity:get "AABBCollider"
-      local over     = checkDotInRect(x,              y,
-									  collider.x,     collider.y,
-									  collider.width, collider.height)
-	  if over then
-		 local button = entity:get "ButtonCallback"
-		 --world:unregister(self)
-		 button.callback()
-      end
-
-   end
-   
-   return self
-end

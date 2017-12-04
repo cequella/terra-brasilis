@@ -86,8 +86,8 @@ function roundHighlight()
    function self:mouseMoved(entity, x, y)
       local sprite   = entity:get "Sprite"
       local collider = entity:get "SphereCollider"
-      local over     = checkDotInSphere(x -collider.x,
-										y -collider.y,
+      local over     = checkDotInSphere(x,          y,
+										collider.x, collider.y,
 										collider.radius)
       
       sprite.color = over and collider.color or {255,255,255}
@@ -111,5 +111,65 @@ function squareHighlight()
 	  sprite.state = over and "MouseOver" or "Default"
    end
 
+   return self
+end
+
+function playSound()
+   local self = System.requires {"Sound"}
+
+   function self:update(entity, dt)
+	  local sound = entity:get "Sound"
+
+	  if     sound.state == "Play"   then love.audio.play(sound.content)
+	  elseif sound.state == "Pause"  then love.audio.pause(sound.content)
+	  elseif sound.state == "Stop"   then love.audio.stop(sound.content)
+	  elseif sound.state == "Resume" then love.audio.resume(sound.content)
+	  elseif sound.state == "Rewind" then love.audio.rewind(sound.content)
+	  end
+
+   end
+   
+   return self
+end
+
+function rectButtonCallbackExecute()
+   local self = System.requires {"ButtonCallback", "AABBCollider"}
+
+   function self:mouseClick(entity, x, y, button)
+	  if not VersionFlavour.isLeft(button) then return end
+
+	  local collider = entity:get "AABBCollider"
+      local over     = checkDotInRect(x,              y,
+									  collider.x,     collider.y,
+									  collider.width, collider.height)
+	  if over then
+		 local button = entity:get "ButtonCallback"
+		 --world:unregister(self)
+		 button.callback()
+      end
+
+   end
+   
+   return self
+end
+
+function roundButtonCallbackExecute()
+   local self = System.requires {"ButtonCallback", "SphereCollider"}
+
+   function self:mouseClick(entity, x, y, button)
+	  if not VersionFlavour.isLeft(button) then return end
+
+	  local collider = entity:get "SphereCollider"
+      local over     = checkDotInSphere(x,          y,
+										collider.x, collider.y,
+										collider.radius)
+	  if over then
+		 local button = entity:get "ButtonCallback"
+		 --world:unregister(self)
+		 button.callback()
+      end
+
+   end
+   
    return self
 end

@@ -13,8 +13,8 @@ function table.new(orig)
    return copy
 end
 
-function checkDotInSphere(dx, dy, radius)
-   return (dx^2 + dy^2)<(radius^2)
+function checkDotInSphere(x, y, sx, sy, radius)
+   return ((sx-x)^2 + (sy-y)^2)<(radius^2)
 end
 
 function checkDotInRect(x, y, rx, ry, rwidth, rheight)
