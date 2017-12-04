@@ -1,0 +1,56 @@
+require "ecs.World"
+
+require "CommonEntities"
+require "CommonSystems"
+
+AudioConfigWorld = {}
+setmetatable(AudioConfigWorld, {
+				__index = AudioConfigWorld,
+				__call = function(instance)
+				   local self = World()
+
+				   self
+					  :register( render() )
+					  :register( squareHighlight() )
+					  :register( playSound() )
+					  :register( rectButtonCallbackExecute() )
+
+				   local backToConfigMenu = function()
+					  world = ConfigWorld()
+				   end
+				   local bla = function()
+					  print("Clicou")
+				   end
+				   --[[
+				   local quit = function()
+					  love.event.quit()
+				   end
+				   --]]
+
+				   local factor = 0.8
+				   local topMargin = 400
+
+				   local function hCenter(image)
+					  return (800 -image:getWidth()*factor)/2
+				   end
+
+
+				   self:assemble( Background(cache.menuBackground) )
+				   self:assemble( RectangleButton(cache.acceptButton,
+												  hCenter(cache.acceptButton),
+												  topMargin,
+												  cache.acceptButton:getWidth() *factor,
+												  cache.acceptButton:getHeight() *factor,
+												  bla) )
+				   self:assemble( RectangleButton(cache.backButton,
+												  hCenter(cache.backButton),
+												  topMargin +70,
+												  cache.backButton:getWidth() *factor,
+												  cache.backButton:getHeight() *factor,
+												  backToConfigMenu) )
+				   --self:assemble( BackgroundSound(cache.nightSound, "Play") )
+				   
+				   return self
+				end
+							}
+)
