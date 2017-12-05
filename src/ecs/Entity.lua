@@ -3,16 +3,11 @@ return {
       local Entity = {
 	 componentList = {},
 	 tagList = {},
-	 childList = {},
 	 remove = false,
 	 loaded = false
       }
 
       function Entity:destroy()
-	 for i=1, #self.childList do
-	    self.childList[i]:destroy()
-	 end
-	 
 	 self.remove = true
       end
       
@@ -23,19 +18,10 @@ return {
 	 return component
       end
 
-      function Entity:addChild(entity)
-	 self.childList[#self.childList] = entity
-	 return entity
-      end
-      
       function Entity:get(id)
 	 return self.componentList[id]
       end
 
-      function Entity:getChild(id)
-	 return self.childList[id]
-      end
-      
       function Entity:check(id)
 	 return (self.tagList[id]==nil) and false or self.tagList[id]
       end

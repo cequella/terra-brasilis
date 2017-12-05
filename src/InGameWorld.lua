@@ -52,9 +52,34 @@ function InGameWorld.ui()
       local state = entity:get "GameState"
 
       if not state.menuIsOpened then
-	 if key == "escape" then
-	    
+	 if key == "escape"  then
+	    state.menuOpened = true
 	 end
+      end
+   end
+   function self:update(entity)
+      local state = entity:get "GameState"
+      if state.menuOpened and not state.menuAssembled then
+	 local bla = function()
+	    world = MainMenuWorld()
+	    state.menuOpened = false
+	    state.menuAssembled = false
+	 end
+	 state.quitButton = world:assemble( RectangleButton(cache.quitButton,
+							    200, 200,
+							    cache.quitButton:getWidth()*0.8, cache.quitButton:getHeight()*0.8,
+							    bla) )
+	 state.menuAssembled = true
+      end
+   end
+   function self:draw(entity)
+      local state = entity:get "GameState"
+      
+      -- Show Menu
+      if state.menuOpened then
+	 love.graphics.setColor(0, 0, 0, 200)
+	 love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
+	 love.graphics.setColor(255, 255, 255)
       end
    end
    function self:drawUI(entity)
