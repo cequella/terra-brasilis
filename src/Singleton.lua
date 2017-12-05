@@ -22,12 +22,12 @@ function Singleton.new(instance)
    self.card      = love.graphics.newImage("assets/card.jpg")
    self.tileImage = love.graphics.newImage("assets/tile.png")
    self.pieMenu = {
-      spawn           = love.graphics.newImage("assets/indioIcon.png"),
-      move            = love.graphics.newImage("assets/andarIcon.png"),
+      spawn           = love.graphics.newImage("assets/nativeIcon.png"),
+      move            = love.graphics.newImage("assets/moveIcon.png"),
       attack          = love.graphics.newImage("assets/atkIcon.png"),
-      upgrade         = love.graphics.newImage("assets/tempButton.png"),
+      upgrade         = love.graphics.newImage("assets/upgradeIcon.png"),
       craft           = love.graphics.newImage("assets/craftIcon.png"),
-      resourceCollect = love.graphics.newImage("assets/explorarIconn.png"),
+      resourceCollect = love.graphics.newImage("assets/collectIcon.png"),
    }
    self.pieMenuDisabled = love.graphics.newImage("assets/unabledButton.png")
    self.guarani = love.graphics.newImage("assets/bart.png")

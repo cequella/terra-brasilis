@@ -15,14 +15,13 @@ setmetatable(InGameWorld,{
 		      :register( roundHighlight() )
 		      :register( squareHighlight() )
 		      :register( rectButtonCallbackExecute() )
-		      --:register( tilePieMenu() )
+		      :register( callPieMenu() )
 		      :register( showHelp() )
 
-		   local function bla()
-		      print "Ola"
-		      self:register( InGameWorld.cardDescription() )
+		   local function cardDetail()
+		      --self:register( InGameWorld.cardDescription() )
 		   end
-
+		   
 		   self:assemble( Prop(cache.background, 0, 0, cache.background:getWidth(), cache.background:getHeight()) )
 		   local xStep = cache.TILE_SIZE*0.875
 		   local yStep = cache.TILE_SIZE*0.750
@@ -38,7 +37,7 @@ setmetatable(InGameWorld,{
 		   self:assemble( RectangleButton(cache.rain,
 						  200, 0,
 						  cache.rain:getWidth()*0.15, cache.rain:getHeight()*0.15,
-						  bla, "Adversidade Ativa", "AtBottom") )
+						  cardDetail, "Adversidade ativa", "AtBottom") )
 		   self:assemble( Game() )
 
 		   return self
@@ -49,6 +48,15 @@ setmetatable(InGameWorld,{
 function InGameWorld.ui()
    local self = System.requires {"GameState"}
 
+   function self:keyboardChanged(entity, key)
+      local state = entity:get "GameState"
+
+      if not state.menuIsOpened then
+	 if key == "escape" then
+	    
+	 end
+      end
+   end
    function self:drawUI(entity)
       local state = entity:get "GameState"
 
@@ -80,5 +88,134 @@ function InGameWorld.cardDescription()
       love.graphics.draw(card, 50, (love.graphics.getHeight()-card:getHeight())/2)
    end
    
+   return self
+end
+
+
+
+
+local PieMenuOption = {
+   spawn = function(tile, sprite)
+      local buttonImage
+      local callback
+      
+      if tile.content then -- not empty
+	 callback = nil
+	 buttonImage = cache.pieMenuDisabled
+      else
+	 local posX = sprite.x +(sprite.width-cache.PAW_SIZE)/2
+	 local posY = sprite.y +(sprite.height-cache.PAW_SIZE)/2
+
+	 buttonImage = cache.pieMenu.spawn
+	 callback = function()
+	    tile.content = world:assemble( Paw("Guarani", posX, posY) )
+	 end   
+      end
+      
+      return buttonImage, callback, "Recrutar", "AtBottom"
+   end,
+   attack = function()
+      local buttonImage = cache.pieMenu.attack
+      local callback = function()
+	 print("Atacou")
+      end
+      
+      return buttonImage, callback, "Atacar", "AtLeft"
+   end,
+   resourceCollect = function()
+      local buttonImage = cache.pieMenu.resourceCollect
+      local callback = function()
+	 print("Resource Collect")
+      end
+      
+      return buttonImage, callback, "Coletar recurso", "AtTop"
+   end,
+   upgrade = function()
+      local buttonImage = cache.pieMenu.upgrade
+      local callback = function()
+	 print("Upgrade")
+      end
+      
+      return buttonImage, callback, "Promover", "AtRight"
+   end
+}
+
+----------------------------------------------------------------------
+function callPieMenu()
+   local self = System.requires {"BoardTile", "SphereCollider"}
+   
+   function self:mouseClick(entity, x, y, button)
+      if not VersionFlavour.isLeft(button) then return end
+
+      local tile     = entity:get "BoardTile"
+      local collider = entity:get "SphereCollider"
+      local sprite   = entity:get "Sprite"
+      local over     = checkDotInSphere(x,          y,
+					collider.x, collider.y,
+					collider.radius)
+      if not over then return end
+
+      local centerX = sprite.x -cache.PIEMENU_BUTTON_SIZE/2 +sprite.width/2 
+      local centerY = sprite.y -cache.PIEMENU_BUTTON_SIZE/2 +sprite.height/2
+
+      entity.piemenu = {}
+      for i=1, 4 do
+	 local xDisp = cache.PIEMENU_RADIUS*math.cos(i*math.pi/2) 
+	 local yDisp = cache.PIEMENU_RADIUS*math.sin(i*math.pi/2)
+
+	 -- Spawn option
+	 local buttonImage, callback, help, position
+	 if i == 1 then
+	    buttonImage, callback, help, position = PieMenuOption.spawn(tile, sprite)
+	 elseif i == 2 then
+	    buttonImage, callback, help, position = PieMenuOption.attack(tile, sprite)
+	 elseif i == 3 then
+	    buttonImage, callback, help, position = PieMenuOption.resourceCollect(tile, sprite)
+	 else --if i == 4 then
+	    buttonImage, callback, help, position = PieMenuOption.upgrade(tile, sprite)
+	 end
+
+	 local temp = RoundButton(buttonImage,
+				  centerX +xDisp, centerY +yDisp,
+				  cache.PIEMENU_BUTTON_SIZE,
+				  callback, help, position)
+	 table.insert(entity.piemenu, world:assemble(temp))
+      end
+
+      world:register( pieMenuManagement(entity, collider.x, collider.y) )
+      world:unregister( self )
+   end
+
+   return self
+end
+
+function pieMenuManagement(owner, centerX, centerY)
+   local self = System.requires {"ButtonCallback", "SphereCollider", "UIHelp"}
+
+   function self:mouseClick(entity, x, y, button)
+      if not VersionFlavour.isLeft(button) then return end
+
+      local collider = entity:get "SphereCollider"
+      local over     = checkDotInSphere(x,          y,
+					collider.x, collider.y,
+					collider.radius)
+      local inPieRadius = checkDotInSphere(x,       y,
+					   centerX, centerY,
+					   cache.PIEMENU_RADIUS +cache.PIEMENU_BUTTON_SIZE)
+      
+      if over then
+	 local button = entity:get "ButtonCallback"
+	 button.callback()
+      end
+      if over == inPieRadius then -- if over XOR !inPieRadius (clear)
+	 for _, option in ipairs(owner.piemenu) do
+	    option:destroy()
+	 end
+	 
+	 world:register( tilePieMenu() )
+	 world:unregister( self )
+      end
+   end
+
    return self
 end
