@@ -52,7 +52,10 @@ function Singleton.new(instance)
    self.background = love.graphics.newImage("assets/background2.jpg")
    self.menuBackground = love.graphics.newImage("assets/menuBG.png")
 
-   self.nightSound = love.audio.newSource("assets/night.ogg")
+   -- Sounds
+   self.nightSound     = love.audio.newSource("assets/night.ogg")
+   self.buttonFeedback = love.audio.newSource("assets/buttonFeedback.mp3")
+   self.returnFeedback = love.audio.newSource("assets/returnFeedback.mp3")
 
    -- Font
    self.uiFont = love.graphics.newFont("assets/CoolinCheer.ttf", 22)

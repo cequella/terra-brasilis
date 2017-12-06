@@ -147,7 +147,7 @@ function rectButtonCallbackExecute()
 				      collider.width, collider.height)
       if over then
 	 local button = entity:get "ButtonCallback"
-	 --world:unregister(self)
+	 love.audio.play(cache.buttonFeedback)
 	 button.callback()
       end
 
@@ -168,7 +168,7 @@ function roundButtonCallbackExecute()
 					collider.radius)
       if over then
 	 local button = entity:get "ButtonCallback"
-	 --world:unregister(self)
+	 love.audio.play(cache.buttonFeedback)
 	 button.callback()
       end
 
@@ -181,13 +181,22 @@ function showAudioConfig()
    local self = System.requires {"AudioUI"}
 
    function self:update(entity, dt)
-	  local position = entity:get "AudioUI"
-	  --suit.layout:reset(position.x, position.y)
-	  suit.layout:reset(200, 200)
-	  suit.Slider(position.config, suit.layout:col(160, 20))
+      local ui = entity:get "AudioUI"
+      suit.layout:reset(ui.position.x, ui.position.y)
+
+      -- Main music
+      suit.Label("Música", {align = "center"}, suit.layout:row(ui.width, 12))
+      suit.Slider(ui.main, suit.layout:row(ui.width, 12))
+      cache.nightSound:setVolume(ui.main.value)
+
+      -- Effects
+      suit.Label("Efeitos", {align = "center"}, suit.layout:row(ui.width, 12))
+      suit.Slider(ui.effect, suit.layout:row(ui.width, 12))
+      cache.buttonFeedback:setVolume(ui.effect.value)
+      cache.returnFeedback:setVolume(ui.effect.value)
    end
    function self:draw(entity)
-	  suit.draw()
+      suit.draw()
    end
 
    return self

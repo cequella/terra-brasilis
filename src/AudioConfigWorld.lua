@@ -14,6 +14,7 @@ setmetatable(AudioConfigWorld, {
 		      :register( squareHighlight() )
 		      :register( playSound() )
 		      :register( rectButtonCallbackExecute() )
+		      :register( showAudioConfig() )
 
 		   local backToConfigMenu = function()
 		      world = ConfigWorld()
@@ -53,7 +54,8 @@ setmetatable(AudioConfigWorld, {
 						  cache.backButton:getWidth() *factor,
 						  cache.backButton:getHeight() *factor,
 						  backToConfigMenu) )
-		   --self:assemble( BackgroundSound(cache.nightSound, "Play") )
+		   self:assemble( BackgroundSound(cache.nightSound, "Play") )
+		   self:assemble( AudioConfig((800 -200)/2, 250, 200) )
 		   
 		   return self
 		end

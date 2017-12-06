@@ -63,15 +63,15 @@ end
 
 function RectangleButton(buttonStates, x, y, width, height, callback, help, helpPosition)
    if callback then
-      return {
+      return{
 	 {Sprite, buttonStates, x, y, width, height},
 	 {AABBCollider, x, y, width, height, {255, 255, 0}},
 	 {ButtonCallback, callback},
 	 {UIHelp, help, helpPosition}
       }
    else
-      return {
-	 {Sprite, buttonStates, x, y, width, height, "Unable"},
+      return{
+	 {Sprite, buttonStates, x, y, width, height, "Unable"}
       }
    end
 end
@@ -107,9 +107,9 @@ function WorldClock()
    }
 end
 
-function AudioConfig(x ,y)
+function AudioConfig(x, y, width)
    return {
-	  {AudioUI, x, y}
+	  {AudioUI, x, y, width}
    }
 end
 

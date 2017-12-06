@@ -59,8 +59,8 @@ end
 function love.load()
    cache = Singleton()
    --world = MainMenuWorld()
-   world = InGameWorld()
-   --world = AudioConfigWorld()
+   --world = InGameWorld()
+   world = AudioConfigWorld()
    --world = VideoWorld()
    --world = ConfigWorld()
 end
