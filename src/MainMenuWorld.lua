@@ -68,7 +68,7 @@ setmetatable(MainMenuWorld, {
 						  cache.quitButton:getWidth() *factor,
 						  cache.quitButton:getHeight() *factor,
 						  quit) )
-		   --self:assemble( BackgroundSound(cache.nightSound, "Play") )
+		   self:assemble( BackgroundSound(cache.nightSound, "Play") )
 		   
 		   return self
 		end

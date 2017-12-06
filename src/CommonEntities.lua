@@ -34,7 +34,8 @@ end
 
 function Game()
    return {
-      {GameState}
+      {GameState},
+      {Resource, 0, 0, 0, 0}
    }
 end
 
@@ -87,12 +88,13 @@ function ResourceCard(x, y)
    }
 end
 
-function AdversityCard(x, y, width)
+function AdversityCard(x, y, width, duration)
    local height = 1.618*width
    return {
       {Sprite, cache.card, x, y, width, height},
-      {AABBCollider, x, y, width, height, {255, 255, 0}},
-      {UIHelp, nil, "Adversidade ativa", "AtBottom"}
+      {AABBCollider, x, y, width, height, {0, 255, 255}},
+      {UIHelp, nil, "Adversidade ativa", "AtBottom"},
+      {Resource, duration, 0, 0, 0}
    }
 end
 

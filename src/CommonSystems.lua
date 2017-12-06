@@ -193,7 +193,6 @@ function showAudioConfig()
       suit.Label("Efeitos", {align = "center"}, suit.layout:row(ui.width, 12))
       suit.Slider(ui.effect, suit.layout:row(ui.width, 12))
       cache.buttonFeedback:setVolume(ui.effect.value)
-      cache.returnFeedback:setVolume(ui.effect.value)
    end
    function self:draw(entity)
       suit.draw()
