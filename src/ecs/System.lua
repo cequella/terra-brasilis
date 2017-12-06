@@ -1,17 +1,19 @@
 return {
    requires = function(dependence)
+	  --print("function name: "..debug.getinfo(2, "n").name)
       assert(type(dependence) == "table")
       local System = {
-	 dependence = dependence
+		 __index = debug.getinfo(2, "n").name,
+		 dependence = dependence
       }
 
       function System:match(entity)
-	 for i=1, #self.dependence do
-	    local available = entity:check(self.dependence[i])
-	    
-	    if not available then return false end
-	 end
-	 return true
+		 for i=1, #self.dependence do
+			local available = entity:check(self.dependence[i])
+			
+			if not available then return false end
+		 end
+		 return true
       end
 
       function System:mouseClick(entity, x, y, button, isTouch)          end
