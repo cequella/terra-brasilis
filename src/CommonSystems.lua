@@ -1,3 +1,5 @@
+local suit = require "suit"
+
 require "PieMenuSystem"
 require "InGameSystem"
 
@@ -172,5 +174,21 @@ function roundButtonCallbackExecute()
 
    end
    
+   return self
+end
+
+function showAudioConfig()
+   local self = System.requires {"AudioUI"}
+
+   function self:update(entity, dt)
+	  local position = entity:get "AudioUI"
+	  --suit.layout:reset(position.x, position.y)
+	  suit.layout:reset(200, 200)
+	  suit.Slider(position.config, suit.layout:col(160, 20))
+   end
+   function self:draw(entity)
+	  suit.draw()
+   end
+
    return self
 end

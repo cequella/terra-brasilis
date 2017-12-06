@@ -101,3 +101,15 @@ function ResourceCollect()
    self.category = {"Herb", "Herb", "Herb"}
    return self
 end
+
+function AudioUI(x, y)
+   local self = Component.new "AudioUI"
+   self.position={x=x, y=y}
+   self.config={value = 0.5, min = -2, max = 2}
+   return self
+end
+
+function VideoUI()
+   local self = Component.new "VideoUI"
+   return self
+end

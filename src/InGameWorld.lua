@@ -18,6 +18,7 @@ setmetatable(InGameWorld,{
 					  :register( roundButtonCallbackExecute() )
 					  :register( callPieMenu() )
 					  :register( showHelp() )
+					  :register( showAudioConfig() )
 
 				   local function cardDetail()
 					  --self:register( InGameWorld.cardDescription() )
@@ -42,6 +43,7 @@ setmetatable(InGameWorld,{
 												  cache.rain:getWidth()*0.15, cache.rain:getHeight()*0.15,
 												  cardDetail, "Adversidade ativa", "AtBottom") )
 				   self:assemble( Game() )
+				   self:assemble( AudioConfig(200, 200) )
 
 				   return self
 				end

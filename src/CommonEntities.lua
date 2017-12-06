@@ -106,3 +106,15 @@ function WorldClock()
       {Sprite, image, posX, posY, width, height}
    }
 end
+
+function AudioConfig(x ,y)
+   return {
+	  {AudioUI, x, y}
+   }
+end
+
+function VideoConfig(x ,y)
+   return {
+	  {VideoUI}
+   }
+end
