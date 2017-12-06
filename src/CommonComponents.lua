@@ -4,6 +4,9 @@ function GameState()
    local self = Component.new "GameState"
    self.resource = {5, 3, 2}
    self.currentAdversity = cache.rain
+   self.menuOpened = false
+   self.menuAssembled = false
+   self.ingameMenu = {}
    --[[
       self.currentAdversity = nil
    self.clock  = 0

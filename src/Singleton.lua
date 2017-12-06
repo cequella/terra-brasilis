@@ -1,10 +1,10 @@
 Singleton = {}
 Singleton.__index = Singleton
 setmetatable(Singleton, {
-		__call = function(instance)
-		   return Singleton.new(instance)
-		end
-			}
+				__call = function(instance)
+				   return Singleton.new(instance)
+				end
+						}
 )
 
 function Singleton.new(instance)
@@ -44,6 +44,7 @@ function Singleton.new(instance)
    self.quitButton     = love.graphics.newImage("assets/QuitButton.png")
    self.backButton     = love.graphics.newImage("assets/BackButton.png")
    self.acceptButton   = love.graphics.newImage("assets/AcceptButton.png")
+   self.closeButton    = love.graphics.newImage("assets/XButton.png")
    
    self.winMessage  = love.graphics.newImage("assets/win.png")
    self.loseMessage = love.graphics.newImage("assets/lose.png")

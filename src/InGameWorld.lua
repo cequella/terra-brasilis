@@ -11,10 +11,11 @@ setmetatable(InGameWorld,{
 
 				   self
 					  :register( render() )
-					  :register( InGameWorld.ui() )
+					  :register( InGameWorld.gameflow() )
 					  :register( roundHighlight() )
 					  :register( squareHighlight() )
 					  :register( rectButtonCallbackExecute() )
+					  :register( roundButtonCallbackExecute() )
 					  :register( callPieMenu() )
 					  :register( showHelp() )
 
@@ -53,15 +54,46 @@ function InGameWorld.createInnerMenu(state)
 	  state.menuOpened = false
 	  state.menuAssembled = false
    end
-   
-   state.quitButton = world:assemble( RectangleButton(cache.quitButton,
+   local closeMenu = function()
+	  for i=1, #state.ingameMenu do
+		 state.ingameMenu[i]:destroy()
+	  end
+	  InGameWorld.enableInteraction()
+	  state.menuOpened = false
+	  state.menuAssembled = false
+   end
+
+   local videoButton = world:assemble( RectangleButton(cache.audioButton,
+													   (800 -cache.audioButton:getWidth()*0.8)/2,
+													   200,
+													   cache.audioButton:getWidth()*0.8,
+													   cache.audioButton:getHeight()*0.8,
+													   backToMainMenu) )
+   local audioButton = world:assemble( RectangleButton(cache.videoButton,
+													   (800 -cache.videoButton:getWidth()*0.8)/2,
+													   260,
+													   cache.videoButton:getWidth()*0.8,
+													   cache.videoButton:getHeight()*0.8,
+													   backToMainMenu) )
+   local quitButton = world:assemble( RectangleButton(cache.quitButton,
 													  (800 -cache.quitButton:getWidth()*0.8)/2,
-													  200,
+													  350,
 													  cache.quitButton:getWidth()*0.8,
 													  cache.quitButton:getHeight()*0.8,
 													  backToMainMenu) )
-   state.menuAssembled = true
+   local closeButton = world:assemble( RectangleButton(cache.closeButton,
+													   500,
+													   150,
+													   cache.closeButton:getWidth()*0.2,
+													   cache.closeButton:getHeight()*0.2,
+													   closeMenu) )
 
+   table.insert(state.ingameMenu, audioButton);
+   table.insert(state.ingameMenu, videoButton);
+   table.insert(state.ingameMenu, quitButton);
+   table.insert(state.ingameMenu, closeButton);
+
+   state.menuAssembled = true
 end
 function InGameWorld.enableInteraction()
    world
@@ -73,8 +105,7 @@ function InGameWorld.disableInteraction()
 	  :unregister( roundHighlight() )
 	  :unregister( callPieMenu() )
 end
-
-function InGameWorld.ui()
+function InGameWorld.gameflow()
    local self = System.requires {"GameState"}
 
    function self:keyboardChanged(entity, key)
@@ -118,7 +149,6 @@ function InGameWorld.ui()
 
    return self
 end
-
 function InGameWorld.cardDescription()
    local self = System.requires {"GameState"}
 
@@ -139,7 +169,7 @@ end
 
 
 
-
+----------------------------------------------------------------------
 local PieMenuOption = {
    spawn = function(tile, sprite)
       local buttonImage
@@ -185,8 +215,6 @@ local PieMenuOption = {
       return buttonImage, callback, "Promover", "AtRight"
    end
 }
-
-----------------------------------------------------------------------
 function callPieMenu()
    local self = System.requires{"BoardTile", "SphereCollider"}
    
