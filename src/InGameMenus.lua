@@ -111,6 +111,7 @@ function InGame.callPieMenu()
       local centerY = sprite.y +(sprite.height-cache.PIEMENU_BUTTON_SIZE)/2
 
 	  if tile.faction == "Guarani" then
+		 print(tile.coord)
 		 entity.piemenu = guaraniPieMenu(tile, centerX, centerY)
 	  elseif tile.faction == "Oca" then
 		 entity.piemenu = ocaPieMenu(centerX, centerY)
@@ -179,7 +180,7 @@ end
 function guaraniPieMenu(tile, centerX, centerY)
    local out = {}
    table.insert( out, world:assemble(AttackButton(centerX, centerY, tile)) )
-   table.insert( out, world:assemble(MoveButton(centerX, centerY, tile.coord+1, 1)) )
+   table.insert( out, world:assemble(MoveButton(centerX, centerY, tile.coord)) )
    table.insert( out, world:assemble(CollectButton(centerX, centerY)) )
    table.insert( out, world:assemble(UpgradeButton(centerX, centerY)) )
    return out

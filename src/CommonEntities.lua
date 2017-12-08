@@ -192,7 +192,7 @@ function CollectButton(x, y)
 					  end, "Coletar Recursos", "AtBottom")
 end
 
-function MoveButton(x, y, from, to)
+function MoveButton(x, y, from)
    local target = InGameWorld.neighborhood(from)
    
    return RoundButton(cache.pieMenu.move,

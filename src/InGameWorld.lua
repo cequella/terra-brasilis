@@ -154,6 +154,14 @@ function InGameWorld.drawPawnStatus()
 end
 
 ---------------------------------------------------- Gameflow
+function InGameWorld.coordToIndex(i, j)
+   return j*6+i+1
+end
+function InGameWorld.indexToCoord(index)
+   local i = index%6
+   local j = (index -i)/6
+   return i, j
+end
 function InGameWorld.needUpdate(where)
    local game = world:getAllWith {"GameState"}[1]:get "GameState"
    game.needUpdate = where
@@ -172,35 +180,63 @@ function InGameWorld.spawnPoint()
    return nil
 end
 function InGameWorld.neighborhood(tileCoord)
-   local j = tileCoord%6
-   local i = (tileCoord -j)/6
+   local i, j = InGameWorld.indexToCoord(tileCoord)
    local around = {}
 
-   if i-1>0 then
-	  table.insert(around, {x=j, y=i-1})
-	  if j+1<6 then
-		 table.insert(around, {x=j+1, y=i-1})
-	  end
-   end
+   if j%2==0 then
 
+	  -- Super
+	  if j-1 > 0 then
+		 table.insert(around, {x=i, y=j-1})
+		 if i-1>0 then
+			table.insert(around, {x=i-1, y=j-1})
+		 end
+	  end
+
+	  -- Infer
+	  if j+1 < 6 then
+		 table.insert(around, {x=i, y=j+1})
+		 if i-1>0 then
+			table.insert(around, {x=i-1, y=j+1})
+		 end
+	  end
+	  
+   else
+
+	  -- Super
+	  if j-1 > 0 then
+		 table.insert(around, {x=i, y=j-1})
+		 if i+1<6 then
+			table.insert(around, {x=i+1, y=j-1})
+		 end
+	  end
+
+	  -- Infer
+	  if j+1 < 6 then
+		 table.insert(around, {x=i, y=j+1})
+		 if i+1<6 then
+			table.insert(around, {x=i+1, y=j+1})
+		 end
+	  end
+	  
+   end
+   
    if i-1>0 then
-	  table.insert(around, {x=j-1, y=i})
+	  table.insert(around, {x=i-1, y=j})
    end
    if i+1<6 then
-	  table.insert(around, {x=j+1, y=i})
+	  table.insert(around, {x=i+1, y=j})
    end
-
-   if i+1<6 then
-	  table.insert(around, {x=j, y=i+1})
-	  if j+1<6 then
-		 table.insert(around, {x=j+1, y=i+1})
-	  end
+   
+   print("tile: {"..i..", "..j.."}")
+   for _,i in ipairs(around) do
+	  print(" {"..i.x..", "..i.y.."}")
    end
    return around
 end
 function InGameWorld.targetList(tileCoord)
-   local j = tileCoord%6
-   local i = (tileCoord -j)/6
+   local i = tileCoord%6
+   local j = (tileCoord -i)/6
    local around = InGameWorld.neighborhood(tileCoord)
 
    local board = world:getAllWith {"BoardTile"}

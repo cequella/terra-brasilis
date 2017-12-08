@@ -28,7 +28,8 @@ function InGameAction.moveActionStart()
 	  local board = world:getAllWith {"BoardTile"}
 	  
 	  for _, i in ipairs(action.info.target) do
-		 local tile = board[i.y*6+i.x]
+		 local index = InGameWorld.coordToIndex(i.x, i.y)
+		 local tile = board[index]
 		 local collider = tile:get "SphereCollider"
 		 local sprite = tile:get "Sprite"
 		 local over = checkDotInSphere(x, y,
@@ -36,15 +37,14 @@ function InGameAction.moveActionStart()
 									   collider.radius)
 
 		 if over then
-			local desTile = board[i.y*6+i.x]:get "BoardTile"
-			local srcTile = board[action.info.from]:get "BoardTile"
+			local desTile = tile:get "BoardTile"
+			local srcTile = board[action.info.from+1]:get "BoardTile"
+			local temp = srcTile.entity:get "Sprite"
+			
 			desTile.faction = "Guarani"
 			desTile.entity = srcTile.entity
-
-			local temp = srcTile.entity:get "Sprite"
 			temp.x = sprite.x +18
 			temp.y = sprite.y +9
-
 			srcTile.faction = nil
 		 end
 		 sprite.color = {255, 255, 255}
@@ -58,8 +58,9 @@ function InGameAction.moveActionStart()
 	  local board = world:getAllWith {"BoardTile"}
 
 	  for _, i in ipairs(action.info.target) do
-		 local sprite = board[i.y*6+i.x]:get "Sprite"
-		 local boardTile = board[i.y*6+i.x]:get "BoardTile"
+		 local index = InGameWorld.coordToIndex(i.x, i.y)
+		 local sprite = board[index]:get "Sprite"
+		 local boardTile = board[index]:get "BoardTile"
 		 if boardTile.faction == nil then
 			sprite.color = {0, 255, 255}
 		 end
