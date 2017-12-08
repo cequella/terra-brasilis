@@ -43,17 +43,22 @@ function InGameWorld.gameflow()
 	  local yStep = cache.TILE_SIZE*0.750   
 	  local hSize = cache.TILE_SIZE/2
 	  local oca = {}
+	  local band = {}
 	  for i=0, 5 do
 		 for j=0, 5 do
+			local coord = i*6+j
 			local posX = (i%2==0) and 120 +j*xStep or 120 +xStep*(j+0.5)
 			local posY = 135 +i*yStep
 			
-			local content = nil
-			if i*6+j == 27 then
+			local faction = nil
+			if coord==27 then
 			   oca={x=posX, y=posY}
 			   faction="Oca"
+			elseif coord==19 then
+			   band={x=posX, y=posY}
+			   faction="Bandeirante"
 			end
-			local tile = world:assemble( Tile(cache.tileImage, posX, posY, i*6+j, faction) )
+			local tile = world:assemble( Tile(cache.tileImage, posX, posY, coord, faction) )
 		 end
 	  end
 
@@ -62,6 +67,11 @@ function InGameWorld.gameflow()
 						   oca.x+18, oca.y+9,
 						   cache.PAWN_SIZE, cache.PAWN_SIZE) )
 	  world:register( InGame.callPieMenu() )
+
+	  -- Bandeirante
+	  local board = world:getAllWith {"BoardTile"}
+	  local temp = board[20]:get "BoardTile"
+	  temp.entity = world:assemble( Bandeirante(band.x +18, band.y +9) )
 	  
 	  -- Clock
 	  world:assemble( WorldClock() )
@@ -166,9 +176,25 @@ function InGameWorld.attackAction()
 
    function self:load(entity)
 	  local action = entity:get "Action"
-	  local tile = world:getAllWith {"BoardTile"}[action.at]
+	  local board = world:getAllWith {"BoardTile"}
+	  local tile = board[action.info.at]
 
-	  
+	  -- get coords
+	  local i = action.info.at%6
+	  local j = (action.info.at -i)/6
+	  local around = {{x=i, y=j-1}, {x=i+1, y=j-1}, {x=i-1, y=j}, {x=i+1, y=j}, {x=i, y=j+1}, {x=i+1, y=j+1}}
+
+	  for _,coord in ipairs(around) do
+		 local temp = board[coord.y*6 +coord.x +1]:get "BoardTile"
+		 if temp.faction == "Bandeirante" then
+			local pawn = temp.entity:get "Pawn"
+			pawn.life = pawn.life -1
+			if pawn.life == 0 then
+			   temp.entity:destroy()
+			   temp.faction = nil
+			end
+		 end
+	  end
 	  
 	  entity:destroy()
 	  world:unregister(self.__index)

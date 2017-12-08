@@ -103,7 +103,7 @@ function InGame.callPieMenu()
 										collider.radius)
 
 	  if not over then return end
-	  if tile.faction==nil then return end
+	  if tile.faction==nil or tile.faction=="Bandeirante" then return end
 
       local centerX = sprite.x +(sprite.width-cache.PIEMENU_BUTTON_SIZE)/2
       local centerY = sprite.y +(sprite.height-cache.PIEMENU_BUTTON_SIZE)/2
@@ -181,6 +181,9 @@ function guaraniPieMenu(tile, centerX, centerY)
 							  cache.PIEMENU_BUTTON_SIZE,
 							  function()
 								 print("Ataca")
+								 local temp = {at = tile.coord}
+								 world:register( InGameWorld.attackAction() )
+								 world:assemble( AttackAction(temp) )
 							  end, "Atacar", "AtLeft")
    local move = RoundButton(cache.pieMenu.move,
 							centerX +cache.PIEMENU_RADIUS, centerY,
