@@ -78,10 +78,11 @@ function ButtonCallback(callback)
    self.callback = callback
    return self
 end
-function BoardTile(coord, content)
+function BoardTile(coord, faction, entity)
    local self = Component.new "BoardTile"
    self.coord = coord
-   self.content = content
+   self.faction = faction
+   self.entity = entity
    return self
 end
 

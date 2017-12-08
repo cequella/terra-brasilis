@@ -50,9 +50,9 @@ function InGameWorld.gameflow()
 			local content = nil
 			if i*6+j == 27 then
 			   oca={x=posX, y=posY}
-			   content="Oca"
+			   faction="Oca"
 			end
-			local tile = world:assemble( Tile(cache.tileImage, posX, posY, i*6+j, content) )
+			local tile = world:assemble( Tile(cache.tileImage, posX, posY, i*6+j, faction) )
 		 end
 	  end
 
@@ -99,39 +99,45 @@ end
 function InGameWorld.spawnAction()
    local self = System.requires {"Action"}
 
-   function self:update(entity)
+   function self:load(entity)
 	  local action = entity:get "Action"
 	  local tile = world:getAllWith {"BoardTile"}[action.at]
 
 	  -- Conf boardtile component
 	  local description = tile:get "BoardTile"
-	  description.content = "Guarani"
-
-	  -- Use sprite component
 	  local sprite = tile:get "Sprite"
-	  world:assemble( Guarani(sprite.x +18, sprite.y +9) )
+	  
+	  description.faction = "Guarani"
+	  description.entity = world:assemble( Guarani(sprite.x +18, sprite.y +9) )
 	  
 	  entity:destroy()
+	  world:unregister(self.__index)
    end
 
    return self
 end
-function InGameWorld.move()
+function InGameWorld.moveAction()
    local self = System.requires {"Action"}
 
-   function self:update(entity)
+   function self:load(entity)
 	  local action = entity:get "Action"
 	  local tile = world:getAllWith {"BoardTile"}[action.at]
 
 	  -- Conf boardtile component
 	  local description = tile:get "BoardTile"
-	  description.content = "Guarani"
+	  description.faction = nil
+	  description.entity:destroy()
 
+	  tile = world:getAllWith {"BoardTile"}[1]
+	  description = tile:get "BoardTile"
+	  description.faction = "Guarani"
+	  
 	  -- Use sprite component
 	  local sprite = tile:get "Sprite"
-	  world:assemble( Guarani(sprite.x +18, sprite.y +9) )
-	  
+	  description.entity = world:assemble( Guarani(sprite.x +18, sprite.y +9) )
+
 	  entity:destroy()
+	  world:unregister(self.__index)
    end
 
    return self
@@ -144,7 +150,7 @@ function InGameWorld.spawnPoint()
 
    for _,i in ipairs(possible) do
 	  local tile = board[i]:get "BoardTile"
-	  if tile.content == nil then
+	  if tile.faction == nil then
 		 return i
 	  end
    end

@@ -21,18 +21,18 @@ function SpawnAction(at)
    }
 end
 
-function MoveAction(tile)
+function MoveAction(at)
    return {
 	  {Action, "Move", at}
    }
 end
 
-function Tile(tileStates, x, y, coord, content)
+function Tile(tileStates, x, y, coord, faction, content)
    local hSize = cache.TILE_SIZE/2
    return {
       {Sprite, tileStates, x, y, cache.TILE_SIZE, cache.TILE_SIZE},
       {SphereCollider, x +hSize, y +hSize, cache.TILE_SIZE*0.3, {0, 255, 255}},
-      {BoardTile, coord, content}
+      {BoardTile, coord, faction, content}
    }
 end
 

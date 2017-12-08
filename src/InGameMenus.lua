@@ -103,14 +103,14 @@ function InGame.callPieMenu()
 										collider.radius)
 
 	  if not over then return end
-	  if tile.content==nil then return end
+	  if tile.faction==nil then return end
 
       local centerX = sprite.x +(sprite.width-cache.PIEMENU_BUTTON_SIZE)/2
       local centerY = sprite.y +(sprite.height-cache.PIEMENU_BUTTON_SIZE)/2
 
-	  if tile.content == "Guarani" then
+	  if tile.faction == "Guarani" then
 		 entity.piemenu = guaraniPieMenu(tile, centerX, centerY)
-	  elseif tile.content == "Oca" then
+	  elseif tile.faction == "Oca" then
 		 entity.piemenu = ocaPieMenu(centerX, centerY)
 	  end
 
@@ -134,10 +134,6 @@ function InGame.pieMenuManagement(owner, centerX, centerY)
 										   centerX, centerY,
 										   cache.PIEMENU_RADIUS +cache.PIEMENU_BUTTON_SIZE)
       
-      if over then
-		 local button = entity:get "ButtonCallback"
-		 button.callback()
-      end
       if over == inPieRadius then -- if over XOR !inPieRadius (clear)
 		 for _, option in ipairs(owner.piemenu) do
 			option:destroy()
@@ -168,6 +164,7 @@ function ocaPieMenu(centerX, centerY)
 						  centerX, centerY -cache.PIEMENU_RADIUS,
 						  cache.PIEMENU_BUTTON_SIZE,
 						  function()
+							 print("Recruta")
 							 world:register( InGameWorld.spawnAction() )
 							 world:assemble( SpawnAction(spawnPoint) )
 						  end, "Recrutar", "AtTop")
@@ -181,22 +178,29 @@ function guaraniPieMenu(tile, centerX, centerY)
    local attack = RoundButton(cache.pieMenu.attack,
 							  centerX -cache.PIEMENU_RADIUS, centerY,
 							  cache.PIEMENU_BUTTON_SIZE,
-							  function()end, "Atacar", "AtLeft")
+							  function()
+								 print("Ataca")
+							  end, "Atacar", "AtLeft")
    local move = RoundButton(cache.pieMenu.move,
 							centerX +cache.PIEMENU_RADIUS, centerY,
 							cache.PIEMENU_BUTTON_SIZE,
 							function()
+							   print("Move")
 							   world:register( InGameWorld.moveAction() )
-							   world:assemble( MoveAction(tile.coord -1) )
+							   world:assemble( MoveAction(tile.coord+1) )
 							end, "Mover", "AtRight")
    local collect = RoundButton(cache.pieMenu.resourceCollect,
 							   centerX, centerY +cache.PIEMENU_RADIUS,
 							   cache.PIEMENU_BUTTON_SIZE,
-							   function()end, "Coletar Recursos", "AtBottom")
+							   function()
+								  print("Coleta")
+							   end, "Coletar Recursos", "AtBottom")
    local upgrade = RoundButton(cache.pieMenu.upgrade,
 							   centerX, centerY -cache.PIEMENU_RADIUS,
 							   cache.PIEMENU_BUTTON_SIZE,
-							   function()end, "Promover", "AtTop")
+							   function()
+								  print("Promove")
+							   end, "Promover", "AtTop")
    
    table.insert(out, world:assemble(attack))
    table.insert(out, world:assemble(move))
