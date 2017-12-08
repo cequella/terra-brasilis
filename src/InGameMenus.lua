@@ -205,6 +205,9 @@ function guaraniPieMenu(tile, centerX, centerY)
 							   cache.PIEMENU_BUTTON_SIZE,
 							   function()
 								  print("Promove")
+								  local temp = {at = tile.coord+1}
+								  world:register( InGameWorld.upgradeAction() )
+								  world:assemble( UpgradeAction(temp) )
 							   end, "Promover", "AtTop")
    
    table.insert(out, world:assemble(attack))

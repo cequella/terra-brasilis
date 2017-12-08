@@ -5,13 +5,15 @@ local TILE_SIZE = 96
 
 function Guarani(x, y)
    return {
-      {Sprite, cache.guarani, x, y, cache.PAW_SIZE, cache.PAW_SIZE}
+      {Sprite, cache.guarani, x, y, cache.PAWN_SIZE, cache.PAWN_SIZE},
+	  {Pawn}
    }
 end
 
 function Bandeirante(x, y)
    return {
-      {Sprite, cache.guarani, x, y, cache.PAW_SIZE, cache.PAW_SIZE}
+      {Sprite, cache.guarani, x, y, cache.PAWN_SIZE, cache.PAWN_SIZE},
+	  {Pawn}
    }
 end
 
@@ -30,6 +32,12 @@ end
 function CollectAction(at)
    return {
 	  {Action, "Collect", at}
+   }
+end
+
+function UpgradeAction(at)
+   return {
+	  {Action, "Upgrade", at}
    }
 end
 

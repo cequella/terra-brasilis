@@ -19,6 +19,7 @@ setmetatable(InGameWorld,{
 					  :register( roundButtonCallbackExecute() )
 					  :register( showHelp() )
 					  :register( InGameWorld.gameflow() )
+					  :register( InGameWorld.drawPawnStatus() )
 
 				   self:assemble( Game() )
 
@@ -59,7 +60,7 @@ function InGameWorld.gameflow()
 	  -- Oca
 	  world:assemble( Prop(cache.guarani,
 						   oca.x+18, oca.y+9,
-						   cache.PAW_SIZE, cache.PAW_SIZE) )
+						   cache.PAWN_SIZE, cache.PAWN_SIZE) )
 	  world:register( InGame.callPieMenu() )
 	  
 	  -- Clock
@@ -149,10 +150,10 @@ function InGameWorld.collectAction()
 	  local action = entity:get "Action"
 	  local game = world:getAllWith {"GameState"}[1]
 
-	  local resource = game:get "Resource"
-	  resource.mineral = resource.mineral+action.info.mineral
-	  resource.vegetal = resource.vegetal+action.info.vegetal
-	  resource.animal = resource.animal+action.info.animal
+	  local resource   = game:get "Resource"
+	  resource.mineral = resource.mineral +action.info.mineral
+	  resource.vegetal = resource.vegetal +action.info.vegetal
+	  resource.animal  = resource.animal  +action.info.animal
 	  
 	  entity:destroy()
 	  world:unregister(self.__index)
@@ -175,6 +176,45 @@ function InGameWorld.attackAction()
 
    return self
 end
+function InGameWorld.upgradeAction()
+   local self = System.requires {"Action"}
+
+   function self:load(entity)
+	  local action = entity:get "Action"
+	  local tile = world:getAllWith {"BoardTile"}[action.info.at]
+	  local content = tile:get "BoardTile"
+	  local pawn = content.entity:get "Pawn"
+	  pawn.life = pawn.life +1
+	  
+	  entity:destroy()
+	  world:unregister(self.__index)
+   end
+
+   return self
+end
+function InGameWorld.drawPawnStatus()
+   local self = System.requires {"Pawn"}
+
+   function self:mouseMoved(entity, x, y)
+	  local pawn = entity:get "Pawn"
+	  local sprite = entity:get "Sprite"
+	  pawn.over = checkDotInSphere(x, y,
+								   sprite.x, sprite.y,
+								   cache.PAWN_SIZE)
+   end
+   function self:drawUI(entity)
+	  local sprite = entity:get "Sprite"
+	  local pawn = entity:get "Pawn"
+
+	  if not pawn.over then return end
+	  for i=1, pawn.life do
+		 love.graphics.draw(cache.lifeIcon, sprite.x+(i-1)*8, sprite.y, 0.0, 0.02, 0.02)
+	  end
+   end
+
+   return self
+end
+
 ---------------------------------------------------- Gameflow
 
 function InGameWorld.spawnPoint()
@@ -190,8 +230,3 @@ function InGameWorld.spawnPoint()
 
    return nil
 end
---[[
-
-
-
---]]

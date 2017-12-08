@@ -13,7 +13,7 @@ function Singleton.new(instance)
    self.TILE_SIZE           = 96
    self.PIEMENU_BUTTON_SIZE = 30
    self.PIEMENU_RADIUS      = 48
-   self.PAW_SIZE            = 64
+   self.PAWN_SIZE           = 64
 
    -- Cognition
    self.feedback = 0.4 --seconds
@@ -45,6 +45,8 @@ function Singleton.new(instance)
    self.backButton     = love.graphics.newImage("assets/BackButton.png")
    self.acceptButton   = love.graphics.newImage("assets/AcceptButton.png")
    self.closeButton    = love.graphics.newImage("assets/XButton.png")
+
+   self.lifeIcon = love.graphics.newImage("assets/lifeIcon.png")
    
    self.winMessage  = love.graphics.newImage("assets/win.png")
    self.loseMessage = love.graphics.newImage("assets/lose.png")
@@ -55,6 +57,7 @@ function Singleton.new(instance)
    -- Sounds
    self.nightSound     = love.audio.newSource("assets/night.ogg")
    self.buttonFeedback = love.audio.newSource("assets/buttonFeedback.mp3")
+   self.buttonFeedback:setVolume(0.0)
 
    -- Font
    self.uiFont = love.graphics.newFont("assets/CoolinCheer.ttf", 22)

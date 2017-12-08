@@ -122,3 +122,10 @@ function Resource(time, mineral, vegetal, animal)
    self.animal  = animal
    return self
 end
+
+function Pawn()
+   local self = Component.new "Pawn"
+   self.life = 3
+   self.over = false
+   return self
+end
