@@ -27,6 +27,12 @@ function MoveAction(at)
    }
 end
 
+function CollectAction(at)
+   return {
+	  {Action, "Collect", at}
+   }
+end
+
 function Tile(tileStates, x, y, coord, faction, content)
    local hSize = cache.TILE_SIZE/2
    return {

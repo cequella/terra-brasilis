@@ -17,10 +17,10 @@ function GameState()
    return self
 end
 
-function Action(choice, at)
+function Action(choice, info)
    local self = Component.new "Action"
    self.choice = choice
-   self.at = at
+   self.info = info
    return self
 end
 

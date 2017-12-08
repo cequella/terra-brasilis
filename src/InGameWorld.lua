@@ -101,7 +101,7 @@ function InGameWorld.spawnAction()
 
    function self:load(entity)
 	  local action = entity:get "Action"
-	  local tile = world:getAllWith {"BoardTile"}[action.at]
+	  local tile = world:getAllWith {"BoardTile"}[action.info.spawnpoint]
 
 	  -- Conf boardtile component
 	  local description = tile:get "BoardTile"
@@ -121,14 +121,14 @@ function InGameWorld.moveAction()
 
    function self:load(entity)
 	  local action = entity:get "Action"
-	  local tile = world:getAllWith {"BoardTile"}[action.at]
+	  local tile = world:getAllWith {"BoardTile"}[action.info.from]
 
 	  -- Conf boardtile component
 	  local description = tile:get "BoardTile"
 	  description.faction = nil
 	  description.entity:destroy()
 
-	  tile = world:getAllWith {"BoardTile"}[1]
+	  tile = world:getAllWith {"BoardTile"}[action.info.to]
 	  description = tile:get "BoardTile"
 	  description.faction = "Guarani"
 	  
@@ -136,6 +136,39 @@ function InGameWorld.moveAction()
 	  local sprite = tile:get "Sprite"
 	  description.entity = world:assemble( Guarani(sprite.x +18, sprite.y +9) )
 
+	  entity:destroy()
+	  world:unregister(self.__index)
+   end
+
+   return self
+end
+function InGameWorld.collectAction()
+   local self = System.requires {"Action"}
+
+   function self:load(entity)
+	  local action = entity:get "Action"
+	  local game = world:getAllWith {"GameState"}[1]
+
+	  local resource = game:get "Resource"
+	  resource.mineral = resource.mineral+action.info.mineral
+	  resource.vegetal = resource.vegetal+action.info.vegetal
+	  resource.animal = resource.animal+action.info.animal
+	  
+	  entity:destroy()
+	  world:unregister(self.__index)
+   end
+
+   return self
+end
+function InGameWorld.attackAction()
+   local self = System.requires {"Action"}
+
+   function self:load(entity)
+	  local action = entity:get "Action"
+	  local tile = world:getAllWith {"BoardTile"}[action.at]
+
+	  
+	  
 	  entity:destroy()
 	  world:unregister(self.__index)
    end

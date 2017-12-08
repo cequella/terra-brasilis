@@ -165,8 +165,9 @@ function ocaPieMenu(centerX, centerY)
 						  cache.PIEMENU_BUTTON_SIZE,
 						  function()
 							 print("Recruta")
+							 local temp = {spawnpoint = spawnPoint}
 							 world:register( InGameWorld.spawnAction() )
-							 world:assemble( SpawnAction(spawnPoint) )
+							 world:assemble( SpawnAction(temp) )
 						  end, "Recrutar", "AtTop")
    end
    
@@ -186,14 +187,18 @@ function guaraniPieMenu(tile, centerX, centerY)
 							cache.PIEMENU_BUTTON_SIZE,
 							function()
 							   print("Move")
+							   local temp = {from = tile.coord+1, to = 1}
 							   world:register( InGameWorld.moveAction() )
-							   world:assemble( MoveAction(tile.coord+1) )
+							   world:assemble( MoveAction(temp) )
 							end, "Mover", "AtRight")
    local collect = RoundButton(cache.pieMenu.resourceCollect,
 							   centerX, centerY +cache.PIEMENU_RADIUS,
 							   cache.PIEMENU_BUTTON_SIZE,
 							   function()
 								  print("Coleta")
+								  local temp = {mineral = 1, vegetal = 1, animal = 1}
+								  world:register( InGameWorld.collectAction() )
+								  world:assemble( CollectAction(temp) )
 							   end, "Coletar Recursos", "AtBottom")
    local upgrade = RoundButton(cache.pieMenu.upgrade,
 							   centerX, centerY -cache.PIEMENU_RADIUS,
