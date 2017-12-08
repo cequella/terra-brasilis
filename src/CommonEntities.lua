@@ -156,3 +156,72 @@ function VideoConfig(x ,y)
 	  {VideoUI}
    }
 end
+
+------------------------------------ Complex
+
+function UpgradeButton(x, y)
+   local resource = world:getAllWith {"GameState"}[1]:get "Resource"
+   
+   if resource.mineral>2 then
+	  return RoundButton(cache.pieMenu.upgrade,
+						 x, y -cache.PIEMENU_RADIUS,
+						 cache.PIEMENU_BUTTON_SIZE,
+						 function()
+							print("Promove")
+							local temp = {at = tile.coord+1}
+							world:register( InGameAction.upgradeAction() )
+							world:assemble( UpgradeAction(temp) )
+						 end, "Promover", "AtTop")
+   end
+   
+   return RoundButton(cache.pieMenuDisabled,
+					  x, y -cache.PIEMENU_RADIUS,
+					  cache.PIEMENU_BUTTON_SIZE,
+					  function()end, "Promover (min. 3 minério)", "AtTop")
+end
+
+function CollectButton(x, y)
+   return RoundButton(cache.pieMenu.resourceCollect,
+					  x, y +cache.PIEMENU_RADIUS,
+					  cache.PIEMENU_BUTTON_SIZE,
+					  function()
+						 print("Coleta")
+						 local temp = {mineral = 1, vegetal = 1, animal = 1}
+						 world:register( InGameAction.collectAction() )
+						 world:assemble( CollectAction(temp) )
+					  end, "Coletar Recursos", "AtBottom")
+end
+
+function MoveButton(x, y, from, to)
+   return RoundButton(cache.pieMenu.move,
+					  x +cache.PIEMENU_RADIUS, y,
+					  cache.PIEMENU_BUTTON_SIZE,
+					  function()
+						 print("Move")
+						 local temp = {from=from, to=to}
+						 world:register( InGameAction.moveAction() )
+						 world:assemble( MoveAction(temp) )
+					  end, "Mover", "AtRight")
+
+end
+
+function AttackButton(x, y, tile)
+   local target = InGameWorld.targetList(tile.coord)
+
+   if target ~= nil then
+	  return RoundButton(cache.pieMenu.attack,
+						 x -cache.PIEMENU_RADIUS, y,
+						 cache.PIEMENU_BUTTON_SIZE,
+						 function()
+							print("Ataca")
+							local temp = {target=target}
+							world:register( InGameAction.attackAction() )
+							world:assemble( AttackAction(temp) )
+						 end, "Atacar", "AtLeft")
+   else
+	  return RoundButton(cache.pieMenuDisabled,
+						 x -cache.PIEMENU_RADIUS, y,
+						 cache.PIEMENU_BUTTON_SIZE,
+						 function()end)
+   end
+end

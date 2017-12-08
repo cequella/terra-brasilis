@@ -123,7 +123,7 @@ function InGameWorld.drawPawnStatus()
 
 	  if not pawn.over then return end
 	  for i=1, pawn.life do
-		 love.graphics.draw(cache.lifeIcon, sprite.x+(i-1)*8, sprite.y, 0.0, 0.02, 0.02)
+		 love.graphics.draw(cache.lifeIcon, sprite.x, sprite.y+(i-1)*8, 0.0, 0.02, 0.02)
 	  end
    end
 
@@ -144,4 +144,47 @@ function InGameWorld.spawnPoint()
    end
 
    return nil
+end
+function InGameWorld.targetList(tile)
+   local j = tile%6
+   local i = (tile -j)/6
+   local around = {}
+
+   if i-1>0 then
+	  table.insert(around, {x=j, y=i-1})
+	  if j+1<6 then
+		 table.insert(around, {x=j+1, y=i-1})
+	  end
+   end
+
+   if i-1>0 then
+	  table.insert(around, {x=j-1, y=i})
+   end
+   if i+1<6 then
+	  table.insert(around, {x=j+1, y=i})
+   end
+
+   if i+1<6 then
+	  table.insert(around, {x=j, y=i+1})
+	  if j+1<6 then
+		 table.insert(around, {x=j+1, y=i+1})
+	  end
+   end
+
+   local board = world:getAllWith {"BoardTile"}
+   
+   local out = {}
+   for _,i in ipairs(around) do
+	  local coord = i.y*6 +i.x +1
+	  local temp = board[coord]:get "BoardTile"
+	  if temp.faction == "Bandeirante" then
+		 table.insert(out, coord)
+	  end
+   end
+
+   if #out>0 then
+	  return out
+   else
+	  return nil
+   end
 end

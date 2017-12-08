@@ -178,46 +178,9 @@ function ocaPieMenu(centerX, centerY)
 end
 function guaraniPieMenu(tile, centerX, centerY)
    local out = {}
-   local attack = RoundButton(cache.pieMenu.attack,
-							  centerX -cache.PIEMENU_RADIUS, centerY,
-							  cache.PIEMENU_BUTTON_SIZE,
-							  function()
-								 print("Ataca")
-								 local temp = {at = tile.coord}
-								 world:register( InGameAction.attackAction() )
-								 world:assemble( AttackAction(temp) )
-							  end, "Atacar", "AtLeft")
-   local move = RoundButton(cache.pieMenu.move,
-							centerX +cache.PIEMENU_RADIUS, centerY,
-							cache.PIEMENU_BUTTON_SIZE,
-							function()
-							   print("Move")
-							   local temp = {from = tile.coord+1, to = 1}
-							   world:register( InGameAction.moveAction() )
-							   world:assemble( MoveAction(temp) )
-							end, "Mover", "AtRight")
-   local collect = RoundButton(cache.pieMenu.resourceCollect,
-							   centerX, centerY +cache.PIEMENU_RADIUS,
-							   cache.PIEMENU_BUTTON_SIZE,
-							   function()
-								  print("Coleta")
-								  local temp = {mineral = 1, vegetal = 1, animal = 1}
-								  world:register( InGameAction.collectAction() )
-								  world:assemble( CollectAction(temp) )
-							   end, "Coletar Recursos", "AtBottom")
-   local upgrade = RoundButton(cache.pieMenu.upgrade,
-							   centerX, centerY -cache.PIEMENU_RADIUS,
-							   cache.PIEMENU_BUTTON_SIZE,
-							   function()
-								  print("Promove")
-								  local temp = {at = tile.coord+1}
-								  world:register( InGameAction.upgradeAction() )
-								  world:assemble( UpgradeAction(temp) )
-							   end, "Promover", "AtTop")
-   
-   table.insert(out, world:assemble(attack))
-   table.insert(out, world:assemble(move))
-   table.insert(out, world:assemble(collect))
-   table.insert(out, world:assemble(upgrade))
+   table.insert( out, world:assemble(AttackButton(centerX, centerY, tile)) )
+   table.insert( out, world:assemble(MoveButton(centerX, centerY, tile.coord+1, 1)) )
+   table.insert( out, world:assemble(CollectButton(centerX, centerY)) )
+   table.insert( out, world:assemble(UpgradeButton(centerX, centerY)) )
    return out
 end

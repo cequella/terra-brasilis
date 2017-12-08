@@ -51,9 +51,8 @@ function InGameAction.collectAction()
 
    function self:load(entity)
 	  local action = entity:get "Action"
-	  local game = world:getAllWith {"GameState"}[1]
-
-	  local resource   = game:get "Resource"
+	  local resource = world:getAllWith {"GameState"}[1]:get "Resource"
+	  
 	  resource.mineral = resource.mineral +action.info.mineral
 	  resource.vegetal = resource.vegetal +action.info.vegetal
 	  resource.animal  = resource.animal  +action.info.animal
@@ -66,33 +65,24 @@ function InGameAction.collectAction()
 end
 function InGameAction.attackAction()
    local self = System.requires {"Action"}
-
+   
    function self:load(entity)
 	  local action = entity:get "Action"
 	  local board = world:getAllWith {"BoardTile"}
-	  local tile = board[action.info.at]
 
-	  -- get coords
-	  local i = action.info.at%6
-	  local j = (action.info.at -i)/6
-	  local around = {{x=i, y=j-1}, {x=i+1, y=j-1}, {x=i-1, y=j}, {x=i+1, y=j}, {x=i, y=j+1}, {x=i+1, y=j+1}}
-
-	  for _,coord in ipairs(around) do
-		 local temp = board[coord.y*6 +coord.x +1]:get "BoardTile"
-		 if temp.faction == "Bandeirante" then
-			local pawn = temp.entity:get "Pawn"
-			pawn.life = pawn.life -1
-			if pawn.life == 0 then
-			   temp.entity:destroy()
-			   temp.faction = nil
-			end
+	  for _,coord in ipairs(action.info.target) do
+		 local temp = board[coord]:get "BoardTile"
+		 local pawn = temp.entity:get "Pawn"
+		 pawn.life = pawn.life -1
+		 if pawn.life == 0 then
+			temp.entity:destroy()
+			temp.faction = nil
 		 end
 	  end
 	  
 	  entity:destroy()
 	  world:unregister(self.__index)
    end
-
    return self
 end
 function InGameAction.upgradeAction()
