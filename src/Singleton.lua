@@ -20,7 +20,7 @@ function Singleton.new(instance)
 
    self.clock     = love.graphics.newImage("assets/SunAndMoon.png")
    self.card      = love.graphics.newImage("assets/card.jpg")
-   self.tileImage = love.graphics.newImage("assets/tile.png")
+   self.tileImage = love.graphics.newImage("assets/tileFinal.png")
    self.pieMenu = {
       spawn           = love.graphics.newImage("assets/nativeIcon.png"),
       move            = love.graphics.newImage("assets/moveIcon.png"),
@@ -30,7 +30,9 @@ function Singleton.new(instance)
       resourceCollect = love.graphics.newImage("assets/collectIcon.png"),
    }
    self.pieMenuDisabled = love.graphics.newImage("assets/unabledButton.png")
-   self.guarani = love.graphics.newImage("assets/bart.png")
+   self.guarani = love.graphics.newImage("assets/guarani.png")
+   self.bandeirante = love.graphics.newImage("assets/bandeirante.png")
+   self.oca = love.graphics.newImage("assets/oca.png")
    self.resourceMarker = love.graphics.newImage("assets/resourceTable.png")
    self.logo = love.graphics.newImage("assets/logo.png")
    self.frame = love.graphics.newImage("assets/InGameFrame.png")
@@ -58,8 +60,9 @@ function Singleton.new(instance)
 
    -- Sounds
    self.nightSound     = love.audio.newSource("assets/night.ogg")
+   self.daySound       = love.audio.newSource("assets/day.ogg")
+   self.menuSound      = love.audio.newSource("assets/menu.ogg")
    self.buttonFeedback = love.audio.newSource("assets/buttonFeedback.mp3")
-
 
    -- Controler
    self.main   = { value=0.5, min=0.0, max=1.0 }

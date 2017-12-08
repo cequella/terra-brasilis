@@ -25,7 +25,7 @@ setmetatable(MainMenuWorld, {
 		      world = ConfigWorld()
 		   end
 		   local bla = function()
-			  world = TutorialWorld()
+		      world = TutorialWorld()
 		   end
 		   local quit = function()
 		      love.event.quit()
@@ -39,9 +39,9 @@ setmetatable(MainMenuWorld, {
 		   end
 		   
 		   self:assemble( Prop(cache.menuBackground,
-							   0, 0,
-							   cache.menuBackground:getWidth(),
-							   cache.menuBackground:getHeight()) )
+				       0, 0,
+				       cache.menuBackground:getWidth(),
+				       cache.menuBackground:getHeight()) )
 		   self:assemble( Prop(cache.logo,
 				       (800 -cache.logo:getWidth())/2,
 				       50,
@@ -71,7 +71,10 @@ setmetatable(MainMenuWorld, {
 						  cache.quitButton:getWidth() *factor,
 						  cache.quitButton:getHeight() *factor,
 						  quit) )
-		   self:assemble( BackgroundSound(cache.nightSound, "Play") )
+		   self:assemble( BackgroundSound(cache.menuSound, "Play") )
+
+		   -- Gambs
+		   love.audio.stop(cache.daySound)
 		   
 		   return self
 		end

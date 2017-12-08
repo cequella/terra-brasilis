@@ -18,6 +18,7 @@ setmetatable(InGameWorld,{
 		      :register( rectButtonCallbackExecute() )
 		      :register( roundButtonCallbackExecute() )
 		      :register( showHelp() )
+		      :register( playSound() )
 		      :register( InGame.innerMenu() )
 		      :register( InGameWorld.drawPawnStatus() )
 		      :register( InGameWorld.drawResourcesMarker() )
@@ -95,7 +96,7 @@ function InGameWorld.playerGameflow()
       end
 
       -- Oca
-      world:assemble( Prop(cache.guarani,
+      world:assemble( Prop(cache.oca,
 			   oca.x+18, oca.y+9,
 			   cache.PAWN_SIZE, cache.PAWN_SIZE) )
 
@@ -112,6 +113,10 @@ function InGameWorld.playerGameflow()
 
       -- HUD
       world:assemble( Prop(cache.frame, 0, 0, cache.frame:getWidth(), cache.frame:getHeight()) )
+      world:assemble( BackgroundSound(cache.daySound, "Play") )
+
+      -- Gambs
+      love.audio.stop(cache.menuSound)
    end
    function self:update(entity, dt)
       local state = entity:get "GameState"

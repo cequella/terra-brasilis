@@ -12,7 +12,7 @@ end
 
 function Bandeirante(x, y)
    return {
-      {Sprite, cache.guarani, x, y, cache.PAWN_SIZE, cache.PAWN_SIZE},
+      {Sprite, cache.bandeirante, x, y, cache.PAWN_SIZE, cache.PAWN_SIZE},
 	  {Pawn}
    }
 end
