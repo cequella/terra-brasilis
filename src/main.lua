@@ -14,6 +14,8 @@ require "InGameWorld"
 require "AudioConfigWorld"
 require "VideoConfigWorld"
 require "ConfigWorld"
+require "TutorialWorld"
+require "CreditsWorld"
 
 function drawDebugHUD()
    love.graphics.setColor(0, 0, 0, 180)
@@ -60,11 +62,13 @@ function love.keyreleased(key, scancode, isrepeat)
 end
 function love.load()
    cache = Singleton()
-   --world = MainMenuWorld()
-   world = InGameWorld()
+   world = MainMenuWorld()
+   --world = InGameWorld()
    --world = AudioConfigWorld()
    --world = VideoWorld()
    --world = ConfigWorld()
+   --world = CreditsWorld()
+   --world = TutorialWorld()
 end
 function love.update(dt)
    world:update(dt)

@@ -34,6 +34,8 @@ function Singleton.new(instance)
    self.resourceMarker = love.graphics.newImage("assets/resourceTable.png")
    self.logo = love.graphics.newImage("assets/logo.png")
    self.frame = love.graphics.newImage("assets/InGameFrame.png")
+   self.tutorial = love.graphics.newImage("assets/tutorial.png")
+   self.credits = love.graphics.newImage("assets/credits.png")
 
    -- Buttons
    self.startButton    = love.graphics.newImage("assets/StartGameButton.png")

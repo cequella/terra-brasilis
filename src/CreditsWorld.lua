@@ -6,9 +6,9 @@ require "CommonSystems"
 require "AudioConfigWorld"
 require "VideoConfigWorld"
 
-ConfigWorld = {}
-setmetatable(ConfigWorld, {
-		__index = ConfigWorld,
+CreditsWorld = {}
+setmetatable(CreditsWorld, {
+		__index = CreditsWorld,
 		__call = function(instance)
 		   local self = World()
 
@@ -20,12 +20,6 @@ setmetatable(ConfigWorld, {
 
 		   local backToMainMenu = function()
 		      world = MainMenuWorld()
-		   end
-		   local openAudioMenu = function()
-		      world = AudioConfigWorld()
-		   end
-		   local openVideoMenu = function()
-		      world = VideoConfigWorld()
 		   end
 
 		   local factor = 0.8
@@ -45,18 +39,11 @@ setmetatable(ConfigWorld, {
 				       50,
 				       cache.logo:getWidth(),
 				       cache.logo:getHeight()) )
-		   self:assemble( RectangleButton(cache.audioButton,
-						  hCenter(cache.audioButton),
-						  topMargin,
-						  cache.audioButton:getWidth() *factor,
-						  cache.audioButton:getHeight() *factor,
-						  openAudioMenu) )
-		   self:assemble( RectangleButton(cache.videoButton,
-						  hCenter(cache.videoButton),
-						  topMargin +70,
-						  cache.videoButton:getWidth() *factor,
-						  cache.videoButton:getHeight() *factor,
-						  openVideoMenu) )
+		   self:assemble( Prop(cache.credits,
+							   (800 -(cache.credits:getWidth()*0.5))/2,
+							   50,
+							   cache.credits:getWidth()*0.5,
+							   cache.credits:getHeight()*0.5) )
 		   self:assemble( RectangleButton(cache.backButton,
 						  hCenter(cache.backButton),
 						  topMargin +140,

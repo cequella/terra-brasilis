@@ -30,7 +30,7 @@ function InGameAction.spawnDevil()
 			   pawn.life = pawn.life -1
 
 			   if pawn.life == 0 then
-				  temp.faction == nil
+				  temp.faction = nil
 				  temp.entity:destroy()
 			   end
 			else
