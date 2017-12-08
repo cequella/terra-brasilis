@@ -39,9 +39,13 @@ function InGameAction.moveActionStart()
 			local desTile = board[i.y*6+i.x]:get "BoardTile"
 			local srcTile = board[action.info.from]:get "BoardTile"
 			desTile.faction = "Guarani"
-			desTile.entity = world:assemble( Guarani(sprite.x +18, sprite.y+9) )
-			srcTile.faction = nil 
-			srcTile.entity:destroy()
+			desTile.entity = srcTile.entity
+
+			local temp = srcTile.entity:get "Sprite"
+			temp.x = sprite.x +18
+			temp.y = sprite.y +9
+
+			srcTile.faction = nil
 		 end
 		 sprite.color = {255, 255, 255}
 	  end
