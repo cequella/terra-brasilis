@@ -79,6 +79,7 @@ function InGameAction.attackAction()
 			temp.faction = nil
 		 end
 	  end
+	  InGameWorld.needUpdate("Board")
 	  
 	  entity:destroy()
 	  world:unregister(self.__index)

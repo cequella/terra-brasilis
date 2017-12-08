@@ -14,6 +14,7 @@ function GameState()
    self.menuOpened = false
    self.menuAssembled = false
    self.ingameMenu = {}
+   self.needUpdate = "Board"
    return self
 end
 
@@ -37,6 +38,7 @@ function Sprite(image, x, y, width, height, startState)
    self.sx = 1.0
    self.sy = 1.0
    self.color = {255, 255, 255}
+   self.hightlight = nil
 
    if width and height then
       self.sx = width/self.width
@@ -54,22 +56,22 @@ function Sound(content, state)
    return self
 end
 
-function SphereCollider(centerX, centerY, radius, color)
+function SphereCollider(centerX, centerY, radius, highlight)
    local self = Component.new "SphereCollider"
-   self.x = centerX
-   self.y = centerY
-   self.radius  = radius
-   self.color   = color
+   self.x         = centerX
+   self.y         = centerY
+   self.radius    = radius
+   self.highlight = highlight
    return self
 end
 
-function AABBCollider(x, y, width, height, color)
+function AABBCollider(x, y, width, height, highlight)
    local self = Component.new "AABBCollider"
-   self.x = x
-   self.y = y
-   self.width   = width
-   self.height  = height
-   self.color   = color 
+   self.x         = x
+   self.y         = y
+   self.width     = width
+   self.height    = height
+   self.highlight = highlight 
    return self
 end
 

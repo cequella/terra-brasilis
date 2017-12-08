@@ -20,6 +20,7 @@ setmetatable(InGameWorld,{
 					  :register( showHelp() )
 					  :register( InGameWorld.gameflow() )
 					  :register( InGameWorld.drawPawnStatus() )
+					  :register( InGame.innerMenu() )
 
 				   self:assemble( Game() )
 
@@ -87,8 +88,31 @@ function InGameWorld.gameflow()
 									  game.currentAdversity.image:getHeight()*0.15,
 									  function() end,
 									  game.currentAdversity.name, "AtBottom") )
-	  
    end
+   function self:update(entity, dt)
+	  local game = entity:get "GameState"
+	  if not game.needUpdate then return end
+
+	  if game.needUpdate == "Board" then
+		 local board = world:getAllWith {"BoardTile"}
+		 for i=1, #board do
+			local temp = board[i]:get "BoardTile"
+			if temp.faction == "Bandeirante" then
+			   temp = board[i]:get "Sprite"
+			   temp.color = {255, 0, 255}
+			   temp = board[i]:get "SphereCollider"
+			   temp.highlight = {255, 0, 255}
+			else
+			   temp = board[i]:get "Sprite"
+			   temp.color = {255, 255, 255}
+			   temp = board[i]:get "SphereCollider"
+			   temp.highlight = {0, 255, 255}
+			end
+		 end
+	  end
+	  game.needUpdate = false
+   end
+   
    return self
 end
 function InGameWorld.drawResourcesMarker()
@@ -131,7 +155,10 @@ function InGameWorld.drawPawnStatus()
 end
 
 ---------------------------------------------------- Gameflow
-
+function InGameWorld.needUpdate(where)
+   local game = world:getAllWith {"GameState"}[1]:get "GameState"
+   game.needUpdate = where
+end
 function InGameWorld.spawnPoint()
    local board = world:getAllWith {"BoardTile"}
    local possible = {21, 22, 27, 29, 33, 34}
@@ -145,9 +172,9 @@ function InGameWorld.spawnPoint()
 
    return nil
 end
-function InGameWorld.targetList(tile)
-   local j = tile%6
-   local i = (tile -j)/6
+function InGameWorld.neighborhood(tileCoord)
+   local j = tileCoord%6
+   local i = (tileCoord -j)/6
    local around = {}
 
    if i-1>0 then
@@ -170,6 +197,12 @@ function InGameWorld.targetList(tile)
 		 table.insert(around, {x=j+1, y=i+1})
 	  end
    end
+   return around
+end
+function InGameWorld.targetList(tileCoord)
+   local j = tileCoord%6
+   local i = (tileCoord -j)/6
+   local around = InGameWorld.neighborhood(tileCoord)
 
    local board = world:getAllWith {"BoardTile"}
    

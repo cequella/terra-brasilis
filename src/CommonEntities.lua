@@ -222,6 +222,6 @@ function AttackButton(x, y, tile)
 	  return RoundButton(cache.pieMenuDisabled,
 						 x -cache.PIEMENU_RADIUS, y,
 						 cache.PIEMENU_BUTTON_SIZE,
-						 function()end)
+						 function()end, "Atacar (sem inimigos próximos)", "AtLeft")
    end
 end

@@ -17,7 +17,7 @@ require "ConfigWorld"
 
 function drawDebugHUD()
    love.graphics.setColor(0, 0, 0, 180)
-   love.graphics.rectangle("fill", 0, 0, 120, 50)
+   love.graphics.rectangle("fill", 0, 0, 120, 80)
    
    love.graphics.setColor(255, 255, 255)
    
@@ -31,6 +31,8 @@ function drawDebugHUD()
 
    love.graphics.print("Window= "..tostring(love.graphics.getWidth()).."x"..
 						  tostring(love.graphics.getHeight()), 0, 36)
+   love.graphics.print("#Entity= "..tostring(#world.entityList), 0, 48)
+   love.graphics.print("#System= "..tostring(#world.systemList), 0, 60)
 end
 
 function love.mousepressed(x, y, button, istouch)
