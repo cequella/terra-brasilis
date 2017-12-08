@@ -71,7 +71,7 @@ end
 function Game()
    return {
       {GameState},
-      {Resource, 0, 0, 0, 0}
+      {Resource, 0, 1, 1, 1}
    }
 end
 
@@ -159,16 +159,16 @@ end
 
 ------------------------------------ Complex
 
-function UpgradeButton(x, y)
+function UpgradeButton(x, y, tile)
    local resource = world:getAllWith {"GameState"}[1]:get "Resource"
    
-   if resource.mineral>2 then
+   if resource.amount[2]>2 then
 	  return RoundButton(cache.pieMenu.upgrade,
 						 x, y -cache.PIEMENU_RADIUS,
 						 cache.PIEMENU_BUTTON_SIZE,
 						 function()
 							print("Promove")
-							local temp = {at = tile.coord+1}
+							local temp = {at =tile.coord+1, cost ={-1, -3, 0, 0}}
 							world:register( InGameAction.upgradeAction() )
 							world:assemble( UpgradeAction(temp) )
 						 end, "Promover", "AtTop")
@@ -186,7 +186,7 @@ function CollectButton(x, y)
 					  cache.PIEMENU_BUTTON_SIZE,
 					  function()
 						 print("Coleta")
-						 local temp = {mineral = 1, vegetal = 1, animal = 1}
+						 local temp = {cost = {0, 1, 1, 1} }
 						 world:register( InGameAction.collectAction() )
 						 world:assemble( CollectAction(temp) )
 					  end, "Coletar Recursos", "AtBottom")
@@ -200,7 +200,7 @@ function MoveButton(x, y, from)
 					  cache.PIEMENU_BUTTON_SIZE,
 					  function()
 						 print("Move")
-						 local temp = {from=from, target=target}
+						 local temp = {from=from, target=target, cost={-2, 0, 0, 0}}
 						 world:register( InGameAction.moveActionStart() )
 						 world:assemble( MoveAction(temp) )
 					  end, "Mover", "AtRight")
@@ -216,7 +216,7 @@ function AttackButton(x, y, tile)
 						 cache.PIEMENU_BUTTON_SIZE,
 						 function()
 							print("Ataca")
-							local temp = {target=target}
+							local temp = {target=target, cost={-1, 0, 0, 0}}
 							world:register( InGameAction.attackAction() )
 							world:assemble( AttackAction(temp) )
 						 end, "Atacar", "AtLeft")
@@ -225,5 +225,29 @@ function AttackButton(x, y, tile)
 						 x -cache.PIEMENU_RADIUS, y,
 						 cache.PIEMENU_BUTTON_SIZE,
 						 function()end, "Atacar (sem inimigos próximos)", "AtLeft")
+   end
+end
+
+function SpawnButton(x, y)
+   local resource = world:getAllWith {"GameState"}[1]:get "Resource"
+   local spawnPoint = InGameWorld.spawnPoint()
+
+   if (spawnPoint == nil) or
+   (resource.amount[2]<1 and resource.amount[3]<1 and resource.amount[4]<1) then
+	  return RoundButton(cache.pieMenuDisabled,
+						 x, y -cache.PIEMENU_RADIUS,
+						 cache.PIEMENU_BUTTON_SIZE,
+						 function()end)
+   else
+	  return RoundButton(cache.pieMenu.spawn,
+						 x, y -cache.PIEMENU_RADIUS,
+						 cache.PIEMENU_BUTTON_SIZE,
+						 function()
+							print("Recruta")
+							local temp = {spawnpoint = spawnPoint,
+										  cost={-3, -1, -1, -1}}
+							world:register( InGameAction.spawnAction() )
+							world:assemble( SpawnAction(temp) )
+						 end, "Recrutar", "AtTop")
    end
 end

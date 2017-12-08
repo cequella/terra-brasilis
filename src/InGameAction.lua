@@ -13,6 +13,7 @@ function InGameAction.spawnAction()
 	  
 	  description.faction = "Guarani"
 	  description.entity = world:assemble( Guarani(sprite.x +18, sprite.y +9) )
+	  InGameWorld.updateTurn(action.info.cost)
 	  
 	  entity:destroy()
 	  world:unregister(self.__index)
@@ -46,6 +47,7 @@ function InGameAction.moveActionStart()
 			temp.x = sprite.x +18
 			temp.y = sprite.y +9
 			srcTile.faction = nil
+			InGameWorld.updateTurn(action.info.cost)
 		 end
 		 sprite.color = {255, 255, 255}
 	  end
@@ -91,11 +93,8 @@ function InGameAction.collectAction()
 
    function self:load(entity)
 	  local action = entity:get "Action"
-	  local resource = world:getAllWith {"GameState"}[1]:get "Resource"
-	  
-	  resource.mineral = resource.mineral +action.info.mineral
-	  resource.vegetal = resource.vegetal +action.info.vegetal
-	  resource.animal  = resource.animal  +action.info.animal
+
+	  InGameWorld.updateTurn(action.info.cost)
 	  
 	  entity:destroy()
 	  world:unregister(self.__index)
@@ -120,6 +119,7 @@ function InGameAction.attackAction()
 		 end
 	  end
 	  InGameWorld.needUpdate("Board")
+	  InGameWorld.updateTurn(action.info.cost)
 	  
 	  entity:destroy()
 	  world:unregister(self.__index)
@@ -135,6 +135,7 @@ function InGameAction.upgradeAction()
 	  local content = tile:get "BoardTile"
 	  local pawn = content.entity:get "Pawn"
 	  pawn.life = pawn.life +1
+	  InGameWorld.updateTurn(action.info.cost)
 	  
 	  entity:destroy()
 	  world:unregister(self.__index)

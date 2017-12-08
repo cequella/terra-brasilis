@@ -18,9 +18,10 @@ setmetatable(InGameWorld,{
 					  :register( rectButtonCallbackExecute() )
 					  :register( roundButtonCallbackExecute() )
 					  :register( showHelp() )
-					  :register( InGameWorld.gameflow() )
-					  :register( InGameWorld.drawPawnStatus() )
 					  :register( InGame.innerMenu() )
+					  :register( InGameWorld.drawPawnStatus() )
+					  :register( InGameWorld.drawResourcesMarker() )
+					  :register( InGameWorld.playerGameflow() )
 
 				   self:assemble( Game() )
 
@@ -28,12 +29,73 @@ setmetatable(InGameWorld,{
 				end
 						 }
 )
-function InGameWorld.gameflow()
+function InGameWorld.pcGameflow()
+   local self = System.requires {"GameState"}
+
+   function self:update(entity, dt)
+	  local state = entity:get "GameState"
+
+	  --print(tostring(state.dt))
+	  
+	  if state.dt == nil then
+		 state.dt = dt
+		 return
+	  end
+	  state.dt = state.dt +dt
+
+	  if state.dt > 1 then
+		 local board = world:getAllWith {"BoardTile"}
+		 local tile = board[1]
+		 local boardTile = tile:get "BoardTile"
+
+		 if boardTile.faction == nil then
+			local sprite = tile:get "Sprite"
+			boardTile.faction = "Bandeirante"
+			boardTile.entity = world:assemble( Bandeirante(sprite.x +18, sprite.y +9) )
+		 end
+	  end
+	  if state.dt > 2 then
+		 local board = world:getAllWith {"BoardTile"}
+		 local tile = board[2]
+		 local boardTile = tile:get "BoardTile"
+
+		 if boardTile.faction == nil then
+			local sprite = tile:get "Sprite"
+			boardTile.faction = "Bandeirante"
+			boardTile.entity = world:assemble( Bandeirante(sprite.x +18, sprite.y +9) )
+		 end
+	  end
+	  if state.dt > 3 then
+		 local board = world:getAllWith {"BoardTile"}
+		 local tile = board[3]
+		 local boardTile = tile:get "BoardTile"
+
+		 if boardTile.faction == nil then
+			local sprite = tile:get "Sprite"
+			boardTile.faction = "Bandeirante"
+			boardTile.entity = world:assemble( Bandeirante(sprite.x +18, sprite.y +9) )
+		 end
+	  end
+	  if state.dt > 4 then
+		 state.dt = nil
+		 world
+			:unregister(self.__index)
+			:register( InGameWorld.playerGameflow() )
+			:register( InGame.callPieMenu() )
+	  end
+   end
+   return self
+end
+function InGameWorld.playerGameflow()
    local self = System.requires {"GameState"}
 
    function self:load(entity)
 	  local game = entity:get "GameState"
 
+	  world
+		 --:register( InGameWorld.pcGameflow() )
+		 :register( InGame.callPieMenu() )
+	  
 	  -- Background
 	  world:assemble( Prop(cache.background,
 						   0, 0,
@@ -44,7 +106,6 @@ function InGameWorld.gameflow()
 	  local yStep = cache.TILE_SIZE*0.750   
 	  local hSize = cache.TILE_SIZE/2
 	  local oca = {}
-	  local band = {}
 	  for i=0, 5 do
 		 for j=0, 5 do
 			local coord = i*6+j
@@ -55,9 +116,6 @@ function InGameWorld.gameflow()
 			if coord==27 then
 			   oca={x=posX, y=posY}
 			   faction="Oca"
-			elseif coord==19 then
-			   band={x=posX, y=posY}
-			   faction="Bandeirante"
 			end
 			local tile = world:assemble( Tile(cache.tileImage, posX, posY, coord, faction) )
 		 end
@@ -67,19 +125,12 @@ function InGameWorld.gameflow()
 	  world:assemble( Prop(cache.guarani,
 						   oca.x+18, oca.y+9,
 						   cache.PAWN_SIZE, cache.PAWN_SIZE) )
-	  world:register( InGame.callPieMenu() )
 
-	  -- Bandeirante
-	  local board = world:getAllWith {"BoardTile"}
-	  local temp = board[20]:get "BoardTile"
-	  temp.entity = world:assemble( Bandeirante(band.x +18, band.y +9) )
-	  
 	  -- Clock
 	  world:assemble( WorldClock() )
 
 	  -- HUD
 	  world:assemble( Prop(cache.frame, 0, 0, cache.frame:getWidth(), cache.frame:getHeight()) )
-	  world:register( InGameWorld.drawResourcesMarker() )
 
 	  -- Adversity
 	  world:assemble( RectangleButton(game.currentAdversity.image,
@@ -90,26 +141,23 @@ function InGameWorld.gameflow()
 									  game.currentAdversity.name, "AtBottom") )
    end
    function self:update(entity, dt)
-	  local game = entity:get "GameState"
-	  if not game.needUpdate then return end
-
-	  --[[
-	  if game.needUpdate == "Board" then
-		 local board = world:getAllWith {"BoardTile"}
-		 for i=1, #board do
-			local temp = board[i]:get "BoardTile"
-			if temp.faction == "Bandeirante" then
-			   temp = board[i]:get "SphereCollider"
-			   temp.highlight = {255, 0, 0}
-			elseif temp.faction == "Oca" then
-			   temp = board[i]:get "SphereCollider"
-			   temp.highlight = {0, 255, 255}
-			end
-		 end
-	  end
-	  --]]
+	  local state = entity:get "GameState"
 	  
-	  game.needUpdate = false
+	  if state.needUpdate then
+		 state.needUpdate = false
+	  end
+	  
+	  if state.turnCount == 3 then
+		 state.turnCount = 0
+		 world
+			:unregister( self.__index )
+			:unregister( "callPieMenu" )
+			:register( InGameWorld.pcGameflow() )
+	  end
+   end
+   function self:drawUI(entity)
+	  local game = entity:get "GameState"
+	  love.graphics.print(tostring(game.turnCount), 100, 100)
    end
    
    return self
@@ -123,9 +171,9 @@ function InGameWorld.drawResourcesMarker()
       local topMargin = 510
       
       love.graphics.setFont(cache.uiFont)
-      love.graphics.print(tostring(resource.mineral), 60, topMargin)
-      love.graphics.print(tostring(resource.vegetal), 60, topMargin+22)
-      love.graphics.print(tostring(resource.animal),  60, topMargin+44)
+	  for i=2, 4 do
+		 love.graphics.print(tostring(resource.amount[2]), 60, topMargin +(i-2)*22)
+	  end
       love.graphics.setFont(tempFont)
    end
    return self
@@ -166,6 +214,14 @@ function InGameWorld.needUpdate(where)
    local game = world:getAllWith {"GameState"}[1]:get "GameState"
    game.needUpdate = where
 end
+function InGameWorld.updateTurn(cost)
+   local game = world:getAllWith {"GameState"}[1]
+   local state = game:get "GameState"
+   local resource = game:get "Resource"
+   
+   state.turnCount  = state.turnCount  +1
+   for i=1, 4 do resource.amount[i] = resource.amount[i] +cost[i] end
+end
 function InGameWorld.spawnPoint()
    local board = world:getAllWith {"BoardTile"}
    local possible = {21, 22, 27, 29, 33, 34}
@@ -186,7 +242,7 @@ function InGameWorld.neighborhood(tileCoord)
    if j%2==0 then
 
 	  -- Super
-	  if j-1 > 0 then
+	  if j-1 >= 0 then
 		 table.insert(around, {x=i, y=j-1})
 		 if i-1>0 then
 			table.insert(around, {x=i-1, y=j-1})
@@ -204,7 +260,7 @@ function InGameWorld.neighborhood(tileCoord)
    else
 
 	  -- Super
-	  if j-1 > 0 then
+	  if j-1 >= 0 then
 		 table.insert(around, {x=i, y=j-1})
 		 if i+1<6 then
 			table.insert(around, {x=i+1, y=j-1})
@@ -227,11 +283,7 @@ function InGameWorld.neighborhood(tileCoord)
    if i+1<6 then
 	  table.insert(around, {x=i+1, y=j})
    end
-   
-   print("tile: {"..i..", "..j.."}")
-   for _,i in ipairs(around) do
-	  print(" {"..i.x..", "..i.y.."}")
-   end
+
    return around
 end
 function InGameWorld.targetList(tileCoord)

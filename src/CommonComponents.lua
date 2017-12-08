@@ -3,7 +3,7 @@ Component = require "ecs.Component"
 function GameState()
    local self = Component.new "GameState"
    self.playerType = "Player"
-   self.turnCounter = 0
+   self.turnCount = 0
    self.currentAdversity = {
 	  name = "Chuva",
 	  image = cache.rain,
@@ -118,10 +118,7 @@ end
 
 function Resource(time, mineral, vegetal, animal)
    local self = Component.new "Resource"
-   self.time    = time
-   self.mineral = mineral
-   self.vegetal = vegetal
-   self.animal  = animal
+   self.amount = {time, mineral, vegetal, animal}
    return self
 end
 
