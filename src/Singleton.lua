@@ -33,7 +33,6 @@ function Singleton.new(instance)
    self.guarani = love.graphics.newImage("assets/guarani.png")
    self.bandeirante = love.graphics.newImage("assets/bandeirante.png")
    self.oca = love.graphics.newImage("assets/oca.png")
-   self.resourceMarker = love.graphics.newImage("assets/resourceTable.png")
    self.logo = love.graphics.newImage("assets/logo.png")
    self.frame = love.graphics.newImage("assets/InGameFrame.png")
    self.tutorial = love.graphics.newImage("assets/tutorial.png")
@@ -51,13 +50,16 @@ function Singleton.new(instance)
    self.closeButton    = love.graphics.newImage("assets/XButton.png")
 
    self.lifeIcon = love.graphics.newImage("assets/lifeIcon.png")
-   
-   self.winMessage  = love.graphics.newImage("assets/win.png")
-   self.loseMessage = love.graphics.newImage("assets/lose.png")
+
+   -- Screens
+   self.winBack   = love.graphics.newImage("assets/winBack.png")
+   self.loseBack  = love.graphics.newImage("assets/loseBack.png")
+   self.winFront  = love.graphics.newImage("assets/winFront.png")
+   self.loseFront = love.graphics.newImage("assets/loseFront.png")
 
    self.background = love.graphics.newImage("assets/background2.jpg")
    self.menuBackground = love.graphics.newImage("assets/menuBG.png")
-
+   
    -- Sounds
    self.nightSound     = love.audio.newSource("assets/night.ogg")
    self.daySound       = love.audio.newSource("assets/day.ogg")
@@ -67,9 +69,6 @@ function Singleton.new(instance)
    -- Controler
    self.main   = { value=0.5, min=0.0, max=1.0 }
    self.effect = { value=0.5, min=0.0, max=1.0 }
-
-   --self.nightSound:setVolume(0.0)
-   --self.buttonFeedback:setVolume(0.0)
 
    -- Font
    self.uiFont = love.graphics.newFont("assets/CoolinCheer.ttf", 22)

@@ -63,11 +63,28 @@ end
 function InGameWorld.playerGameflow()
    local self = System.requires {"GameState"}
 
+   function self:keyboardChanged(entity, key)
+      if key == "q" then
+	 world
+	    :unregister( "callPieMenu" )
+	    :unregister( "showVictoryScreen" )
+	    :register( InGameWorld.showLoseScreen() )
+      elseif key == "w" then
+	 world
+	    :unregister( "callPieMenu" )
+	    :unregister( "showLoseScreen" )
+	    :register( InGameWorld.showVictoryScreen() )
+      elseif key == "e" then
+	 world
+	    :unregister( "showLoseScreen" )
+	    :unregister( "showVictoryScreen" )
+	    :register( InGame.callPieMenu() )
+      end
+   end
    function self:load(entity)
       local game = entity:get "GameState"
 
       world
-      --:register( InGameWorld.pcGameflow() )
 	 :register( InGame.callPieMenu() )
       
       -- Background
@@ -82,6 +99,8 @@ function InGameWorld.playerGameflow()
       local oca = {}
       for i=0, 5 do
 	 for j=0, 5 do
+	    local temp
+	    
 	    local coord = i*6+j
 	    local posX = (i%2==0) and 120 +j*xStep or 120 +xStep*(j+0.5)
 	    local posY = 135 +i*yStep
@@ -90,15 +109,13 @@ function InGameWorld.playerGameflow()
 	    if coord==27 then
 	       oca={x=posX, y=posY}
 	       faction="Oca"
+	       temp = cache.oca
+	    else
+	       temp = cache.tileImage
 	    end
-	    local tile = world:assemble( Tile(cache.tileImage, posX, posY, coord, faction) )
+	    local tile = world:assemble( Tile(temp, posX, posY, coord, faction) )
 	 end
       end
-
-      -- Oca
-      world:assemble( Prop(cache.oca,
-			   oca.x+18, oca.y+9,
-			   cache.PAWN_SIZE, cache.PAWN_SIZE) )
 
       -- Clock
       world:assemble( WorldClock() )
@@ -141,11 +158,11 @@ function InGameWorld.drawResourcesMarker()
       local resource = entity:get "Resource"
 
       local tempFont = love.graphics.getFont();
-      local topMargin = 472
+      local topMargin = 490
       
       love.graphics.setFont(cache.uiFont)
       for i=2, 4 do
-	 love.graphics.print(tostring(resource.amount[2]), 200, topMargin +(i-2)*22)
+	 love.graphics.print(tostring(resource.amount[2]), 188, topMargin +(i-2)*22)
       end
       love.graphics.setFont(tempFont)
    end
@@ -158,9 +175,9 @@ function InGameWorld.drawPawnStatus()
       local pawn = entity:get "Pawn"
       local sprite = entity:get "Sprite"
       pawn.over = checkDotInSphere(x, y,
-				   sprite.x, sprite.y,
-				   cache.PAWN_SIZE)
-   end--]]
+      sprite.x, sprite.y,
+      cache.PAWN_SIZE)
+      end--]]
    function self:drawUI(entity)
       local sprite = entity:get "Sprite"
       local pawn = entity:get "Pawn"
@@ -172,6 +189,77 @@ function InGameWorld.drawPawnStatus()
    end
    return self
 end
+function InGameWorld.showVictoryScreen()
+   local self = System.requires {"GameState"}
+
+   function self:load()
+      world:assemble( RectangleButton(cache.backButton,
+				      200, 450,
+				      cache.backButton:getWidth(), cache.backButton:getHeight(),
+				      function()
+					 world = MainMenuWorld()
+				      end
+      ))
+      world:assemble( RectangleButton(cache.quitButton,
+				      400, 450,
+				      cache.quitButton:getWidth(), cache.quitButton:getHeight(),
+				      function()
+					 love.event.quit()
+				      end
+      ))
+   end
+   function self:drawUI(entity)
+      local factor = 0.6
+      local topMargin = 100
+      
+      love.graphics.draw( cache.winBack,
+			  (love.graphics.getWidth() -cache.winBack:getWidth()*factor)/2, topMargin,
+			  0.0,
+			  factor, factor )
+      love.graphics.draw( cache.winFront,
+			  (love.graphics.getWidth() -cache.winFront:getWidth()*factor)/2, topMargin +100,
+			  0.0,
+			  factor, factor)
+   end
+
+   return self
+end
+function InGameWorld.showLoseScreen()
+   local self = System.requires {"GameState"}
+
+   function self:load()
+      world:assemble( RectangleButton(cache.backButton,
+				      200, 450,
+				      cache.backButton:getWidth(), cache.backButton:getHeight(),
+				      function()
+					 world = MainMenuWorld()
+				      end
+      ))
+      world:assemble( RectangleButton(cache.quitButton,
+				      400, 450,
+				      cache.quitButton:getWidth(), cache.quitButton:getHeight(),
+				      function()
+					 love.event.quit()
+				      end
+      ))
+   end
+   function self:drawUI(entity)
+      local factor = 0.6
+      local topMargin = 100
+      
+      love.graphics.draw( cache.loseBack,
+			  (love.graphics.getWidth() -cache.loseBack:getWidth()*factor)/2, topMargin,
+			  0.0,
+			  factor, factor )
+      love.graphics.draw( cache.loseFront,
+			  (love.graphics.getWidth() -cache.loseFront:getWidth()*factor)/2, topMargin +100,
+			  0.0,
+			  factor, factor)
+   end
+
+   return self
+end
+
 
 ---------------------------------------------------- Gameflow
 function InGameWorld.coordToIndex(i, j)

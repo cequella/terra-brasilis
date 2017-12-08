@@ -121,7 +121,7 @@ function InGameAction.moveActionStart()
 	 local sprite = board[index]:get "Sprite"
 	 local boardTile = board[index]:get "BoardTile"
 	 if boardTile.faction == nil then
-	    sprite.color = {0, 255, 255}
+	    sprite.color = {0, 180, 255}
 	 end
       end
       --[[

@@ -6,50 +6,50 @@ local TILE_SIZE = 96
 function Guarani(x, y)
    return {
       {Sprite, cache.guarani, x, y, cache.PAWN_SIZE, cache.PAWN_SIZE},
-	  {Pawn}
+      {Pawn}
    }
 end
 
 function Bandeirante(x, y)
    return {
       {Sprite, cache.bandeirante, x, y, cache.PAWN_SIZE, cache.PAWN_SIZE},
-	  {Pawn}
+      {Pawn}
    }
 end
 
 function SpawnAction(at)
    return {
-	  {Action, "Spawn", at}
+      {Action, "Spawn", at}
    }
 end
 
 function MoveAction(at)
    return {
-	  {Action, "Move", at}
+      {Action, "Move", at}
    }
 end
 
 function CollectAction(at)
    return {
-	  {Action, "Collect", at}
+      {Action, "Collect", at}
    }
 end
 
 function UpgradeAction(at)
    return {
-	  {Action, "Upgrade", at}
+      {Action, "Upgrade", at}
    }
 end
 
 function AttackAction(at)
    return {
-	  {Action, "Attack", at}
+      {Action, "Attack", at}
    }
 end
 
 function DevilAction(at)
    return {
-	  {Action, "Devil", at}
+      {Action, "Devil", at}
    }
 end
 
@@ -57,7 +57,7 @@ function Tile(tileStates, x, y, coord, faction, content)
    local hSize = cache.TILE_SIZE/2
    return {
       {Sprite, tileStates, x, y, cache.TILE_SIZE, cache.TILE_SIZE},
-      {SphereCollider, x +hSize, y +hSize, cache.TILE_SIZE*0.3, {255, 255, 0}},
+      {SphereCollider, x +hSize, y +hSize, cache.TILE_SIZE*0.3, {255, 180, 0}},
       {BoardTile, coord, faction, content}
    }
 end
@@ -92,14 +92,14 @@ function RoundButton(buttonStates, x, y, size, callback, help, helpPosition)
 
    if callback then
       return {
-		 {Sprite, buttonStates, x, y, size, size},
-		 {SphereCollider, x +hSize, y +hSize, hSize, {255, 255, 0}},
-		 {ButtonCallback, callback},
-		 {UIHelp, help, helpPosition}
+	 {Sprite, buttonStates, x, y, size, size},
+	 {SphereCollider, x +hSize, y +hSize, hSize, {255, 255, 0}},
+	 {ButtonCallback, callback},
+	 {UIHelp, help, helpPosition}
       }
    else
       return {
-		 {Sprite, buttonStates, x, y, size, size, "Unable"},
+	 {Sprite, buttonStates, x, y, size, size, "Unable"},
       }
    end
 end
@@ -107,14 +107,14 @@ end
 function RectangleButton(buttonStates, x, y, width, height, callback, help, helpPosition)
    if callback then
       return{
-		 {Sprite, buttonStates, x, y, width, height},
-		 {AABBCollider, x, y, width, height, {255, 255, 0}},
-		 {ButtonCallback, callback},
-		 {UIHelp, help, helpPosition}
+	 {Sprite, buttonStates, x, y, width, height},
+	 {AABBCollider, x, y, width, height, {255, 255, 0}},
+	 {ButtonCallback, callback},
+	 {UIHelp, help, helpPosition}
       }
    else
       return{
-		 {Sprite, buttonStates, x, y, width, height, "Unable"}
+	 {Sprite, buttonStates, x, y, width, height, "Unable"}
       }
    end
 end
@@ -153,13 +153,13 @@ end
 
 function AudioConfig(x, y, width)
    return {
-	  {AudioUI, x, y, width}
+      {AudioUI, x, y, width}
    }
 end
 
 function VideoConfig(x ,y)
    return {
-	  {VideoUI}
+      {VideoUI}
    }
 end
 
@@ -169,47 +169,47 @@ function UpgradeButton(x, y, tile)
    local resource = world:getAllWith {"GameState"}[1]:get "Resource"
    
    if resource.amount[2]>2 then
-	  return RoundButton(cache.pieMenu.upgrade,
-						 x, y -cache.PIEMENU_RADIUS,
-						 cache.PIEMENU_BUTTON_SIZE,
-						 function()
-							print("Promove")
-							local temp = {at =tile.coord+1, cost ={-1, -3, 0, 0}}
-							world:register( InGameAction.upgradeAction() )
-							world:assemble( UpgradeAction(temp) )
-						 end, "Promover", "AtTop")
+      return RoundButton(cache.pieMenu.upgrade,
+			 x, y -cache.PIEMENU_RADIUS,
+			 cache.PIEMENU_BUTTON_SIZE,
+			 function()
+			    print("Promove")
+			    local temp = {at =tile.coord+1, cost ={-1, -3, 0, 0}}
+			    world:register( InGameAction.upgradeAction() )
+			    world:assemble( UpgradeAction(temp) )
+			 end, "Promover", "AtTop")
    end
    
    return RoundButton(cache.pieMenuDisabled,
-					  x, y -cache.PIEMENU_RADIUS,
-					  cache.PIEMENU_BUTTON_SIZE,
-					  function()end, "Promover (min. 3 minério)", "AtTop")
+		      x, y -cache.PIEMENU_RADIUS,
+		      cache.PIEMENU_BUTTON_SIZE,
+		      function()end, "Promover (min. 3 minério)", "AtTop")
 end
 
 function CollectButton(x, y)
    return RoundButton(cache.pieMenu.resourceCollect,
-					  x, y +cache.PIEMENU_RADIUS,
-					  cache.PIEMENU_BUTTON_SIZE,
-					  function()
-						 print("Coleta")
-						 local temp = {cost = {0, 1, 1, 1} }
-						 world:register( InGameAction.collectAction() )
-						 world:assemble( CollectAction(temp) )
-					  end, "Coletar Recursos", "AtBottom")
+		      x, y +cache.PIEMENU_RADIUS,
+		      cache.PIEMENU_BUTTON_SIZE,
+		      function()
+			 print("Coleta")
+			 local temp = {cost = {0, 1, 1, 1} }
+			 world:register( InGameAction.collectAction() )
+			 world:assemble( CollectAction(temp) )
+		      end, "Coletar Recursos", "AtBottom")
 end
 
 function MoveButton(x, y, from)
    local target = InGameWorld.neighborhood(from)
    
    return RoundButton(cache.pieMenu.move,
-					  x +cache.PIEMENU_RADIUS, y,
-					  cache.PIEMENU_BUTTON_SIZE,
-					  function()
-						 print("Move")
-						 local temp = {from=from, target=target, cost={-2, 0, 0, 0}}
-						 world:register( InGameAction.moveActionStart() )
-						 world:assemble( MoveAction(temp) )
-					  end, "Mover", "AtRight")
+		      x +cache.PIEMENU_RADIUS, y,
+		      cache.PIEMENU_BUTTON_SIZE,
+		      function()
+			 print("Move")
+			 local temp = {from=from, target=target, cost={-2, 0, 0, 0}}
+			 world:register( InGameAction.moveActionStart() )
+			 world:assemble( MoveAction(temp) )
+		      end, "Mover", "AtRight")
 
 end
 
@@ -217,20 +217,20 @@ function AttackButton(x, y, tile)
    local target = InGameWorld.targetList(tile.coord)
 
    if target ~= nil then
-	  return RoundButton(cache.pieMenu.attack,
-						 x -cache.PIEMENU_RADIUS, y,
-						 cache.PIEMENU_BUTTON_SIZE,
-						 function()
-							print("Ataca")
-							local temp = {target=target, cost={-1, 0, 0, 0}}
-							world:register( InGameAction.attackAction() )
-							world:assemble( AttackAction(temp) )
-						 end, "Atacar", "AtLeft")
+      return RoundButton(cache.pieMenu.attack,
+			 x -cache.PIEMENU_RADIUS, y,
+			 cache.PIEMENU_BUTTON_SIZE,
+			 function()
+			    print("Ataca")
+			    local temp = {target=target, cost={-1, 0, 0, 0}}
+			    world:register( InGameAction.attackAction() )
+			    world:assemble( AttackAction(temp) )
+			 end, "Atacar", "AtLeft")
    else
-	  return RoundButton(cache.pieMenuDisabled,
-						 x -cache.PIEMENU_RADIUS, y,
-						 cache.PIEMENU_BUTTON_SIZE,
-						 function()end, "Atacar (sem inimigos próximos)", "AtLeft")
+      return RoundButton(cache.pieMenuDisabled,
+			 x -cache.PIEMENU_RADIUS, y,
+			 cache.PIEMENU_BUTTON_SIZE,
+			 function()end, "Atacar (sem inimigos próximos)", "AtLeft")
    end
 end
 
@@ -240,20 +240,20 @@ function SpawnButton(x, y)
 
    if (spawnPoint == nil) or
    (resource.amount[2]<1 and resource.amount[3]<1 and resource.amount[4]<1) then
-	  return RoundButton(cache.pieMenuDisabled,
-						 x, y -cache.PIEMENU_RADIUS,
-						 cache.PIEMENU_BUTTON_SIZE,
-						 function()end)
+      return RoundButton(cache.pieMenuDisabled,
+			 x, y -cache.PIEMENU_RADIUS,
+			 cache.PIEMENU_BUTTON_SIZE,
+			 function()end)
    else
-	  return RoundButton(cache.pieMenu.spawn,
-						 x, y -cache.PIEMENU_RADIUS,
-						 cache.PIEMENU_BUTTON_SIZE,
-						 function()
-							print("Recruta")
-							local temp = {spawnpoint = spawnPoint,
-										  cost={-3, -1, -1, -1}}
-							world:register( InGameAction.spawnAction() )
-							world:assemble( SpawnAction(temp) )
-						 end, "Recrutar", "AtTop")
+      return RoundButton(cache.pieMenu.spawn,
+			 x, y -cache.PIEMENU_RADIUS,
+			 cache.PIEMENU_BUTTON_SIZE,
+			 function()
+			    print("Recruta")
+			    local temp = {spawnpoint = spawnPoint,
+					  cost={-3, -1, -1, -1}}
+			    world:register( InGameAction.spawnAction() )
+			    world:assemble( SpawnAction(temp) )
+			 end, "Recrutar", "AtTop")
    end
 end
