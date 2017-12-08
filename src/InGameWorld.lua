@@ -43,46 +43,19 @@ function InGameWorld.pcGameflow()
 	  end
 	  state.dt = state.dt +dt
 
-	  if state.dt > 1 then
-		 local board = world:getAllWith {"BoardTile"}
-		 local tile = board[1]
-		 local boardTile = tile:get "BoardTile"
+	  local temp = {}
+	  for i=1, 3 do
+		 table.insert(temp, math.random(1, 6))
+	  end
+	  
+	  world:register( InGameAction.spawnDevil() )
+	  world:assemble( DevilAction(temp) )
 
-		 if boardTile.faction == nil then
-			local sprite = tile:get "Sprite"
-			boardTile.faction = "Bandeirante"
-			boardTile.entity = world:assemble( Bandeirante(sprite.x +18, sprite.y +9) )
-		 end
-	  end
-	  if state.dt > 2 then
-		 local board = world:getAllWith {"BoardTile"}
-		 local tile = board[2]
-		 local boardTile = tile:get "BoardTile"
-
-		 if boardTile.faction == nil then
-			local sprite = tile:get "Sprite"
-			boardTile.faction = "Bandeirante"
-			boardTile.entity = world:assemble( Bandeirante(sprite.x +18, sprite.y +9) )
-		 end
-	  end
-	  if state.dt > 3 then
-		 local board = world:getAllWith {"BoardTile"}
-		 local tile = board[3]
-		 local boardTile = tile:get "BoardTile"
-
-		 if boardTile.faction == nil then
-			local sprite = tile:get "Sprite"
-			boardTile.faction = "Bandeirante"
-			boardTile.entity = world:assemble( Bandeirante(sprite.x +18, sprite.y +9) )
-		 end
-	  end
-	  if state.dt > 4 then
-		 state.dt = nil
-		 world
-			:unregister(self.__index)
-			:register( InGameWorld.playerGameflow() )
-			:register( InGame.callPieMenu() )
-	  end
+	  state.dt = nil
+	  world
+		 :unregister(self.__index)
+		 :register( InGameWorld.playerGameflow() )
+		 :register( InGame.callPieMenu() )
    end
    return self
 end

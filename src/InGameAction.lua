@@ -1,5 +1,51 @@
 InGameAction = {}
 
+function InGameAction.spawnDevil()
+   local self = System.requires {"Action"}
+
+   function self:load(entity)
+	  local action = entity:get "Action"
+	  local board = world:getAllWith {"BoardTile"}
+
+	  for _,i in ipairs(action.info) do
+		 local tile = board[i]:get "BoardTile"
+		 local sprite = board[i]:get "Sprite"
+
+		 if tile.faction == nil then
+			tile.faction = "Bandeirante"
+			tile.entity = world:assemble( Bandeirante(sprite.x +18, sprite.y+9) )
+		 elseif tile.faction == "Bandeirante" then
+			local temp = board[i+6]:get "BoardTile"
+			if temp.faction == nil then
+			   temp.faction = "Bandeirante"
+			   temp.entity = tile.entity
+
+			   local aux = temp.entity:get "Sprite"
+			   local aux2 = board[i+6]:get "Sprite"
+			   aux.x = aux2.x +18
+			   aux.y = aux2.y +9
+			   tile.faction = nil
+			elseif temp.faction == "Guarani" then
+			   local pawn = temp.entity:get "Pawn"
+			   pawn.life = pawn.life -1
+
+			   if pawn.life == 0 then
+				  temp.faction == nil
+				  temp.entity:destroy()
+			   end
+			else
+			   
+			end
+		 end
+	  end
+	  
+	  entity:destroy()
+	  world:unregister(self.__index)
+   end
+
+   return self
+end
+
 function InGameAction.spawnAction()
    local self = System.requires {"Action"}
 

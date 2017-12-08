@@ -43,7 +43,13 @@ end
 
 function AttackAction(at)
    return {
-	  {Action, "attack", at}
+	  {Action, "Attack", at}
+   }
+end
+
+function DevilAction(at)
+   return {
+	  {Action, "Devil", at}
    }
 end
 
