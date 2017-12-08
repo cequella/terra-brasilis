@@ -101,7 +101,9 @@ function InGame.callPieMenu()
       local over     = checkDotInSphere(x,          y,
 										collider.x, collider.y,
 										collider.radius)
-      if not over then return end
+
+	  --print(""..tile.coord.."= "..tostring(tile.content))
+	  if not over then return end
 	  if tile.content==nil then return end
 
       local centerX = sprite.x +(sprite.width-cache.PIEMENU_BUTTON_SIZE)/2

@@ -102,12 +102,15 @@ function InGameWorld.action()
 
    function self:update(entity)
 	  local action = entity:get "Action"
-	  	  
 	  local tile = world:getAllWith {"BoardTile"}[action.at]
-	  tile.content = "Guarani"
-	  
+
+	  -- Conf boardtile component
+	  local description = tile:get "BoardTile"
+	  description.content = "Guarani"
+
+	  -- Use sprite component
 	  local sprite = tile:get "Sprite"
-		 world:assemble( Guarani(sprite.x +18, sprite.y +9) )
+	  world:assemble( Guarani(sprite.x +18, sprite.y +9) )
 	  
 	  entity:destroy()
    end
@@ -121,7 +124,7 @@ function InGameWorld.spawnPoint()
    local possible = {21, 22, 27, 29, 33, 34}
 
    for _,i in ipairs(possible) do
-	  local tile = board[i]
+	  local tile = board[i]:get "BoardTile"
 	  if tile.content == nil then
 		 return i
 	  end
