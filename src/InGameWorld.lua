@@ -150,6 +150,13 @@ function InGameWorld.playerGameflow()
 	    :register( InGameWorld.pcGameflow() )
       end
    end
+   function self:drawUI(entity)
+      local state = entity:get "GameState"
+      local font = love.graphics.getFont()
+      love.graphics.setFont(cache.uiFont, 23)
+      love.graphics.print(tostring(3-state.turnCount), 122, 553)
+      love.graphics.setFont(font)
+   end
    return self
 end
 function InGameWorld.drawResourcesMarker()
@@ -280,7 +287,9 @@ function InGameWorld.updateTurn(cost)
    local resource = game:get "Resource"
    
    state.turnCount  = state.turnCount  +1
-   for i=1, 4 do resource.amount[i] = resource.amount[i] +cost[i] end
+   for i=1, 4 do
+      resource.amount[i] = resource.amount[i] +cost[i]
+   end
 end
 function InGameWorld.spawnPoint()
    local board = world:getAllWith {"BoardTile"}

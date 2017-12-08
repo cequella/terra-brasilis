@@ -17,6 +17,8 @@ require "ConfigWorld"
 require "TutorialWorld"
 require "CreditsWorld"
 
+math.randomseed(os.time())
+
 function drawDebugHUD()
    love.graphics.setColor(0, 0, 0, 180)
    love.graphics.rectangle("fill", 0, 0, 120, 80)

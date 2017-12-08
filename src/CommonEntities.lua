@@ -187,12 +187,16 @@ function UpgradeButton(x, y, tile)
 end
 
 function CollectButton(x, y)
+   local a = math.random(1, 3)
+   local b = math.random(1, 3)
+   local c = math.random(1, 3)
+   
    return RoundButton(cache.pieMenu.resourceCollect,
 		      x, y +cache.PIEMENU_RADIUS,
 		      cache.PIEMENU_BUTTON_SIZE,
 		      function()
 			 print("Coleta")
-			 local temp = {cost = {0, 1, 1, 1} }
+			 local temp = {cost = {0, 2, 3, 1} }
 			 world:register( InGameAction.collectAction() )
 			 world:assemble( CollectAction(temp) )
 		      end, "Coletar Recursos", "AtBottom")
