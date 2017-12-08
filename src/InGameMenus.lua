@@ -1,3 +1,5 @@
+require "InGameAction"
+
 InGame = {}
 
 function InGame.enableInteraction()
@@ -166,7 +168,7 @@ function ocaPieMenu(centerX, centerY)
 						  function()
 							 print("Recruta")
 							 local temp = {spawnpoint = spawnPoint}
-							 world:register( InGameWorld.spawnAction() )
+							 world:register( InGameAction.spawnAction() )
 							 world:assemble( SpawnAction(temp) )
 						  end, "Recrutar", "AtTop")
    end
@@ -182,7 +184,7 @@ function guaraniPieMenu(tile, centerX, centerY)
 							  function()
 								 print("Ataca")
 								 local temp = {at = tile.coord}
-								 world:register( InGameWorld.attackAction() )
+								 world:register( InGameAction.attackAction() )
 								 world:assemble( AttackAction(temp) )
 							  end, "Atacar", "AtLeft")
    local move = RoundButton(cache.pieMenu.move,
@@ -191,7 +193,7 @@ function guaraniPieMenu(tile, centerX, centerY)
 							function()
 							   print("Move")
 							   local temp = {from = tile.coord+1, to = 1}
-							   world:register( InGameWorld.moveAction() )
+							   world:register( InGameAction.moveAction() )
 							   world:assemble( MoveAction(temp) )
 							end, "Mover", "AtRight")
    local collect = RoundButton(cache.pieMenu.resourceCollect,
@@ -200,7 +202,7 @@ function guaraniPieMenu(tile, centerX, centerY)
 							   function()
 								  print("Coleta")
 								  local temp = {mineral = 1, vegetal = 1, animal = 1}
-								  world:register( InGameWorld.collectAction() )
+								  world:register( InGameAction.collectAction() )
 								  world:assemble( CollectAction(temp) )
 							   end, "Coletar Recursos", "AtBottom")
    local upgrade = RoundButton(cache.pieMenu.upgrade,
@@ -209,7 +211,7 @@ function guaraniPieMenu(tile, centerX, centerY)
 							   function()
 								  print("Promove")
 								  local temp = {at = tile.coord+1}
-								  world:register( InGameWorld.upgradeAction() )
+								  world:register( InGameAction.upgradeAction() )
 								  world:assemble( UpgradeAction(temp) )
 							   end, "Promover", "AtTop")
    
