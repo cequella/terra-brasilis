@@ -19,7 +19,6 @@ setmetatable(InGameWorld,{
 					  :register( roundButtonCallbackExecute() )
 					  :register( showHelp() )
 					  :register( InGameWorld.gameflow() )
-					  :register( InGameWorld.action() )
 
 				   self:assemble( Game() )
 
@@ -97,7 +96,27 @@ function InGameWorld.drawResourcesMarker()
    end
    return self
 end
-function InGameWorld.action()
+function InGameWorld.spawnAction()
+   local self = System.requires {"Action"}
+
+   function self:update(entity)
+	  local action = entity:get "Action"
+	  local tile = world:getAllWith {"BoardTile"}[action.at]
+
+	  -- Conf boardtile component
+	  local description = tile:get "BoardTile"
+	  description.content = "Guarani"
+
+	  -- Use sprite component
+	  local sprite = tile:get "Sprite"
+	  world:assemble( Guarani(sprite.x +18, sprite.y +9) )
+	  
+	  entity:destroy()
+   end
+
+   return self
+end
+function InGameWorld.move()
    local self = System.requires {"Action"}
 
    function self:update(entity)

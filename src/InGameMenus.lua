@@ -102,7 +102,6 @@ function InGame.callPieMenu()
 										collider.x, collider.y,
 										collider.radius)
 
-	  --print(""..tile.coord.."= "..tostring(tile.content))
 	  if not over then return end
 	  if tile.content==nil then return end
 
@@ -110,7 +109,7 @@ function InGame.callPieMenu()
       local centerY = sprite.y +(sprite.height-cache.PIEMENU_BUTTON_SIZE)/2
 
 	  if tile.content == "Guarani" then
-		 entity.piemenu = guaraniPieMenu(centerX, centerY)
+		 entity.piemenu = guaraniPieMenu(tile, centerX, centerY)
 	  elseif tile.content == "Oca" then
 		 entity.piemenu = ocaPieMenu(centerX, centerY)
 	  end
@@ -169,6 +168,7 @@ function ocaPieMenu(centerX, centerY)
 						  centerX, centerY -cache.PIEMENU_RADIUS,
 						  cache.PIEMENU_BUTTON_SIZE,
 						  function()
+							 world:register( InGameWorld.spawnAction() )
 							 world:assemble( SpawnAction(spawnPoint) )
 						  end, "Recrutar", "AtTop")
    end
@@ -176,7 +176,7 @@ function ocaPieMenu(centerX, centerY)
    table.insert(out, world:assemble(spawn))
    return out
 end
-function guaraniPieMenu(centerX, centerY)
+function guaraniPieMenu(tile, centerX, centerY)
    local out = {}
    local attack = RoundButton(cache.pieMenu.attack,
 							  centerX -cache.PIEMENU_RADIUS, centerY,
@@ -185,7 +185,10 @@ function guaraniPieMenu(centerX, centerY)
    local move = RoundButton(cache.pieMenu.move,
 							centerX +cache.PIEMENU_RADIUS, centerY,
 							cache.PIEMENU_BUTTON_SIZE,
-							function()end, "Mover", "AtRight")
+							function()
+							   world:register( InGameWorld.moveAction() )
+							   world:assemble( MoveAction(tile.coord -1) )
+							end, "Mover", "AtRight")
    local collect = RoundButton(cache.pieMenu.resourceCollect,
 							   centerX, centerY +cache.PIEMENU_RADIUS,
 							   cache.PIEMENU_BUTTON_SIZE,

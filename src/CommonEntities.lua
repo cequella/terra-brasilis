@@ -21,6 +21,12 @@ function SpawnAction(at)
    }
 end
 
+function MoveAction(tile)
+   return {
+	  {Action, "Move", at}
+   }
+end
+
 function Tile(tileStates, x, y, coord, content)
    local hSize = cache.TILE_SIZE/2
    return {
