@@ -102,16 +102,16 @@ function InGameWorld.playerGameflow()
 	  -- Clock
 	  world:assemble( WorldClock() )
 
-	  -- HUD
-	  world:assemble( Prop(cache.frame, 0, 0, cache.frame:getWidth(), cache.frame:getHeight()) )
-
 	  -- Adversity
 	  world:assemble( RectangleButton(game.currentAdversity.image,
-									  200, 0,
-									  game.currentAdversity.image:getWidth()*0.15,
-									  game.currentAdversity.image:getHeight()*0.15,
+									  80, 0,
+									  game.currentAdversity.image:getWidth()*0.32,
+									  game.currentAdversity.image:getHeight()*0.32,
 									  function() end,
 									  game.currentAdversity.name, "AtBottom") )
+
+	  -- HUD
+	  world:assemble( Prop(cache.frame, 0, 0, cache.frame:getWidth(), cache.frame:getHeight()) )
    end
    function self:update(entity, dt)
 	  local state = entity:get "GameState"
@@ -141,11 +141,11 @@ function InGameWorld.drawResourcesMarker()
       local resource = entity:get "Resource"
 
       local tempFont = love.graphics.getFont();
-      local topMargin = 510
+      local topMargin = 472
       
       love.graphics.setFont(cache.uiFont)
 	  for i=2, 4 do
-		 love.graphics.print(tostring(resource.amount[2]), 60, topMargin +(i-2)*22)
+		 love.graphics.print(tostring(resource.amount[2]), 205, topMargin +(i-2)*22)
 	  end
       love.graphics.setFont(tempFont)
    end

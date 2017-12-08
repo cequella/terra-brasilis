@@ -1,4 +1,4 @@
-local DEBUG           = true
+--local DEBUG           = true
 local GAMA_MOUSE_DOWN = false
 local WORLD_CLOCK     = 0
 
@@ -62,8 +62,8 @@ function love.keyreleased(key, scancode, isrepeat)
 end
 function love.load()
    cache = Singleton()
-   world = MainMenuWorld()
-   --world = InGameWorld()
+   --world = MainMenuWorld()
+   world = InGameWorld()
    --world = AudioConfigWorld()
    --world = VideoWorld()
    --world = ConfigWorld()
