@@ -3,13 +3,24 @@ Component = require "ecs.Component"
 function GameState()
    local self = Component.new "GameState"
    self.playerType = "Player"
-   self.turnCounter = 0;
-   self.phase = "Start"
-   self.currentAdversity = 0
+   self.turnCounter = 0
+   self.currentAdversity = {
+	  name = "Chuva",
+	  image = cache.rain,
+	  description = "Whatever",
+	  duration = 3
+   }
    self.adversityList = {"Rain"}
    self.menuOpened = false
    self.menuAssembled = false
    self.ingameMenu = {}
+   return self
+end
+
+function Action(choice, at)
+   local self = Component.new "Action"
+   self.choice = choice
+   self.at = at
    return self
 end
 
@@ -67,14 +78,10 @@ function ButtonCallback(callback)
    self.callback = callback
    return self
 end
-function BoardTile()
+function BoardTile(coord, content)
    local self = Component.new "BoardTile"
-   self.content = nil
-   return self
-end
-
-function Spawn()
-   local self = Component.new "Spawn"
+   self.coord = coord
+   self.content = content
    return self
 end
 

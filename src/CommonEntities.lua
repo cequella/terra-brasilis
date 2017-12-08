@@ -3,20 +3,30 @@ Component = require "ecs.Component"
 
 local TILE_SIZE = 96
 
-function Paw(faction, x, y)
-   local charset = (faction=="Guarani") and cache.guarani or nil
-   
+function Guarani(x, y)
    return {
-      {Sprite, charset, x, y, cache.PAW_SIZE, cache.PAW_SIZE}
+      {Sprite, cache.guarani, x, y, cache.PAW_SIZE, cache.PAW_SIZE}
    }
 end
 
-function Tile(tileStates, x, y)
+function Bandeirante(x, y)
+   return {
+      {Sprite, cache.guarani, x, y, cache.PAW_SIZE, cache.PAW_SIZE}
+   }
+end
+
+function SpawnAction(at)
+   return {
+	  {Action, "Spawn", at}
+   }
+end
+
+function Tile(tileStates, x, y, coord, content)
    local hSize = cache.TILE_SIZE/2
    return {
       {Sprite, tileStates, x, y, cache.TILE_SIZE, cache.TILE_SIZE},
       {SphereCollider, x +hSize, y +hSize, cache.TILE_SIZE*0.3, {0, 255, 255}},
-      {BoardTile}
+      {BoardTile, coord, content}
    }
 end
 
@@ -50,14 +60,14 @@ function RoundButton(buttonStates, x, y, size, callback, help, helpPosition)
 
    if callback then
       return {
-	 {Sprite, buttonStates, x, y, size, size},
-	 {SphereCollider, x +hSize, y +hSize, hSize, {255, 255, 0}},
-	 {ButtonCallback, callback},
-	 {UIHelp, help, helpPosition}
+		 {Sprite, buttonStates, x, y, size, size},
+		 {SphereCollider, x +hSize, y +hSize, hSize, {255, 255, 0}},
+		 {ButtonCallback, callback},
+		 {UIHelp, help, helpPosition}
       }
    else
       return {
-	 {Sprite, buttonStates, x, y, size, size, "Unable"},
+		 {Sprite, buttonStates, x, y, size, size, "Unable"},
       }
    end
 end
@@ -65,14 +75,14 @@ end
 function RectangleButton(buttonStates, x, y, width, height, callback, help, helpPosition)
    if callback then
       return{
-	 {Sprite, buttonStates, x, y, width, height},
-	 {AABBCollider, x, y, width, height, {255, 255, 0}},
-	 {ButtonCallback, callback},
-	 {UIHelp, help, helpPosition}
+		 {Sprite, buttonStates, x, y, width, height},
+		 {AABBCollider, x, y, width, height, {255, 255, 0}},
+		 {ButtonCallback, callback},
+		 {UIHelp, help, helpPosition}
       }
    else
       return{
-	 {Sprite, buttonStates, x, y, width, height, "Unable"}
+		 {Sprite, buttonStates, x, y, width, height, "Unable"}
       }
    end
 end

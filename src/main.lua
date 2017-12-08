@@ -30,7 +30,7 @@ function drawDebugHUD()
    love.graphics.print("RightButton= "..tostring(rightButton), 0, 24)
 
    love.graphics.print("Window= "..tostring(love.graphics.getWidth()).."x"..
-			  tostring(love.graphics.getHeight()), 0, 36)
+						  tostring(love.graphics.getHeight()), 0, 36)
 end
 
 function love.mousepressed(x, y, button, istouch)
