@@ -51,7 +51,7 @@ function Tile(tileStates, x, y, coord, faction, content)
    local hSize = cache.TILE_SIZE/2
    return {
       {Sprite, tileStates, x, y, cache.TILE_SIZE, cache.TILE_SIZE},
-      {SphereCollider, x +hSize, y +hSize, cache.TILE_SIZE*0.3, {0, 255, 255}},
+      {SphereCollider, x +hSize, y +hSize, cache.TILE_SIZE*0.3, {255, 255, 0}},
       {BoardTile, coord, faction, content}
    }
 end
@@ -193,13 +193,15 @@ function CollectButton(x, y)
 end
 
 function MoveButton(x, y, from, to)
+   local target = InGameWorld.neighborhood(from)
+   
    return RoundButton(cache.pieMenu.move,
 					  x +cache.PIEMENU_RADIUS, y,
 					  cache.PIEMENU_BUTTON_SIZE,
 					  function()
 						 print("Move")
-						 local temp = {from=from, to=to}
-						 world:register( InGameAction.moveAction() )
+						 local temp = {from=from, target=target}
+						 world:register( InGameAction.moveActionStart() )
 						 world:assemble( MoveAction(temp) )
 					  end, "Mover", "AtRight")
 

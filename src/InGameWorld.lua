@@ -93,23 +93,22 @@ function InGameWorld.gameflow()
 	  local game = entity:get "GameState"
 	  if not game.needUpdate then return end
 
+	  --[[
 	  if game.needUpdate == "Board" then
 		 local board = world:getAllWith {"BoardTile"}
 		 for i=1, #board do
 			local temp = board[i]:get "BoardTile"
 			if temp.faction == "Bandeirante" then
-			   temp = board[i]:get "Sprite"
-			   temp.color = {255, 0, 255}
 			   temp = board[i]:get "SphereCollider"
-			   temp.highlight = {255, 0, 255}
-			else
-			   temp = board[i]:get "Sprite"
-			   temp.color = {255, 255, 255}
+			   temp.highlight = {255, 0, 0}
+			elseif temp.faction == "Oca" then
 			   temp = board[i]:get "SphereCollider"
 			   temp.highlight = {0, 255, 255}
 			end
 		 end
 	  end
+	  --]]
+	  
 	  game.needUpdate = false
    end
    

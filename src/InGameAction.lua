@@ -20,18 +20,45 @@ function InGameAction.spawnAction()
 
    return self
 end
-function InGameAction.moveAction()
+function InGameAction.moveActionStart()
    local self = System.requires {"Action"}
 
+   function self:mouseClick(entity, x, y)
+	  local action = entity:get "Action"
+	  local board = world:getAllWith {"BoardTile"}
+	  
+	  for _, i in ipairs(action.info.target) do
+		 local tile = board[i.y*6+i.x]
+		 local collider = tile:get "SphereCollider"
+		 local sprite = tile:get "Sprite"
+		 local over = checkDotInSphere(x, y,
+									   collider.x, collider.y,
+									   collider.radius)
+
+		 if over then
+			local desTile = board[i.y*6+i.x]:get "BoardTile"
+			local srcTile = board[action.info.from]:get "BoardTile"
+			desTile.faction = "Guarani"
+			desTile.entity = world:assemble( Guarani(sprite.x +18, sprite.y+9) )
+			srcTile.faction = nil 
+			srcTile.entity:destroy()
+		 end
+		 sprite.color = {255, 255, 255}
+	  end
+
+	  entity:destroy()
+	  world:unregister(self.__index)
+   end
    function self:load(entity)
 	  local action = entity:get "Action"
 	  local board = world:getAllWith {"BoardTile"}
 
-	  local temp = InGameWorld.neighborhood(action.info.from)
-	  for _, i in ipairs(temp) do
-		 print(i.x*6+j+1)
-		 --local sprite = board[i]:get "Sprite"
-		 --sprite.color = {255, 0, 255}
+	  for _, i in ipairs(action.info.target) do
+		 local sprite = board[i.y*6+i.x]:get "Sprite"
+		 local boardTile = board[i.y*6+i.x]:get "BoardTile"
+		 if boardTile.faction == nil then
+			sprite.color = {0, 255, 255}
+		 end
 	  end
 	  --[[
 	  -- Conf boardtile component
@@ -46,10 +73,10 @@ function InGameAction.moveAction()
 	  -- Use sprite component
 	  local sprite = tile:get "Sprite"
 	  description.entity = world:assemble( Guarani(sprite.x +18, sprite.y +9) )
-	  --]]
 
 	  entity:destroy()
 	  world:unregister(self.__index)
+	  --]]
    end
 
    return self
