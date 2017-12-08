@@ -36,7 +36,9 @@ setmetatable(AudioConfigWorld, {
 		   end
 
 
-		   self:assemble( Prop(cache.menuBackground, 0, 0, cache.menuBackground:getWidth(), cache.menuBackground:getHeight()) )
+		   self:assemble( Prop(cache.menuBackground,
+				       0, 0,
+				       cache.menuBackground:getWidth(), cache.menuBackground:getHeight()) )
 		   self:assemble( Prop(cache.logo,
 				       (800 -cache.logo:getWidth())/2,
 				       50,

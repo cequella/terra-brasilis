@@ -32,7 +32,7 @@ function drawDebugHUD()
    love.graphics.print("RightButton= "..tostring(rightButton), 0, 24)
 
    love.graphics.print("Window= "..tostring(love.graphics.getWidth()).."x"..
-						  tostring(love.graphics.getHeight()), 0, 36)
+			  tostring(love.graphics.getHeight()), 0, 36)
    love.graphics.print("#Entity= "..tostring(#world.entityList), 0, 48)
    love.graphics.print("#System= "..tostring(#world.systemList), 0, 60)
 end
@@ -62,8 +62,8 @@ function love.keyreleased(key, scancode, isrepeat)
 end
 function love.load()
    cache = Singleton()
-   --world = MainMenuWorld()
-   world = InGameWorld()
+   world = MainMenuWorld()
+   --world = InGameWorld()
    --world = AudioConfigWorld()
    --world = VideoWorld()
    --world = ConfigWorld()

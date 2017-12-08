@@ -60,8 +60,13 @@ function Singleton.new(instance)
    self.nightSound     = love.audio.newSource("assets/night.ogg")
    self.buttonFeedback = love.audio.newSource("assets/buttonFeedback.mp3")
 
-   self.nightSound:setVolume(0.0)
-   self.buttonFeedback:setVolume(0.0)
+
+   -- Controler
+   self.main   = { value=0.5, min=0.0, max=1.0 }
+   self.effect = { value=0.5, min=0.0, max=1.0 }
+
+   --self.nightSound:setVolume(0.0)
+   --self.buttonFeedback:setVolume(0.0)
 
    -- Font
    self.uiFont = love.graphics.newFont("assets/CoolinCheer.ttf", 22)

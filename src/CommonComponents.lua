@@ -106,8 +106,6 @@ function AudioUI(x, y, width)
    local self = Component.new "AudioUI"
    self.position = { x=x, y=y }
    self.width    = width
-   self.main     = { value=0.5, min=0.0, max=1.0 }
-   self.effect   = { value=0.5, min=0.0, max=1.0 }
    return self
 end
 

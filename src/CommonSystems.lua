@@ -13,15 +13,15 @@ function render()
    function self:draw(entity)
       local sprite   = entity:get "Sprite"
 
-	  if sprite.highlight ~= nil then
-		 love.graphics.setColor(sprite.highlight)
-	  else
-		 love.graphics.setColor(sprite.color)
-	  end
+      if sprite.highlight ~= nil then
+	 love.graphics.setColor(sprite.highlight)
+      else
+	 love.graphics.setColor(sprite.color)
+      end
       love.graphics.draw(sprite.image,
-						 sprite.x, sprite.y,
-						 0,
-						 sprite.sx, sprite.sy)
+			 sprite.x, sprite.y,
+			 0,
+			 sprite.sx, sprite.sy)
       love.graphics.setColor(255, 255, 255)
    end
 
@@ -36,51 +36,51 @@ function showHelp()
       local uiHelp = entity:get "UIHelp"
 
       if sprite.state == "MouseOver" then
-		 if uiHelp.timeOver==0 then
-			uiHelp.timeOver = love.timer.getTime()
-		 end
+	 if uiHelp.timeOver==0 then
+	    uiHelp.timeOver = love.timer.getTime()
+	 end
       else
-		 uiHelp.timeOver = 0
+	 uiHelp.timeOver = 0
       end
    end
-   function self:draw(entity)
+   function self:drawUI(entity)
       local sprite = entity:get "Sprite"
       local uiHelp = entity:get "UIHelp"
 
       if not uiHelp.message then return end
       if uiHelp.timeOver>0 then
-		 local font   = love.graphics.getFont()
-		 local deltaT = love.timer.getTime() -uiHelp.timeOver
-		 if deltaT<cache.feedback then return end
-		 
-		 local posX
-		 local posY
-		 
-		 -- Positioning
-		 if uiHelp.position == "AtRight" then
-			posX = sprite.x +sprite.width +10
-			posY = sprite.y +(sprite.height -font:getHeight())/2
-		 elseif uiHelp.position == "AtBottom" then
-			posX = sprite.x +(sprite.width -font:getWidth(uiHelp.message))/2
-			posY = sprite.y +sprite.height +10
-		 elseif uiHelp.position == "AtTop" then
-			posX = sprite.x +(sprite.width -font:getWidth(uiHelp.message))/2
-			posY = sprite.y -font:getHeight() -10
-		 elseif uiHelp.position == "AtLeft" then
-			posX = sprite.x -font:getWidth(uiHelp.message) -10
-			posY = sprite.y +(sprite.height -font:getHeight())/2
-		 end
+	 local font   = love.graphics.getFont()
+	 local deltaT = love.timer.getTime() -uiHelp.timeOver
+	 if deltaT<cache.feedback then return end
+	 
+	 local posX
+	 local posY
+	 
+	 -- Positioning
+	 if uiHelp.position == "AtRight" then
+	    posX = sprite.x +sprite.width +10
+	    posY = sprite.y +(sprite.height -font:getHeight())/2
+	 elseif uiHelp.position == "AtBottom" then
+	    posX = sprite.x +(sprite.width -font:getWidth(uiHelp.message))/2
+	    posY = sprite.y +sprite.height +10
+	 elseif uiHelp.position == "AtTop" then
+	    posX = sprite.x +(sprite.width -font:getWidth(uiHelp.message))/2
+	    posY = sprite.y -font:getHeight() -10
+	 elseif uiHelp.position == "AtLeft" then
+	    posX = sprite.x -font:getWidth(uiHelp.message) -10
+	    posY = sprite.y +(sprite.height -font:getHeight())/2
+	 end
 
-		 -- Draw rectangle
-		 love.graphics.setColor(0, 0, 0, 180)
-		 love.graphics.rectangle("fill",
-								 posX -5, posY -5,
-								 font:getWidth(uiHelp.message) +10, font:getHeight() +10,
-								 6,6,3)
-		 
-		 -- Write text
-		 love.graphics.setColor(255, 255, 255)
-		 love.graphics.print(uiHelp.message, posX, posY)
+	 -- Draw rectangle
+	 love.graphics.setColor(0, 0, 0, 180)
+	 love.graphics.rectangle("fill",
+				 posX -5, posY -5,
+				 font:getWidth(uiHelp.message) +10, font:getHeight() +10,
+				 6,6,3)
+	 
+	 -- Write text
+	 love.graphics.setColor(255, 255, 255)
+	 love.graphics.print(uiHelp.message, posX, posY)
       end
    end
 
@@ -94,8 +94,8 @@ function roundHighlight()
       local sprite   = entity:get "Sprite"
       local collider = entity:get "SphereCollider"
       local over     = checkDotInSphere(x,          y,
-										collider.x, collider.y,
-										collider.radius)
+					collider.x, collider.y,
+					collider.radius)
 
       sprite.highlight = over and collider.highlight or nil
       sprite.state = over and "MouseOver" or "Default"
@@ -111,10 +111,10 @@ function squareHighlight()
       local sprite   = entity:get "Sprite"
       local collider = entity:get "AABBCollider"
       local over     = checkDotInRect(x, y,
-									  collider.x, collider.y,
-									  collider.width, collider.height)
+				      collider.x, collider.y,
+				      collider.width, collider.height)
 
-	  sprite.highlight = over and collider.highlight or nil
+      sprite.highlight = over and collider.highlight or nil
       sprite.state = over and "MouseOver" or "Default"
    end
 
@@ -147,12 +147,12 @@ function rectButtonCallbackExecute()
 
       local collider = entity:get "AABBCollider"
       local over     = checkDotInRect(x,              y,
-									  collider.x,     collider.y,
-									  collider.width, collider.height)
+				      collider.x,     collider.y,
+				      collider.width, collider.height)
       if over then
-		 local button = entity:get "ButtonCallback"
-		 love.audio.play(cache.buttonFeedback)
-		 button.callback()
+	 local button = entity:get "ButtonCallback"
+	 love.audio.play(cache.buttonFeedback)
+	 button.callback()
       end
 
    end
@@ -168,12 +168,12 @@ function roundButtonCallbackExecute()
 
       local collider = entity:get "SphereCollider"
       local over     = checkDotInSphere(x,          y,
-										collider.x, collider.y,
-										collider.radius)
+					collider.x, collider.y,
+					collider.radius)
       if over then
-		 local button = entity:get "ButtonCallback"
-		 love.audio.play(cache.buttonFeedback)
-		 button.callback()
+	 local button = entity:get "ButtonCallback"
+	 love.audio.play(cache.buttonFeedback)
+	 button.callback()
       end
 
    end
@@ -190,13 +190,13 @@ function showAudioConfig()
 
       -- Main music
       suit.Label("Música", {align = "center"}, suit.layout:row(ui.width, 12))
-      suit.Slider(ui.main, suit.layout:row(ui.width, 12))
-      cache.nightSound:setVolume(ui.main.value)
+      suit.Slider(cache.main, suit.layout:row(ui.width, 12))
+      cache.nightSound:setVolume(cache.main.value)
 
       -- Effects
       suit.Label("Efeitos", {align = "center"}, suit.layout:row(ui.width, 12))
-      suit.Slider(ui.effect, suit.layout:row(ui.width, 12))
-      cache.buttonFeedback:setVolume(ui.effect.value)
+      suit.Slider(cache.effect, suit.layout:row(ui.width, 12))
+      cache.buttonFeedback:setVolume(cache.effect.value)
    end
    function self:draw(entity)
       suit.draw()
