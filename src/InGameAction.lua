@@ -25,8 +25,15 @@ function InGameAction.moveAction()
 
    function self:load(entity)
 	  local action = entity:get "Action"
-	  local tile = world:getAllWith {"BoardTile"}[action.info.from]
+	  local board = world:getAllWith {"BoardTile"}
 
+	  local temp = InGameWorld.neighborhood(action.info.from)
+	  for _, i in ipairs(temp) do
+		 print(i.x*6+j+1)
+		 --local sprite = board[i]:get "Sprite"
+		 --sprite.color = {255, 0, 255}
+	  end
+	  --[[
 	  -- Conf boardtile component
 	  local description = tile:get "BoardTile"
 	  description.faction = nil
@@ -39,6 +46,7 @@ function InGameAction.moveAction()
 	  -- Use sprite component
 	  local sprite = tile:get "Sprite"
 	  description.entity = world:assemble( Guarani(sprite.x +18, sprite.y +9) )
+	  --]]
 
 	  entity:destroy()
 	  world:unregister(self.__index)
@@ -65,7 +73,7 @@ function InGameAction.collectAction()
 end
 function InGameAction.attackAction()
    local self = System.requires {"Action"}
-   
+
    function self:load(entity)
 	  local action = entity:get "Action"
 	  local board = world:getAllWith {"BoardTile"}
